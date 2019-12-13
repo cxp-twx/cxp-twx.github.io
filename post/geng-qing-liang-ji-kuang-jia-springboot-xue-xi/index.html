@@ -1,0 +1,624 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>更轻量级框架Springboot学习 | CheckChen</title>
+<meta name="description" content="吾日三省吾身" />
+<link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576205647397">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cxp-twx.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://cxp-twx.github.io">
+  <img class="avatar" src="https://cxp-twx.github.io/images/avatar.png?v=1576205647397" alt="">
+  </a>
+  <h1 class="site-title">
+    CheckChen
+  </h1>
+  <p class="site-description">
+    吾日三省吾身
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              更轻量级框架Springboot学习
+            </h2>
+            <div class="post-info">
+              <span>
+                2019-11-12
+              </span>
+              <span>
+                13 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="springboot学习">SpringBoot学习</h1>
+<ul class="contains-task-list">
+<li class="task-list-item">
+<p><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8526268"><label class="task-list-item-label" for="task-item-8526268"> #### 踩过的坑：</label></p>
+</li>
+<li class="task-list-item">
+<p><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5708815"><label class="task-list-item-label" for="task-item-5708815"> Ctrl + alt + L：列编辑(不好使(不要放手Ctrl+alt))：：：：alt+加拉取（在源码模式下）</label></p>
+</li>
+<li class="task-list-item">
+<p><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1025194"><label class="task-list-item-label" for="task-item-1025194"> typora的偏好设置里面竟然有恢复之前未保存的文件，太强了，粉了！！！</label></p>
+</li>
+</ul>
+<pre><code class="language-xml">&lt;!-- 当项目以war包的方式部署到外部Tomcat运行时 --&gt;
+        &lt;!-- 必须将tomcat标记为provided，阻止将内置的tomcat包打到war包中，以防与外部tomcat容器中的包冲突 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+
+
+如果将SpringBoot工程打成war包，放到外部Tomcat中去运行需要做如下配置：
+ &lt;ol&gt;
+     &lt;li&gt;将pom打包格式改成war&lt;/li&gt;
+     &lt;li&gt;将spring-boot-starter-tomcat依赖配置成provided&lt;/li&gt;
+     &lt;li&gt;启动类做如下修改&lt;/li&gt;
+ &lt;/ol&gt;
+</code></pre>
+<blockquote>
+<p>在SpringBoot中，默认配置的/**映射到/static。<br>
+静态资源映射还有一个配置选项，为了简单这里用.properties方式书写：</p>
+<p>spring.mvc.static-path-pattern=/** # Path pattern used for static<br>
+resources.</p>
+<p>这个配置会影响默认的/**，例如修改为/static/**后，只能映射如/static/js/sample.js这样的请求（修改前是/js/sample.js）。这个配置只能写一个值，不像大多数可以配置多个用逗号隔开的。</p>
+</blockquote>
+<p><mark>在application.yml文件中严格按照层级结构（按照idea的提示）来书写也不会出错！</mark></p>
+<h3 id="springboot视图">SpringBoot视图</h3>
+<h3 id="thymeleaf">Thymeleaf</h3>
+<pre><code>模板引擎(springBoot中用来取参)
+</code></pre>
+<pre><code class="language-xml">&lt;!--前端页面中--&gt;
+&lt;html lang=&quot;en&quot; xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;!--pom.xml中--&gt;
+		&lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p>。。。</p>
+<h1 id="springboot的运行方式">SpringBoot的运行方式</h1>
+<ol>
+<li>直接在IDEA中运行入口处类</li>
+<li>通过Spring-boot-maven-plugin打成可执行jar包，通过Java-jar 运行</li>
+<li>通过mvc spring-boot ：run运行</li>
+</ol>
+<p>打包部署：</p>
+<p><strong>jar包</strong></p>
+<p>SpringBoot官方建议通过SpringBoot提供的打包插件将项目打包成一个可执行的jar包(在这个jar包里面已经内置了Tomcat，可以直接当一个web跑)，方便部署和管理。</p>
+<p>添加编译插件(通过start.spring.io创建的工程默认就有)</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;!-- ... --&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+    &lt;!-- ... --&gt;
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;fork&gt;true&lt;/fork&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+<p>然后直接通过</p>
+<pre><code class="language-cmd">$ mvn clean package
+$ java -jar target/mymodule-0.0.1-SNAPSHOT.jar
+</code></pre>
+<blockquote>
+<p>注意， 如果你使用了src/main/webapp目录，打成jar包会忽略掉该目录下的所有文件，这种情况下只能选择打war包的方式</p>
+</blockquote>
+<p><strong>war包</strong></p>
+<p>主要分为两步</p>
+<h3 id="第一步修改pomxml">第一步，修改pom.xml</h3>
+<p>示例配置：<br>
+pom.xml</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;!-- ... --&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;!-- ... --&gt;
+    &lt;dependencies&gt;
+    &lt;!-- 必须将tomcat标记为provided，阻止将内置的tomcat包打到war包中，以防与外部tomcat容器中的包冲突 --&gt;
+    &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;!-- ... --&gt;
+        &lt;!-- Compile --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;!-- 支持JSP --&gt;        
+    &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+            &lt;artifactId&gt;tomcat-embed-jasper&lt;/artifactId&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;!-- Test --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;useSystemClassLoader&gt;false&lt;/useSystemClassLoader&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+<h3 id="第二步-注册启动类">第二步 注册启动类</h3>
+<p>创建 ServletInitializer.java，继承 SpringBootServletInitializer ，覆盖 configure()，把启动类 Application 注册进去。外部 Web 应用服务器构建 Web Application Context 的时候，会把启动类添加进去。</p>
+<pre><code class="language-java">public class ServletInitializer extends SpringBootServletInitializer {
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(Application.class);
+    }
+}
+</code></pre>
+<p>Mybatis逆向工程插件模板</p>
+<p><strong>generatorConfig.xml</strong>的配置文件之前已有上传。。</p>
+<pre><code class="language-xml"> //他需要有个编译时的mysql——springboot内部的是scope是runtime
+		&lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;version&gt;8.0.18&lt;/version&gt;
+        &lt;/dependency&gt;
+
+&lt;!-- 定义mybatis逆向工程代码生成插件 (生成之后建议注释掉)--&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.mybatis.generator&lt;/groupId&gt;
+                &lt;artifactId&gt;mybatis-generator-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;1.3.7&lt;/version&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;id&gt;Generate MyBatis Artifacts&lt;/id&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;generate&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+                &lt;configuration&gt;
+                    &lt;!-- ${basedir}是maven提供的内置变量，获取的是项目根目录的路径 --&gt;
+                    &lt;!-- 指定自定义配置文件（代码生成工具）路径 --&gt;
+                    &lt;configurationFile&gt;${basedir}/src/main/resources/mybatis/generatorConfig.xml&lt;/configurationFile&gt;
+                    &lt;includeCompileDependencies&gt;true&lt;/includeCompileDependencies&gt;
+                    &lt;overwrite&gt;true&lt;/overwrite&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+</code></pre>
+<h1 id="springboot-ssm整合">SpringBoot-SSM整合</h1>
+<h2 id="第一步">第一步：</h2>
+<p>配置pom.xml以及生成Mybatis逆向工程</p>
+<h2 id="第二步">第二步</h2>
+<p>标识启动类</p>
+<h2 id="第三步">第三步</h2>
+<p>application.yml配置填写</p>
+<h2 id="第四步">第四步</h2>
+<p>开始需求书写（层级就可以开始了）</p>
+<h2 id="thymeleaf模板引擎取代jsp视图">Thymeleaf模板引擎取代JSP视图</h2>
+<p>SpringBoot官方建议我们使用Thymeleaf模板引擎取代JSP视图，如果我们就想使用JSP怎么办呢？可以，做好下面几步配置就可以了</p>
+<h3 id="第一步修改pomxml中的打包方式为war">第一步：修改pom.xml中的打包方式为war</h3>
+<pre><code>&lt;project&gt;
+     ...
+    &lt;packaging&gt;war&lt;/packaging&gt;
+     ...
+&lt;/project&gt;
+</code></pre>
+<h3 id="第二步添加jsp依赖">第二步：添加JSP依赖</h3>
+<pre><code>&lt;!--配置支持jsp--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;
+    &lt;artifactId&gt;tomcat-embed-jasper&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+<h3 id="第三步配置internalresourceviewresolver参数">第三步：配置InternalResourceViewResolver参数</h3>
+<pre><code>spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/ #配置JSP文件前缀
+      suffix: .jsp      #配置JSP页面后缀
+
+</code></pre>
+<blockquote>
+<p>注：<br>
+1、jsp页面必须放到webapp目录或webapp/WEB-INF/下<br>
+2、如果使用了jsp作为视图，则工程只能打成war包部署(因为jar包不会将webapp目录下的东西打进去)</p>
+</blockquote>
+<h1 id="踩坑ing">踩坑ing</h1>
+<pre><code class="language-xml">mybatis:  mapper-locations: classpath:/mybatis/mappers/*.xml
+
+
+config-location: &lt;!--二者有区别--&gt;
+
+</code></pre>
+<ol>
+<li>Date类解决</li>
+</ol>
+<ul>
+<li>在Spring Boot项目中，使用==@RestController==注解，返回的java对象中若含有date类型的属性，则<strong>默认输出为TIMESTAMP时间戳格式</strong></li>
+</ul>
+<p>在application.properties配置文件增加以下配置:</p>
+<pre><code class="language-properties">spring.jackson.date-format=yyyy-MM-dd HH:mm:ss
+spring.jackson.time-zone=GMT+8
+#之前的做法是在bean类的date属性上添加注解@JSONFormat（&quot;yyyy-MM-dd HH:mm:ss&quot;）
+
+</code></pre>
+<ul>
+<li>在Spring Boot项目中，使用==@Controller==注解，储存在Model中的java对象中若含有date类型的属性，则默认是GBK格式</li>
+</ul>
+<pre><code class="language-html">#dates.format()
+用来格式化日期时间
+
+${#dates.format(date, 'dd/MMM/yyyy HH:mm')}
+${#dates.arrayFormat(datesArray, 'dd/MMM/yyyy HH:mm')}
+${#dates.listFormat(datesList, 'dd/MMM/yyyy HH:mm')}
+${#dates.setFormat(datesSet, 'dd/MMM/yyyy HH:mm')}
+
+&lt;!--强势——&gt;
+
+&lt;td th:text=&quot;${#dates.format(book.publish, 'yyyy-MM-dd HH:mm')}&quot;&gt;&lt;/td&gt;
+
+</code></pre>
+<ul>
+<li><code>@InitBinder</code>用于在<code>@Controller</code>中标注于方法，表示为当前控制器注册一个属性编辑器或者其他，只对当前的Controller有效。<mark>而@Controller必须显式的存在Date类</mark></li>
+</ul>
+<pre><code class="language-Java">@InitBinderpublic void initBinder(ServletRequestDataBinder binder) {  
+    SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);    binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+}
+
+</code></pre>
+<pre><code class="language-java">/**
+ * 全局handler前日期统一处理
+ * @author zhanghang
+ * @date 2018/1/11
+ */
+@Component
+public class DateConverterConfig implements Converter&lt;String, Date&gt; {
+
+    private static final List&lt;String&gt; formarts = new ArrayList&lt;&gt;(4);
+    static{
+        formarts.add(&quot;yyyy-MM&quot;);
+        formarts.add(&quot;yyyy-MM-dd&quot;);
+        formarts.add(&quot;yyyy-MM-dd hh:mm&quot;);
+        formarts.add(&quot;yyyy-MM-dd hh:mm:ss&quot;);
+    }
+
+    @Override
+    public Date convert(String source) {
+        String value = source.trim();
+        if (&quot;&quot;.equals(value)) {
+            return null;
+        }
+        if(source.matches(&quot;^\\d{4}-\\d{1,2}$&quot;)){
+            return parseDate(source, formarts.get(0));
+        }else if(source.matches(&quot;^\\d{4}-\\d{1,2}-\\d{1,2}$&quot;)){
+            return parseDate(source, formarts.get(1));
+        }else if(source.matches(&quot;^\\d{4}-\\d{1,2}-\\d{1,2} {1}\\d{1,2}:\\d{1,2}$&quot;)){
+            return parseDate(source, formarts.get(2));
+        }else if(source.matches(&quot;^\\d{4}-\\d{1,2}-\\d{1,2} {1}\\d{1,2}:\\d{1,2}:\\d{1,2}$&quot;)){
+            return parseDate(source, formarts.get(3));
+        }else {
+            throw new IllegalArgumentException(&quot;Invalid boolean value '&quot; + source + &quot;'&quot;);
+        }
+    }
+
+    /**
+     * 格式化日期
+     * @param dateStr String 字符型日期
+     * @param format String 格式
+     * @return Date 日期
+     */
+    public  Date parseDate(String dateStr, String format) {
+        Date date=null;
+        try {
+            DateFormat dateFormat = new SimpleDateFormat(format);
+            date = dateFormat.parse(dateStr);
+        } catch (Exception e) {
+
+        }
+        return date;
+    }
+
+}
+//还没有验证对错、、、、、、、
+
+</code></pre>
+<ul>
+<li>
+<p><strong>layUI中的表格cols[[</strong></p>
+<p><strong>{}</strong></p>
+<p><strong>]]和thymeleaf中的内联表达式冲突需要这样书写，简单改变下冲突cols[</strong></p>
+<p><strong>[{</strong></p>
+<p>​     <strong>}]</strong></p>
+<p><strong>]</strong></p>
+</li>
+<li>
+<p><strong>banner文件</strong></p>
+</li>
+</ul>
+<pre><code class="language-Java">/*SpringApplication.run(SpringbootSsmApplication.class, args);*/
+
+
+//对比
+
+//关闭banner
+SpringApplicationBuilder sub
+= new SpringApplicationBuilder(SpringbootSsmApplication.class);
+
+sub.bannerMode(Banner.Mode.OFF).run(args);
+
+</code></pre>
+<ul>
+<li>好玩的</li>
+</ul>
+<pre><code class="language-css">table, tr, td, th {   
+    /*用来决定表格的边框是分开的还是合并的：collapse、separate*/   
+    border-collapse: separate;
+}
+
+&lt;!--引入css使用link--&gt;
+ /*在HTML中，&lt;link&gt;标签没有结束标签。rel属性用于定义当前文档与被链接文档之间的关系。*/  
+&lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/table_y.css&quot;&gt;
+&lt;!--引入js使用script--&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;myscripts.js&quot;&gt;&lt;/script&gt;
+
+
+
+
+
+注释：外部文件不能包含 &lt;script&gt; 标签！
+
+</code></pre>
+<h1 id="导入import"><strong>导入import：</strong></h1>
+<h3 id="springboot-21版本解决tomcat最大支持10m文件上传问题">SpringBoot 2.1版本解决Tomcat最大支持10M文件上传问题</h3>
+<pre><code class="language-Java">@Bean
+public TomcatServletWebServerFactory tomcatEmbedded() {
+    TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
+    tomcat.addConnectorCustomizers((TomcatConnectorCustomizer) connector -&gt; {
+        if ((connector.getProtocolHandler() instanceof AbstractHttp11Protocol&lt;?&gt;)) {
+            //-1 means unlimited
+            ((AbstractHttp11Protocol&lt;?&gt;) connector.getProtocolHandler()).setMaxSwallowSize(-1);
+        }
+    });
+    return tomcat;
+}
+
+</code></pre>
+<h3 id="springboot-15版本解决tomcat最大只能上传10m文件问题">SpringBoot 1.5版本解决Tomcat最大只能上传10M文件问题</h3>
+<pre><code class="language-java">@Bean
+public TomcatEmbeddedServletContainerFactory tomcatFactory() {
+    TomcatEmbeddedServletContainerFactory tomcatFactory = new TomcatEmbeddedServletContainerFactory();
+    tomcatFactory.addConnectorCustomizers((TomcatConnectorCustomizer) connector -&gt; {
+        if ((connector.getProtocolHandler() instanceof AbstractHttp11Protocol&lt;?&gt;)) {
+            //-1 means unlimited
+            ((AbstractHttp11Protocol&lt;?&gt;) connector.getProtocolHandler()).setMaxSwallowSize(-1);
+        }
+    });
+    return tomcatFactory;
+}
+
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#springboot%E5%AD%A6%E4%B9%A0">SpringBoot学习</a><br>
+*
+<ul>
+<li><a href="#springboot%E8%A7%86%E5%9B%BE">SpringBoot视图</a></li>
+<li><a href="#thymeleaf">Thymeleaf</a></li>
+</ul>
+</li>
+<li><a href="#springboot%E7%9A%84%E8%BF%90%E8%A1%8C%E6%96%B9%E5%BC%8F">SpringBoot的运行方式</a><br>
+*
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%E4%BF%AE%E6%94%B9pomxml">第一步，修改pom.xml</a></li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5-%E6%B3%A8%E5%86%8C%E5%90%AF%E5%8A%A8%E7%B1%BB">第二步 注册启动类</a></li>
+</ul>
+</li>
+<li><a href="#springboot-ssm%E6%95%B4%E5%90%88">SpringBoot-SSM整合</a>
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E6%AD%A5">第一步：</a></li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5">第二步</a></li>
+<li><a href="#%E7%AC%AC%E4%B8%89%E6%AD%A5">第三步</a></li>
+<li><a href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5">第四步</a></li>
+<li><a href="#thymeleaf%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E5%8F%96%E4%BB%A3jsp%E8%A7%86%E5%9B%BE">Thymeleaf模板引擎取代JSP视图</a>
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%E4%BF%AE%E6%94%B9pomxml%E4%B8%AD%E7%9A%84%E6%89%93%E5%8C%85%E6%96%B9%E5%BC%8F%E4%B8%BAwar">第一步：修改pom.xml中的打包方式为war</a></li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%E6%B7%BB%E5%8A%A0jsp%E4%BE%9D%E8%B5%96">第二步：添加JSP依赖</a></li>
+<li><a href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%E9%85%8D%E7%BD%AEinternalresourceviewresolver%E5%8F%82%E6%95%B0">第三步：配置InternalResourceViewResolver参数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E8%B8%A9%E5%9D%91ing">踩坑ing</a></li>
+<li><a href="#%E5%AF%BC%E5%85%A5import"><strong>导入import：</strong></a><br>
+*
+<ul>
+<li><a href="#springboot-21%E7%89%88%E6%9C%AC%E8%A7%A3%E5%86%B3tomcat%E6%9C%80%E5%A4%A7%E6%94%AF%E6%8C%8110m%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E9%97%AE%E9%A2%98">SpringBoot 2.1版本解决Tomcat最大支持10M文件上传问题</a></li>
+<li><a href="#springboot-15%E7%89%88%E6%9C%AC%E8%A7%A3%E5%86%B3tomcat%E6%9C%80%E5%A4%A7%E5%8F%AA%E8%83%BD%E4%B8%8A%E4%BC%A010m%E6%96%87%E4%BB%B6%E9%97%AE%E9%A2%98">SpringBoot 1.5版本解决Tomcat最大只能上传10M文件问题</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://cxp-twx.github.io/post/solr-sou-suo-xiang-xi-zong-jie">
+              <h3 class="post-title">
+                Solr搜索详细总结
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '3818ab196008bdc444d2',
+    clientSecret: '25a6a1be783a52e1a00f165dd3c08fa28fba507a',
+    repo: 'cxp-twx.github.io',
+    owner: 'cxp-twx',
+    admin: ['cxp-twx'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://cxp-twx.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

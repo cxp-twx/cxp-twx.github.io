@@ -1,0 +1,334 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Linux常用命令学习 | CheckChen</title>
+<meta name="description" content="吾日三省吾身" />
+<link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576205647397">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cxp-twx.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://cxp-twx.github.io">
+  <img class="avatar" src="https://cxp-twx.github.io/images/avatar.png?v=1576205647397" alt="">
+  </a>
+  <h1 class="site-title">
+    CheckChen
+  </h1>
+  <p class="site-description">
+    吾日三省吾身
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Linux常用命令学习
+            </h2>
+            <div class="post-info">
+              <span>
+                2019-11-18
+              </span>
+              <span>
+                5 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="linux学习">Linux学习</h1>
+<h1 id="目录结构">目录结构：</h1>
+<p><strong>https://www.runoob.com/linux/linux-system-contents.html</strong></p>
+<h2 id="1-在虚拟机中安装centos操作系统">1. 在虚拟机中安装Centos操作系统</h2>
+<p>使用VirtualBox虚拟机工具安装centos6操作系统</p>
+<h3 id="11-linux-ssh操作终端">**1.1 Linux **SSH操作终端</h3>
+<p>使用SecureCRT工具通过ssh服务远程连接到linux，通过命令行操作</p>
+<h3 id="12-linux常用命令"><strong>1.2.</strong> <strong>Linux常用</strong>命令</h3>
+<h4 id="目录相关命令"><strong>目录</strong><mark>相关命令</mark>：</h4>
+<blockquote>
+<p>ls: 查看当前目录文件</p>
+<p>ll:查看所有以及</p>
+<p>cd: 切换工作目录 如: cd ~ （进入当前用户home目录）</p>
+<p>pwd: 显示当前工作目录</p>
+<p>mkdir: 新建目录</p>
+<p>mkdir -p /././.   :创建多级目录</p>
+<p>cd .. :跳出到根目录（到上一级目录 	）</p>
+<p><strong>ls-命令参数</strong> :</p>
+<ul>
+<li>-a 显示所有文件及目录 (ls内定将文件名或目录名称开头为&quot;.&quot;的视为隐藏档，不会列出)</li>
+<li>-l 除文件名称外，亦将文件型态、权限、拥有者、文件大小等资讯详细列出</li>
+<li>-r 将文件以相反次序显示(原定依英文字母次序)</li>
+<li>-t 将文件依建立时间之先后次序列出</li>
+<li>-A 同 -a ，但不列出 &quot;.&quot; (目前目录) 及 &quot;..&quot; (父目录)</li>
+<li>-F 在列出的文件名称后加一符号；例如可执行档则加 &quot;*&quot;, 目录则加 &quot;/&quot;</li>
+<li>-R 若目录下有文件，则以下之文件亦皆依序列出</li>
+</ul>
+</blockquote>
+<h4 id="文件操作相关"><strong>文件操作</strong>相关：</h4>
+<blockquote>
+<p>cat: 查看文件内容</p>
+<p>tail  -fn 100 /etc/passwd （查看文件最后100行， 自动刷新，非常适合看日志）</p>
+<p>rm: 删除</p>
+<p>mv: 移动文件 (如果还移动到当前目录，就是重命名)</p>
+<p>touch: 创建一个空文件</p>
+<p>sz [文件名] ：下载Linux上的文件到本地系统</p>
+<p>使用指令&quot;cp&quot;将当前目录&quot;test/&quot;下的所有文件复制到新目录&quot;newtest&quot;下，输入如下命令：</p>
+<pre><code class="language-bash">$ cp –r test/ newtest  
+</code></pre>
+</blockquote>
+<blockquote>
+<p>**我们知道cp是复制，mv就是剪切，在windows下的叫法<img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly93d3cuaXRleWUuY29tL2ltYWdlcy9zbWlsZXMvaWNvbl9sb2wuZ2lm" alt="img">，在linux下二者还有一个区别，就是生成的文件的权限不一定相同。</p>
+<p>**mv只是移动了文件，文件的一切都没有改变，而cp是在目标文件夹中创建了新的文件。</p>
+</blockquote>
+<h4 id="vim-文本编辑相关"><strong>VIM 文本</strong>编辑相关：</h4>
+<blockquote>
+<p>vim: linux上的一个强大的文本编辑器</p>
+<p>保存并退出： :wq(命令模式下)、 ZZ（命令模式下）</p>
+<p>不保存退出：:q! (命令模式下)</p>
+<p>从命令模式切换到编辑模式：	a、i、o</p>
+<p>跳到文件头： gg</p>
+<p>跳到文件尾：GG</p>
+</blockquote>
+<h4 id="进程相关命令"><strong>进程</strong>相关命令：</h4>
+<blockquote>
+<p>查看当前系统中运行了哪些进程：ps aux | grep  vsftp (查看当前有没有运行ftp进程)</p>
+<p>杀进程： kill -9 [进程号]</p>
+</blockquote>
+<h4 id="centos安装包管理器yum-命令"><strong>Centos</strong>安装包管理器Yum 命令：</h4>
+<blockquote>
+<p>查看已安装的程序：sudo yum list installed | grep vsftp	(查看是否安装了vsftp软件)</p>
+<p>卸载已安装程序： sudo yum remove vsftpd.i686</p>
+<p>安装程序： sudo yum install vsftpd</p>
+</blockquote>
+<h4 id="centos防火墙命令相关"><strong>Centos</strong>防火墙命令相关:</h4>
+<blockquote>
+<p>查看防火墙状态：service iptables status</p>
+<p>关闭防火墙：service iptables stop</p>
+<p>开启防火墙：service iptables start</p>
+</blockquote>
+<h4 id="服务开机自启动">服务开机自启动：</h4>
+<blockquote>
+<p>chkconfig vsftpd on  (设置vsftpd服务开机自启动)</p>
+</blockquote>
+<h4 id="关机服务开机自启">关机服务开机自启：</h4>
+<blockquote>
+<p>chkconfig iptables off (设置防火墙服务不开机自启)</p>
+<p>关机：sudo halt –p</p>
+<p>重启: sudo reboot</p>
+</blockquote>
+<h4 id="用户相关">用户相关：</h4>
+<blockquote>
+<p>useradd user1——创建用户user1</p>
+<p>使用 passwd 命令为新建用户设置密码：password user1</p>
+<p>命令 usermod 修改用户账户：usermod –l u1 user1  改名字</p>
+<p>usermod –g users user1 ：加入用户组</p>
+<p>su user :查询进入用户</p>
+<p>sudo password user：重置这个用户的密码</p>
+<p>删除用户：userdel user2</p>
+<p>删除用户 user3，同时删除他的工作目录：userdel –r user3</p>
+<p>d命令查看一个用户的UID和GID, 例：查看user4的id：：id user4<br>
+finger命令 ——可以查看用户的主目录、启动shell、用户名、地址、电话等信息</p>
+<p>命令 groupadd创建用户组：：groupadd –g 888 users ：：创建一个组users，其GID为888</p>
+</blockquote>
+<ul>
+<li>
+<p>两种方式，我们以kill用户user为例:</p>
+<ol>
+<li>pkill方式</li>
+</ol>
+<p>pkill -u user</p>
+<ol start="2">
+<li>killall方式</li>
+</ol>
+<p>killall -u user</p>
+</li>
+</ul>
+<h4 id="其他">其他：</h4>
+<blockquote>
+<p>sudo make &amp;&amp; make install：同时执行多个简单的命令</p>
+<p>./configure\：后面的\是转义，代表不换行太长了继续编辑</p>
+<p>ps aux | grep nginx  ：查看是否启动（也是查看有无进程）</p>
+<p>wget  url ：直接根据url链接下载</p>
+<p>rz -be:上传本地的文件到Linux</p>
+<p>tar -zxf  。。。。：解压tar包</p>
+<p>语法：unzip ［选项］ 压缩文件名.zip</p>
+<p>sudo  ./nginx -s reload :热加载（修改了配置文件后不重启，热加载让其生效！）</p>
+<p>查看虚拟机IP：：ip address</p>
+<p>ll -a | grep sudoers ：查看文件权限</p>
+<p>chmod 664 sudoers：添加文件权限</p>
+</blockquote>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#linux%E5%AD%A6%E4%B9%A0">Linux学习</a></li>
+<li><a href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84">目录结构：</a>
+<ul>
+<li><a href="#1-%E5%9C%A8%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E5%AE%89%E8%A3%85centos%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F">1. 在虚拟机中安装Centos操作系统</a>
+<ul>
+<li><a href="#11-linux-ssh%E6%93%8D%E4%BD%9C%E7%BB%88%E7%AB%AF">**1.1 Linux **SSH操作终端</a></li>
+<li><a href="#12-linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><strong>1.2.</strong> <strong>Linux常用</strong>命令</a>
+<ul>
+<li><a href="#%E7%9B%AE%E5%BD%95%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><strong>目录</strong>==相关命令==：</a></li>
+<li><a href="#%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E7%9B%B8%E5%85%B3"><strong>文件操作</strong>相关：</a></li>
+<li><a href="#vim-%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E7%9B%B8%E5%85%B3"><strong>VIM 文本</strong>编辑相关：</a></li>
+<li><a href="#%E8%BF%9B%E7%A8%8B%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><strong>进程</strong>相关命令：</a></li>
+<li><a href="#centos%E5%AE%89%E8%A3%85%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8yum-%E5%91%BD%E4%BB%A4"><strong>Centos</strong>安装包管理器Yum 命令：</a></li>
+<li><a href="#centos%E9%98%B2%E7%81%AB%E5%A2%99%E5%91%BD%E4%BB%A4%E7%9B%B8%E5%85%B3"><strong>Centos</strong>防火墙命令相关:</a></li>
+<li><a href="#%E6%9C%8D%E5%8A%A1%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8">服务开机自启动：</a></li>
+<li><a href="#%E5%85%B3%E6%9C%BA%E6%9C%8D%E5%8A%A1%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF">关机服务开机自启：</a></li>
+<li><a href="#%E7%94%A8%E6%88%B7%E7%9B%B8%E5%85%B3">用户相关：</a></li>
+<li><a href="#%E5%85%B6%E4%BB%96">其他：</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://cxp-twx.github.io/post/geng-qing-liang-ji-kuang-jia-springboot-xue-xi">
+              <h3 class="post-title">
+                更轻量级框架Springboot学习
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '3818ab196008bdc444d2',
+    clientSecret: '25a6a1be783a52e1a00f165dd3c08fa28fba507a',
+    repo: 'cxp-twx.github.io',
+    owner: 'cxp-twx',
+    admin: ['cxp-twx'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://cxp-twx.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

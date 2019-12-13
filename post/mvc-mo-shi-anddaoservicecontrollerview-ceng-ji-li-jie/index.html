@@ -1,0 +1,249 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MVC模式&amp;DAO，Service，Controller、View层级理解 | CheckChen</title>
+<meta name="description" content="吾日三省吾身" />
+<link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576205647397">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cxp-twx.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://cxp-twx.github.io">
+  <img class="avatar" src="https://cxp-twx.github.io/images/avatar.png?v=1576205647397" alt="">
+  </a>
+  <h1 class="site-title">
+    CheckChen
+  </h1>
+  <p class="site-description">
+    吾日三省吾身
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              MVC模式&amp;DAO，Service，Controller、View层级理解
+            </h2>
+            <div class="post-info">
+              <span>
+                2019-12-13
+              </span>
+              <span>
+                8 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p><img src="https://img-blog.csdnimg.cn/20191021190711418.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
+<ul class="markdownIt-TOC">
+<li><a href="#mvc%E6%A8%A1%E5%BC%8F">MVC模式</a></li>
+<li><a href="#dao%E5%B1%82service%E5%B1%82controller%E5%B1%82-view%E5%B1%82">DAO层，Service层，Controller层、View层</a></li>
+<li><a href="#ssm%E6%A1%86%E6%9E%B6%E4%B8%ADdao%E5%B1%82mapper%E5%B1%82controller%E5%B1%82service%E5%B1%82model%E5%B1%82entity%E5%B1%82">SSM框架中Dao层，Mapper层，controller层，service层，model层，entity层</a></li>
+<li><a href="#springboot%E7%9A%84entitydaocontrollerservice%E5%B1%82%E7%BA%A7%E7%90%86%E8%A7%A3">Springboot的entity,dao,controller,service层级理解</a></li>
+</ul>
+</p>
+<h1 id="mvc模式">MVC模式</h1>
+<blockquote>
+<p>你在浏览器输入好用户名和密码之后，点击登录，浏览器会给服务器发个请求。</p>
+<p>服务器接到请求之后，按照预先设定的路由规则把参数传给相应的controller。</p>
+<p>controller判断参数合法性之后，从model那边拿数据。</p>
+<p>model通过orm从数据库里面把数据取出来、封装成对象给controller。</p>
+<p>之后，controller根据结果进行判断，然后加载相应的view（模板）。</p>
+<p>最后controller把模板渲染出来的html打印到网络流中。</p>
+</blockquote>
+<ul>
+<li><strong>生活中的例子：</strong></li>
+</ul>
+<p>​		总统在舞台上演讲，总统口渴了需要水；秘书负责传唤幕后人员送上水来；后台人员负责送水。总统以及舞台是view，秘书是controller，后台人员是model。总统的要求都是由model实际来完成的，controller只是个传话的。世界中很多实际场景都是按这个步骤来运行的，只是我们没有发觉。</p>
+<h1 id="dao层service层controller层-view层">DAO层，Service层，Controller层、View层</h1>
+<p>**DAO层：**DAO层主要是做数据持久层的工作，负责与数据库进行联络的一些任务都封装在此，DAO层的设计首先是设计DAO的接口，然后在Spring的配置文件中定义此接口的实现类，然后就可在模块中调用此接口来进行数据业务的处理，而不用关心此接口的具体实现类是哪个类，显得结构非常清晰，DAO层的数据源配置，以及有关数据库连接的参数都在Spring的配置文件中进行配置。</p>
+<p>**Service层：**Service层主要负责业务模块的逻辑应用设计。同样是首先设计接口，再设计其实现的类，接着再Spring的配置文件中配置其实现的关联。这样我们就可以在应用中调用Service接口来进行业务处理。Service层的业务实现，具体要调用到已定义的DAO层的接口，封装Service层的业务逻辑有利于通用的业务逻辑的独立性和重复利用性，程序显得非常简洁。<br>
+**Controller层：**Controller层负责具体的业务模块流程的控制，在此层里面要调用Serice层的接口来控制业务流程，控制的配置也同样是在Spring的配置文件里面进行，针对具体的业务流程，会有不同的控制器，我们具体的设计过程中可以将流程进行抽象归纳，设计出可以重复利用的子单元流程模块，这样不仅使程序结构变得清晰，也大大减少了代码量。</p>
+<p>**View层：**此层与控制层结合比较紧密，需要二者结合起来协同工发。View层主要负责前台jsp页面的表示，</p>
+<p>DAO层，Service层这两个层次都可以单独开发，互相的耦合度很低，完全可以独立进行，这样的一种模式在开发大项目的过程中尤其有优势，Controller，View层因为耦合度比较高，因而要结合在一起开发，但是也可以看作一个整体独立于前两个层进行开发。这样，在层与层之前我们只需要知道接口的定义，调用接口即可完成所需要的逻辑单元应用，一切显得非常清晰简单。</p>
+<p>DAO设计的总体规划需要和设计的表，和实现类之间一一对应。</p>
+<p>DAO层所定义的接口里的方法都大同小异，这是由我们在DAO层对数据库访问的操作来决定的，对数据库的操作，我们基本要用到的就是新增，更新，删除，查询等方法。因而DAO层里面基本上都应该要涵盖这些方法对应的操作。除此之外，可以定义一些自定义的特殊的对数据库访问的方法。</p>
+<p><strong>Service逻辑层设计</strong></p>
+<p>Service层是建立在DAO层之上的，建立了DAO层后才可以建立Service层，而Service层又是在Controller层之下的，因而Service层应该既调用DAO层的接口，又要提供接口给Controller层的类来进行调用，它刚好处于一个中间层的位置。每个模型都有一个Service接口，每个接口分别封装各自的业务处理方法。</p>
+<p>在DAO层定义的一些方法，在Service层并没有使用，那为什么还要在DAO层进行定义呢？这是由我们定义的需求逻辑所决定的。DAO层的操作 经过抽象后基本上都是通用的，因而我们在定义DAO层的时候可以将相关的方法定义完毕，这样的好处是在对Service进行扩展的时候不需要再对DAO层进行修改，提高了程序的可扩展性。</p>
+<h1 id="ssm框架中dao层mapper层controller层service层model层entity层">SSM框架中Dao层，Mapper层，controller层，service层，model层，entity层</h1>
+<p>SSM是sping+springMVC+mybatis集成的框架。</p>
+<p>MVC即model view controller。</p>
+<p>model层=entity层。存放我们的实体类，与数据库中的属性值基本保持一致。</p>
+<p>service层。存放业务逻辑处理，也是一些关于数据库处理的操作，但不是直接和数据库打交道，他有接口还有接口的实现方法，在接口的实现方法中需要导入mapper层，mapper层是直接跟数据库打交道的，他也是个接口，只有方法名字，具体实现在mapper.xml文件里，service是供我们使用的方法。</p>
+<p>mapper层=dao层，现在用mybatis逆向工程生成的mapper层，其实就是dao层。对数据库进行数据持久化操作，他的方法语句是直接针对数据库操作的，而service层是针对我们controller，也就是针对我们使用者。service的impl是把mapper和service进行整合的文件。</p>
+<p>（多说一句，数据持久化操作就是指，把数据放到持久化的介质中，同时提供增删改查操作，比如数据通过hibernate插入到数据库中。）</p>
+<p>controller层。控制器，导入service层，因为service中的方法是我们使用到的，controller通过接收前端传过来的参数进行业务操作，在返回一个指定的路径或者数据表。</p>
+<p>在实际开发中的Service层可能被处理为实体Service层，而不是接口，业务逻辑直接写在Service（Class，不是Interface）层中，Controller直接调用Service，Service调用Mapper。</p>
+<p>当然了，Service之间也是可以互相调用！</p>
+<h1 id="springboot的entitydaocontrollerservice层级理解">Springboot的entity,dao,controller,service层级理解</h1>
+<p><strong>Dao层：持久层，主要与数据库交互</strong></p>
+<p>DAO层首先会创建Dao接口，接着就可以在配置文件中定义该接口的实现类；接着就可以在模块中调用Dao的接口进行数据业务的处理，而不用关注此接口的具体实现类是哪一个类，Dao层的数据源和数据库连接的参数都是在配置文件中进行配置的。</p>
+<p><strong>Entity层：实体层，数据库在项目中的类</strong></p>
+<p>主要用于定义与数据库对象应的属性，提供get/set方法,tostring方法,有参无参构造函数。</p>
+<p><strong>Service层：业务层 控制业务</strong></p>
+<p>业务模块的逻辑应用设计，和DAO层一样都是先设计接口，再创建要实现的类，然后在配置文件中进行配置其实现的关联。接下来就可以在service层调用接口进行业务逻辑应用的处理。</p>
+<p>好处：封装Service层的业务逻辑有利于业务逻辑的独立性和重复利用性。</p>
+<p><strong>Controller层：控制层 控制业务逻辑</strong></p>
+<p>具体的业务模块流程的控制，controller层主要调用Service层里面的接口控制具体的业务流程，控制的配置也要在配置文件中进行。</p>
+<p><strong>View层</strong></p>
+<p>此层与控制层结合比较紧密，需要二者结合起来协同工发。View层主要负责前台jsp页面的表示。</p>
+<p><strong>Controller和Service的区别是：Controller负责具体的业务模块流程的控制；Service层负责业务模块的逻辑应用设计</strong></p>
+<p><strong>总结：具体的一个项目中有：controller层调用了Service层的方法，Service层调用Dao层的方法，其中调用的参数是使用Entity层进行传递的。</strong></p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#mvc%E6%A8%A1%E5%BC%8F">MVC模式</a></li>
+<li><a href="#dao%E5%B1%82service%E5%B1%82controller%E5%B1%82-view%E5%B1%82">DAO层，Service层，Controller层、View层</a></li>
+<li><a href="#ssm%E6%A1%86%E6%9E%B6%E4%B8%ADdao%E5%B1%82mapper%E5%B1%82controller%E5%B1%82service%E5%B1%82model%E5%B1%82entity%E5%B1%82">SSM框架中Dao层，Mapper层，controller层，service层，model层，entity层</a></li>
+<li><a href="#springboot%E7%9A%84entitydaocontrollerservice%E5%B1%82%E7%BA%A7%E7%90%86%E8%A7%A3">Springboot的entity,dao,controller,service层级理解</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://cxp-twx.github.io/post/ssm-zheng-he">
+              <h3 class="post-title">
+                SSM整合
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '3818ab196008bdc444d2',
+    clientSecret: '25a6a1be783a52e1a00f165dd3c08fa28fba507a',
+    repo: 'cxp-twx.github.io',
+    owner: 'cxp-twx',
+    admin: ['cxp-twx'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://cxp-twx.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

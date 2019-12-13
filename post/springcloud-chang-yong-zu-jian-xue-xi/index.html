@@ -1,0 +1,1952 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SpringCloud常用组件学习 | CheckChen</title>
+<meta name="description" content="吾日三省吾身" />
+<link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576205647397">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cxp-twx.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://cxp-twx.github.io">
+  <img class="avatar" src="https://cxp-twx.github.io/images/avatar.png?v=1576205647397" alt="">
+  </a>
+  <h1 class="site-title">
+    CheckChen
+  </h1>
+  <p class="site-description">
+    吾日三省吾身
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              SpringCloud常用组件学习
+            </h2>
+            <div class="post-info">
+              <span>
+                2019-11-29
+              </span>
+              <span>
+                43 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p><ul class="markdownIt-TOC">
+<li><a href="#springcloud%E5%AD%A6%E4%B9%A0">SpringCloud学习</a>
+<ul>
+<li><a href="#eureka%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E5%9F%BA%E7%A1%80%E6%90%AD%E5%BB%BA">Eureka注册中心基础搭建</a>
+<ul>
+<li><a href="#netflix-eureka">Netflix Eureka</a></li>
+<li><a href="#netflix-ribbon">Netflix Ribbon</a></li>
+<li><a href="#ribbon%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">Ribbon的使用方法</a></li>
+</ul>
+</li>
+<li><a href="#%E6%90%AD%E5%BB%BA%E5%B7%A5%E7%A8%8B%E8%BF%87%E7%A8%8Bpomymlapplication%E5%BA%94%E7%94%A8%E5%B1%82%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81">搭建工程过程：pom——yml——Application——应用层（业务代码）</a>
+<ul>
+<li><a href="#1-%E7%88%B6%E5%B7%A5%E7%A8%8B%E4%BE%9D%E8%B5%96pom%E6%96%87%E4%BB%B6springcloud-parent">1. *父工程依赖pom文件（SpringCloud-parent）</a></li>
+<li><a href="#2-springcloud-eureka-server%E6%9C%8D%E5%8A%A1%E8%80%85">2. *SpringCloud-eureka-server（服务者）</a></li>
+<li><a href="#%E6%8B%93%E5%B1%95jdk18%E9%85%8D%E7%BD%AE-pomxml">拓展：*jdk1.8配置（ pom.xml）</a></li>
+<li><a href="#3-springcloud-eureka-server-cloud-%E6%A8%A1%E5%9D%97%E9%AB%98%E5%8F%AF%E7%94%A8%E7%9A%84%E6%9C%8D%E5%8A%A1%E8%80%85">3. *springcloud-eureka-server-cloud 模块（高可用的服务者）</a></li>
+<li><a href="#4-providercloud%E6%8F%90%E4%BE%9B%E8%80%85">4. *Provider（cloud提供者）</a></li>
+<li><a href="#5-consumercloud%E6%B6%88%E8%B4%B9%E8%80%85">5. *Consumer（cloud消费者）</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AD%A6%E4%B9%A0%E7%90%86%E8%A7%A3">学习理解：</a>
+<ul>
+<li><a href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1-rpc%E5%92%8Crest%E5%8D%8F%E8%AE%AE">微服务 Rpc和Rest协议</a></li>
+<li><a href="#eureka%E7%9A%84%E8%A7%92%E8%89%B2">Eureka的角色</a></li>
+</ul>
+</li>
+<li><a href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98">遇到的问题：</a>
+<ul>
+<li><a href="#1-%E4%B8%A4%E4%B8%AA%E6%B3%A8%E8%A7%A3">1. *两个注解</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#feign%E5%A3%B0%E6%98%8E%E5%BC%8Frest%E5%AE%A2%E6%88%B7%E7%AB%AF">Feign声明式REST客户端</a>
+<ul>
+<li><a href="#%E5%AE%9E%E7%8E%B0%E8%BF%87%E7%A8%8B">实现过程：</a>
+<ul>
+<li><a href="#%E6%B6%88%E8%B4%B9%E8%80%85%E6%8E%A7%E5%88%B6%E5%B1%82">消费者控制层</a></li>
+<li><a href="#%E6%B6%88%E8%B4%B9%E8%80%85%E7%9A%84feign%E6%8E%A5%E5%8F%A3">消费者的Feign（接口）</a></li>
+<li><a href="#%E6%8F%90%E4%BE%9B%E8%80%85%E7%9A%84%E6%8E%A7%E5%88%B6%E5%B1%82">提供者的控制层</a></li>
+<li><a href="#%E6%8F%90%E4%BE%9B%E8%80%85%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%B1%BB">提供者的实现类</a></li>
+<li><a href="#server%E7%AB%AF%E9%BB%98%E9%BB%98%E7%9A%84%E5%81%9A%E7%9D%80%E8%BF%9E%E6%8E%A5%E6%A1%A5%E6%A2%81%E5%B7%A5%E4%BD%9C">server端默默的做着连接桥梁工作。</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#hystrix-%E6%9C%8D%E5%8A%A1%E7%86%94%E6%96%AD-%E9%99%8D%E7%BA%A7-%E9%99%90%E6%B5%81-%E9%9A%94%E7%A6%BB">Hystrix 服务熔断、降级、限流、隔离</a><br>
+*
+<ul>
+<li><a href="#pom%E6%96%87%E4%BB%B6%E4%BE%9D%E8%B5%96">pom文件依赖</a></li>
+<li><a href="#%E5%AE%8C%E6%95%B4%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">完整配置文件：</a></li>
+<li><a href="#%E9%80%9A%E8%BF%87properties%E4%BF%AE%E6%94%B9%E6%8C%87%E5%AE%9Ahystrixcommand%E7%9A%84%E5%8F%82%E6%95%B0">通过Properties修改指定HystrixCommand的参数</a></li>
+<li><a href="#%E5%90%AF%E5%8A%A8%E7%B1%BBribbon%E6%96%B9%E5%BC%8F">启动类（Ribbon方式）：</a></li>
+<li><a href="#%E5%9C%A8%E9%9C%80%E8%A6%81%E7%9A%84%E6%96%B9%E6%B3%95%E4%B8%8A%E8%BE%B9%E6%B7%BB%E5%8A%A0%E6%B3%A8%E8%A7%A3">==*在需要的方法上边添加注解==</a></li>
+<li><a href="#feign%E6%96%B9%E5%BC%8F">Feign方式</a></li>
+<li><a href="#%E6%88%90%E5%8A%9F%E9%85%8D%E7%BD%AE-%E6%B7%BB%E5%8A%A0hystrix%E7%9A%84fallback%E6%96%B9%E6%B3%95">==成功配置、添加hystrix的fallback方法==</a></li>
+</ul>
+</li>
+<li><a href="#%E7%9B%91%E6%8E%A7">监控</a>
+<ul>
+<li><a href="#dashboard-turbine">Dashboard、turbine</a></li>
+<li><a href="#1-hystrix-dashboard">1. Hystrix Dashboard</a>
+<ul>
+<li><a href="#hystrix-dashboard%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">Hystrix Dashboard使用方法</a></li>
+</ul>
+</li>
+<li><a href="#2-turbine%E8%81%9A%E5%90%88%E6%9C%8D%E5%8A%A1">2. Turbine（聚合服务）</a>
+<ul>
+<li><a href="#turbine%E4%B8%8Edashboard-hystrix-eventstream%E7%9A%84%E5%85%B3%E7%B3%BB">Turbine与Dashboard、Hystrix EventStream的关系</a></li>
+<li><a href="#turbine%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">Turbine的使用方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#zuulnetflix-%E7%BB%9F%E4%B8%80%E7%BD%91%E5%85%B3-%E5%9C%B0%E5%9D%80%E8%B7%AF%E7%94%B1">Zuul(Netflix) - 统一网关、地址路由</a>
+<ul>
+<li><a href="#1-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">1. 反向代理</a></li>
+<li><a href="#2-%E7%BB%9F%E4%B8%80%E6%9D%83%E9%99%90%E6%A0%A1%E9%AA%8C">2. 统一权限校验</a></li>
+<li><a href="#3-%E5%92%8Chystrix%E7%9A%84%E6%95%B4%E5%90%88">3. 和hystrix的整合</a></li>
+<li><a href="#zuul%E4%BB%8B%E7%BB%8D">Zuul介绍</a></li>
+<li><a href="#%E5%9C%A8%E5%89%8D%E7%AB%AF%E8%B0%83%E7%94%A8%E5%90%8E%E5%8F%B0%E7%9A%84%E6%97%B6%E5%80%99%E5%8A%A0%E4%B8%80%E5%B1%82%E5%B7%A5%E7%A8%8B%E7%9C%8B%E4%BC%BC%E5%B0%B1%E8%AE%BF%E9%97%AE%E4%BA%86%E4%B8%80%E4%B8%AA%E7%AB%AF%E5%8F%A3%E6%9C%8D%E5%8A%A1%E4%B9%9F%E5%B0%B1%E4%B8%8D%E5%AD%98%E5%9C%A8%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98">（在前端调用后台的时候加一层工程（看似就访问了一个端口服务，也就不存在跨域问题））</a>
+<ul>
+<li><a href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E7%94%A8%E6%B3%95">反向代理用法：</a></li>
+<li><a href="#zuul%E7%9A%84%E8%AE%BF%E9%97%AE%E8%B6%85%E6%97%B6%E6%8E%A7%E5%88%B6">Zuul的访问超时控制</a>
+<ul>
+<li><a href="#%E9%80%9A%E8%BF%87serviceid%E4%BB%A3%E7%90%86%E7%9A%84%E8%AF%B7%E6%B1%82">通过ServiceId代理的请求</a></li>
+</ul>
+</li>
+<li><a href="#zuul%E7%9A%84%E6%A0%B8%E5%BF%83filter">Zuul的核心——Filter</a>
+<ul>
+<li><a href="#zuul%E4%B8%AD%E9%BB%98%E8%AE%A4%E5%AE%9E%E7%8E%B0%E7%9A%84filter">Zuul中默认实现的Filter</a></li>
+<li><a href="#%E7%A6%81%E7%94%A8%E6%8C%87%E5%AE%9A%E7%9A%84filter">禁用指定的Filter</a></li>
+<li><a href="#%E8%87%AA%E5%AE%9A%E4%B9%89filter%E7%A4%BA%E4%BE%8B">自定义Filter示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%9F%BA%E4%BA%8Egit%E4%BB%93%E5%BA%93">配置中心（基于git仓库）</a>
+<ul>
+<li><a href="#1-%E8%A7%A3%E5%86%B3%E9%87%8D%E5%A4%8D%E9%85%8D%E7%BD%AE">1. 解决重复配置</a></li>
+<li><a href="#2-%E5%9F%BA%E4%BA%8Eweb%E7%9A%84%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86">2. 基于web的加密解密</a></li>
+<li><a href="#3%E7%83%AD%E6%9B%B4%E6%96%B0%E9%85%8D%E7%BD%AE%E5%8A%A8%E6%80%81">3.热更新配置（动态）</a></li>
+<li><a href="#%E8%A7%A3%E5%86%B3%E9%87%8D%E5%A4%8D%E9%85%8D%E7%BD%AE">解决重复配置</a>
+<ul>
+<li><a href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BD%BF%E7%94%A8springcloud-config">客户端使用springcloud-config：</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">配置文件</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%98%A0%E5%B0%84%E5%8F%82%E6%95%B0">配置映射参数</a></li>
+</ul>
+</li>
+<li><a href="#git%E4%BB%93%E5%BA%93%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86">git仓库加密解密</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86">配置加密解密</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A6%82%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81">（数据库如：用户名密码）</a>
+<ul>
+<li><a href="#%E6%96%B9%E6%B3%95">方法：</a></li>
+<li><a href="#%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86">对称加密</a></li>
+<li><a href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E9%9D%9E%E6%B3%95%E7%9A%84key%E9%9C%80%E8%A6%81jce">遇到的问题：非法的key需要jce</a></li>
+<li><a href="#%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86">非对称加密</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8A%A8%E6%80%81%E6%9B%B4%E6%96%B0%E9%85%8D%E7%BD%AE">动态更新配置：</a>
+<ul>
+<li><a href="#%E5%8D%95%E5%8F%B0%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8A%A8%E6%80%81%E6%9B%B4%E6%96%B0">单台客户端动态更新</a></li>
+<li><a href="#%E5%A4%9A%E5%8F%B0%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8A%A8%E6%80%81%E6%9B%B4%E6%96%B0">多台客户端动态更新</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA">使用工具，环境搭建：</a></li>
+<li><a href="#springcloud-config-server%E7%AB%AF%E9%85%8D%E7%BD%AE">SpringCloud  Config  Server端配置</a></li>
+<li><a href="#springcloud-client%E7%AB%AF">SpringCloud -client端</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E8%AF%BE%E5%A0%82%E7%9F%A5%E8%AF%86">课堂知识：</a></li>
+<li><a href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98-2">遇到的问题</a></li>
+</ul>
+</p>
+<h1 id="springcloud学习">SpringCloud学习</h1>
+<h2 id="eureka注册中心基础搭建">Eureka注册中心基础搭建</h2>
+<blockquote>
+<p>还有一个集中配置中心（很方便和关键）</p>
+</blockquote>
+<h3 id="netflix-eureka">Netflix Eureka</h3>
+<blockquote>
+<p>服务中心，云端服务发现，一个基于 REST 的服务，用于定位服务，以实现云端中间层服务发现和故障转移。这个可是springcloud最牛鼻的小弟，服务中心，任何小弟需要其它小弟支持什么都需要从这里来拿，同样的你有什么独门武功的都赶紧过报道，方便以后其它小弟来调用；它的好处是你不需要直接找各种什么小弟支持，只需要到服务中心来领取，也不需要知道提供支持的其它小弟在哪里，还是几个小弟来支持的，反正拿来用就行，服务中心来保证稳定性和质量。</p>
+</blockquote>
+<h3 id="netflix-ribbon">Netflix Ribbon</h3>
+<p><em>Ribbon是一个客户端负载均衡组件，帮我们实现后端服务节点动态扩容，而不影响调用方。</em></p>
+<h3 id="ribbon的使用方法">Ribbon的使用方法</h3>
+<blockquote>
+<p>Eureka和Feign中已经默认集成了Ribbon，</p>
+<p>如果项目中引入了Eureka，通过在RestTemplate上添加@LoadBalanced；</p>
+<p>如果用的是Feign声明式REST客户端，feign默认就已经帮我们开启了ribbon负载均衡能力。</p>
+</blockquote>
+<h2 id="搭建工程过程pomymlapplication应用层业务代码">搭建工程过程：pom——yml——Application——应用层（业务代码）</h2>
+<h3 id="1-父工程依赖pom文件springcloud-parent">1. *父工程依赖pom文件（SpringCloud-parent）</h3>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.cxp&lt;/groupId&gt;
+    &lt;artifactId&gt;springcloud-parent&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;version&gt;1.18.10&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+            &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;dependencyManagement&gt;
+        &lt;dependencies&gt;
+            &lt;!-- 定义SpringBoot依赖版本 --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+                &lt;version&gt;2.1.6.RELEASE&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;!-- 注意：SpringCloud最新的Greenwich版本是基于SpringBoot2.1.x(Greenwich)版本构建的
+                    所以这里不支持SpringBoot2.2.x版本
+                    具体SpringBoot与SpringCloud版本对应关系参见：https://spring.io/projects/spring-cloud页面最下方的Release Trains
+                 --&gt;
+            &lt;!--&lt;version&gt;2.2.1.RELEASE&lt;/version&gt;--&gt;
+
+
+            &lt;!-- 定义SpringCloud依赖版本 --&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+                &lt;version&gt;Greenwich.SR2&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/dependencyManagement&gt;
+&lt;/project&gt;
+</code></pre>
+<h3 id="2-springcloud-eureka-server服务者">2. *SpringCloud-eureka-server（服务者）</h3>
+<p>配置文件：</p>
+<pre><code class="language-yml">server:
+  port: 8761
+
+
+eureka:
+  instance:
+    prefer-ip-address: true #在某些情况下，Eureka优先使用IP地址而不是主机名。设置为true，当应用程序向eureka注册时，它将使用其IP地址而不是其主机名
+    #instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+    hostname: cloud.study.com
+  client:
+    # 是否将当前应用注册到eureka中
+    registerWithEureka: true
+    # 是否从eureka注册中心中拉取服务提供者列表
+    fetchRegistry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+spring:
+  application:
+    name: eureka-server
+</code></pre>
+<h3 id="拓展jdk18配置-pomxml">拓展：*jdk1.8配置（ pom.xml）</h3>
+<pre><code class="language-xml">&lt;!-- 配置maven编码字符、编译版本 --&gt;
+    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+    &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;
+    &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;
+</code></pre>
+<h3 id="3-springcloud-eureka-server-cloud-模块高可用的服务者">3. *springcloud-eureka-server-cloud 模块（高可用的服务者）</h3>
+<pre><code class="language-yml">spring:
+  application:
+    name: eureka-server
+
+eureka:
+  instance:
+    prefer-ip-address: true #在某些情况下，Eureka优先使用IP地址而不是主机名。设置为true，当应用程序向eureka注册时，它将使用其IP地址而不是其主机名
+    #instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+    hostname: cloud.study.com
+  client:
+    # 是否将当前应用注册到eureka中
+    registerWithEureka: true
+    # 是否从eureka注册中心中拉取服务提供者列表
+    fetchRegistry: true
+    service-url:
+      defaultZone: http://cloud02.study.com:8762/eureka/,http://cloud03.study.com:8763/eureka/
+
+server:
+  port: 8761
+
+---
+spring:
+  profiles: cloud02
+
+server:
+  port: 8762
+
+eureka:
+  instance:
+    hostname: cloud02.study.com
+  client:
+    service-url:
+      defaultZone: http://cloud.study.com:8761/eureka/,http://cloud03.study.com:8763/eureka/
+
+---
+spring:
+  profiles: cloud03
+
+server:
+  port: 8763
+
+eureka:
+  instance:
+    hostname: cloud03.study.com
+  client:
+    service-url:
+      defaultZone: http://cloud.study.com:8761/eureka/,http://cloud02.study.com:8762/eureka/
+</code></pre>
+<p>注：这个cloud需要一一都启动起来：才不会报错</p>
+<p>​	<img src="https://img-blog.csdnimg.cn/20191202180520911.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="4-providercloud提供者">4. *Provider（cloud提供者）</h3>
+<p>配置文件；</p>
+<pre><code class="language-yml">server:
+  port: 8765
+
+
+eureka:
+  instance:
+    prefer-ip-address: true #在某些情况下，Eureka优先使用IP地址而不是主机名。设置为true，当应用程序向eureka注册时，它将使用其IP地址而不是其主机名
+    #instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+    hostname: cloud.study.com
+  client:
+    # 是否将当前应用注册到eureka中
+    registerWithEureka: true
+    # 是否从eureka注册中心中拉取服务提供者列表
+    fetchRegistry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+spring:
+  application:
+    name: eureka-server
+</code></pre>
+<h3 id="5-consumercloud消费者">5. *Consumer（cloud消费者）</h3>
+<p>yml文件：</p>
+<pre><code class="language-yml">spring:
+  application:
+    name: service-consumer
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${eureka.client.eureka-server-port}/eureka/
+    eureka-server-port: 8765
+  instance:
+    prefer-ip-address: true #在某些情况下，Eureka优先使用IP地址而不是主机名。设置为true，当应用程序向eureka注册时，它将使用其IP地址而不是其主机名
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+    hostname: cloud.study.com
+
+server:
+  port: 8082
+</code></pre>
+<h2 id="学习理解">学习理解：</h2>
+<h3 id="微服务-rpc和rest协议">微服务 Rpc和Rest协议</h3>
+<blockquote>
+<p>接口调用通常包含两个部分，序列化和通信协议。常见的序列化协议包括json、xml、hession、protobuf、thrift、text、bytes等；通信比较流行的是http、soap、websockect，RPC通常基于TCP实现，常用框架例如dubbo，netty、mina、thrift</p>
+</blockquote>
+<ul>
+<li><mark>Rest</mark>：严格意义上说接口很规范，操作对象即为资源，对资源的四种操作（post、get、put、delete），并且参数都放在URL上,但是不严格的说Http+json、Http+xml，常见的http api都可以称为Rest接口。</li>
+<li><mark>Rpc</mark>:我们常说的远程方法调用，就是像调用本地方法一样调用远程方法，通信协议大多采用二进制方式</li>
+</ul>
+<h3 id="eureka的角色">Eureka的<a href="https://blog.csdn.net/hry2015/article/details/82597311">角色</a></h3>
+<figure data-type="image" tabindex="1"><img src="https://img-blog.csdn.net/20180910222113763?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hyeTIwMTU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt=""></figure>
+<blockquote>
+<p>Eureka 是 Netflix 开源的服务注册发现组件，服务端通过 REST 协议暴露服务，提供应用服务的注册和发现的功能。<br>
+所有的Eureka服务都被称为实例（instance）。Eureka服务又分为两类角色：Eureka Server和Eureka Client<br>
+Eureka-Client又分为Application Provider 和Application Consumer<br>
+Application Provider ：服务提供者，内嵌 Eureka-Client ，它向 Eureka-Server 注册自身服务、续约、下线等操作<br>
+Application Consumer ：服务消费者，内嵌 Eureka-Client ，它从 Eureka-Server 获取服务列表，分为全量获取和增量。</p>
+</blockquote>
+<h2 id="遇到的问题">遇到的问题：</h2>
+<h3 id="1-两个注解">1. *两个注解</h3>
+<blockquote>
+<ul>
+<li>
+<p>开启应用的Eureka Server功能<br>
+在应用启动类上加 @EnableEurekaServer注解</p>
+</li>
+<li>
+<p>开启应用的Eureka Client功能<br>
+在应用启动类上加 @EnableEurekaClient注解</p>
+<ul>
+<li>@EnableDiscoveryClient   注解</li>
+</ul>
+<p>这是SpringCloud通过的一个注解，所有的服务发现中心组件都可以使用（客户端和服务端使用的注解一样）</p>
+</li>
+</ul>
+</blockquote>
+<h1 id="feign声明式rest客户端">Feign声明式REST客户端</h1>
+<blockquote>
+<p>依赖eureka和Ribbon</p>
+<p>Feign底层会根据我们配置的注解属性拼接得到最终访问的URI，根据接口中定义的方法的参数和返回值将请求参数、返回结果处理好，这些都是Feign通过帮我们生成代理实现类的方式完成的。</p>
+</blockquote>
+<h2 id="实现过程">实现过程：</h2>
+<blockquote>
+<p>还是需要三方配合，那好处在哪里</p>
+<p>过程：</p>
+<ol>
+<li><strong>（外部路线）首先消费者的控制层——提供者的控制层（返回responseInfo）——返回页面（页面展示数据）</strong></li>
+<li><strong>其次消费者的控制层通过（接口注解以及@RequestMapping(&quot;/calc&quot;))——访问提供者的控制层（通过处理得到数据可以看成是消费者层级的接口实现）——回到消费者控制层返回页面数据</strong></li>
+<li><strong>最后server端默默的做着他们之间的桥梁。</strong></li>
+</ol>
+</blockquote>
+<h3 id="消费者控制层">消费者控制层</h3>
+<pre><code class="language-java">@Controller
+@RequestMapping(&quot;/calc&quot;)
+public class CalcController {
+
+    @Autowired
+    private CalcServiceFeign calcServiceFeign;
+
+    @RequestMapping(&quot;/add&quot;)
+    public String add(@RequestParam int num1, @RequestParam int num2, Model model) {
+        ResponseInfo responseInfo = calcServiceFeign.add(num1, num2);
+        Map data = (Map) responseInfo.getData();
+        model.addAttribute(&quot;num1&quot;, num1);
+        model.addAttribute(&quot;num2&quot;, num2);
+        model.addAttribute(&quot;result&quot;, data.get(&quot;result&quot;));
+        return &quot;index&quot;;
+    }
+}
+</code></pre>
+<h3 id="消费者的feign接口">消费者的Feign（接口）</h3>
+<pre><code class="language-java">//提供者名字（provider）
+@FeignClient(name = &quot;SERVICE-PROVIDER&quot;)
+@RequestMapping(&quot;/calc&quot;)
+public interface CalcServiceFeign {
+
+    @GetMapping(&quot;/add/{num1}/{num2}&quot;)
+    ResponseInfo add(@PathVariable(&quot;num1&quot;) int num1,@PathVariable(&quot;num2&quot;) int num2);
+}
+</code></pre>
+<h3 id="提供者的控制层">提供者的控制层</h3>
+<pre><code class="language-java">@RestController
+@RequestMapping(&quot;/calc&quot;)
+public class CalcController {
+
+    @Autowired
+    private CalcServiceImpl calcService;
+
+    @RequestMapping(&quot;/add/{num1}/{num2}&quot;)
+    public ResponseInfo add(@PathVariable int num1, @PathVariable int num2) {
+        int result = calcService.add(num1, num2);
+        Map&lt;String, Object&gt; data = new HashMap&lt;String, Object&gt;();
+        data.put(&quot;num1&quot;, num1);
+        data.put(&quot;num2&quot;, num2);
+        data.put(&quot;operator&quot;, &quot;+&quot;);
+        data.put(&quot;result&quot;, result);
+        return new ResponseInfo(200, &quot;请求成功&quot;, data);
+
+    }
+
+} 
+
+</code></pre>
+<h3 id="提供者的实现类">提供者的实现类</h3>
+<pre><code class="language-java">@Service
+public class CalcServiceImpl {
+
+    @Autowired
+    private Registration registration;
+
+    public int add(int num1, int num2) {
+
+        String serviceInfo = registration.getHost() + &quot;-&quot; + registration.getInstanceId();
+
+       
+        return num1 + num2;
+    }
+} 	
+
+</code></pre>
+<h3 id="server端默默的做着连接桥梁工作">server端默默的做着连接桥梁工作。</h3>
+<h1 id="hystrix-服务熔断-降级-限流-隔离">Hystrix 服务熔断、降级、限流、隔离</h1>
+<p>消费者模块两种方式</p>
+<blockquote>
+<p>Ribbon: RestTemplate</p>
+<p>Feign。分别做降级处理、步骤如下：</p>
+</blockquote>
+<h3 id="pom文件依赖">pom文件依赖</h3>
+<pre><code class="language-xml"> &lt;dependencies&gt;
+   
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-hystrix&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- 添加SpringBoot Actuator端点监控依赖 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+    &lt;/dependencies&gt;
+
+</code></pre>
+<h3 id="完整配置文件">完整配置文件：</h3>
+<pre><code class="language-yml">spring:
+  application:
+    name: service-consumer-hystrix
+
+server:
+  port: 8082
+
+
+eureka:
+  instance:
+    prefer-ip-address: true #在某些情况下，Eureka优先使用IP地址而不是主机名。设置为true，当应用程序向eureka注册时，它将使用其IP地址而不是其主机名
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+    hostname: cloud.study.com
+
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${eureka.client.eureka-server-port}/eureka/
+    eureka-server-port: 8765
+
+#hystris的配置
+hystrix:
+  command:
+    calc_add_command:
+##对应@HystrixCommand注解的commandKey属性，指定特定熔断器的属性(一般建议在代码中通过注解配置)，此处换成default可修改全局属性。
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000 #设置熔断器判定超时的时间，超过此时间的请求会执行降级逻辑，默认1s
+      circuitBreaker:
+        requestVolumeThreshold: 2 #设置熔断阈值，在熔断统计窗口期内，错误请求（超时、异常）次数达到阈值就会触发熔断，执行降级逻辑，默认20
+        sleepWindowInMilliseconds: 10000  #设置熔断器多久进入半开状态，然后再次尝试确定熔断器是否应再次关闭，默认5s
+        errorThresholdPercentage: 50  #设置在熔断统计窗口期内，错误请求达到百分之多少触发熔断，默认50
+      metrics:
+        rollingStats:
+          timeInMilliseconds: 5000 #熔断度量窗口期时间， 默认10s
+
+#hystris.stream的配置
+management:
+  server:
+    port: 8092
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: &quot;*&quot;
+
+
+
+</code></pre>
+<h3 id="通过properties修改指定hystrixcommand的参数">通过Properties修改指定HystrixCommand的参数</h3>
+<pre><code class="language-yml">hystrix:
+  command:
+    hystrixCommandName (如：calc_add_command):  #对应@HystrixCommand注解的commandKey属性，指定特定熔断器的属性(一般建议在代码中通过注解配置)，此处换成default可修改全局属性。
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000 #设置熔断器判定超时的时间，超过此时间的请求会执行降级逻辑，默认1s
+      circuitBreaker:
+        requestVolumeThreshold: 2 #设置熔断阈值，在熔断统计窗口期内，错误请求（超时、异常）次数达到阈值就会触发熔断，执行降级逻辑，默认20
+        sleepWindowInMilliseconds: 10000  #设置熔断器多久进入半开状态，然后再次尝试确定熔断器是否应再次关闭，默认5s
+        errorThresholdPercentage: 50  #设置在熔断统计窗口期内，错误请求达到百分之多少触发熔断，默认50
+      metrics:
+        rollingStats:
+          timeInMilliseconds: 5000 #熔断度量窗口期时间， 默认10s
+</code></pre>
+<h3 id="启动类ribbon方式">启动类（Ribbon方式）：</h3>
+<pre><code class="language-java">@SpringBootApplication
+@EnableEurekaClient
+//@EnableHystrix    /*不是此注解*/
+@EnableCircuitBreaker   //启用断路器
+public class ConsumerHystrixApplication {
+
+    @Bean
+    @LoadBalanced      //(Ribbon)开启负载均衡
+    public RestTemplate restTemplate(){
+
+        return new RestTemplate();
+    }
+    public static void main(String[] args) {
+
+        SpringApplication.run(ConsumerHystrixApplication.class,args);
+    }
+}
+
+</code></pre>
+<p><mark>成功配置、添加hystrix的fallback方法</mark></p>
+<h3 id="在需要的方法上边添加注解"><mark>*在需要的方法上边添加注解</mark></h3>
+<pre><code class="language-java">@HystrixCommand(
+            fallbackMethod = &quot;addFallback&quot;,
+            commandKey = &quot;calc_add_command&quot;             
+    )
+
+//服务正常通过的方法。
+public String add(){}
+
+
+
+/**
+     * 定义add方法的降级方法，当add方法调用远程服务出现问题，发生熔断时，hystrix会自动放弃调用原来的服务，转而调用降级方法
+     * @param num1
+     * @param num2
+     * @param model
+     * @return
+     */
+    public String addFallback(@RequestParam int num1, @RequestParam int num2, Model model) {
+        model.addAttribute(&quot;num1&quot;, num1);
+        model.addAttribute(&quot;num2&quot;, num2);
+        model.addAttribute(&quot;result&quot;, &quot;-1&quot;);
+        return &quot;index&quot;;
+    }
+
+
+</code></pre>
+<p>模拟处理时间（provider——impl）：</p>
+<pre><code class="language-java">// 只是模拟处理时间长的服务调用
+        Random random = new Random();
+        int sleepTime = random.nextInt(3000);
+        log.info(&quot;休眠时间：&quot; + sleepTime+&quot;ms.&quot;);
+        try {
+            Thread.sleep(sleepTime);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+</code></pre>
+<h3 id="feign方式">Feign方式</h3>
+<p>配置文件也不同；（多个Feign的配置）</p>
+<pre><code class="language-yml">spring:
+  application:
+    name: service-consumer-feign-with-hystrix
+
+server:
+  port: 8082
+
+eureka:
+  instance:
+    prefer-ip-address: true #在某些情况下，Eureka优先使用IP地址而不是主机名。设置为true，当应用程序向eureka注册时，它将使用其IP地址而不是其主机名
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+    hostname: cloud.study.com
+
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${eureka.client.eureka-server-port}/eureka/
+    eureka-server-port: 8765
+
+hystrix:
+  command:
+    default:
+#    calc_add_command:
+      ##对应@HystrixCommand注解的commandKey属性，指定特定熔断器的属性(一般建议在代码中通过注解配置)，此处换成default可修改全局属性。
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000 #设置熔断器判定超时的时间，超过此时间的请求会执行降级逻辑，默认1s
+      circuitBreaker:
+        requestVolumeThreshold: 2 #设置熔断阈值，在熔断统计窗口期内，错误请求（超时、异常）次数达到阈值就会触发熔断，执行降级逻辑，默认20
+        sleepWindowInMilliseconds: 10000  #设置熔断器多久进入半开状态，然后再次尝试确定熔断器是否应再次关闭，默认5s
+        errorThresholdPercentage: 50  #设置在熔断统计窗口期内，错误请求达到百分之多少触发熔断，默认50
+      metrics:
+        rollingStats:
+          timeInMilliseconds: 5000 #熔断度量窗口期时间， 默认10s
+#hystris.stream的配置
+management:
+  server:
+    port: 8092
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: &quot;*&quot;
+feign:
+  client:
+    config:
+      #calc-service-provider:  这一级可以写具体的微服务名称或者default，default代表全局配置，影响所有微服务的调用
+      default:
+        connectTimeout: 1000
+        readTimeout: 2000
+  hystrix:
+    enabled: true
+
+</code></pre>
+<p>pom文件主要依赖（全）</p>
+<pre><code class="language-xml">&lt;!-- 引入feign依赖 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!-- SpringCloud 格林威治版本中需要单独将hystrix依赖也添加上 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-hystrix&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- 引入eureka客户端依赖 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!-- 引入eureka依赖会自动将ribbon依赖一并引入，我们不需要自己单独添加 --&gt;
+        &lt;!--&lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-ribbon&lt;/artifactId&gt;
+        &lt;/dependency&gt;--&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+</code></pre>
+<h3 id="成功配置-添加hystrix的fallback方法"><mark>成功配置、添加hystrix的fallback方法</mark></h3>
+<p><strong>(改动地方：一个注解一个实现类（fallback）)</strong></p>
+<pre><code class="language-java">//提供者名字（provider）
+@FeignClient(name = &quot;SERVICE-PROVIDER&quot;,fallback = CalcClientFallback.class)
+@RequestMapping(&quot;/calc&quot;)
+public interface CalcServiceFeign {
+
+    @GetMapping(&quot;/add/{num1}/{num2}&quot;)
+
+    ResponseInfo add(@PathVariable(&quot;num1&quot;) int num1, @PathVariable(&quot;num2&quot;) int num2);
+}
+
+
+</code></pre>
+<p>有个坑（错误信息：）</p>
+<p>There is already 'calcClientFallback' bean method</p>
+<pre><code class="language-java">@Component
+@RequestMapping(&quot;/fallback&quot;)  //此处只是为了避免重复（实现接口的时候和RestMapping一并继承了）
+public class CalcClientFallback implements CalcServiceFeign{
+    public ResponseInfo add(int num1, int num2) {
+        Map data = new HashMap();
+        data.put(&quot;num1&quot;, num1);
+        data.put(&quot;num2&quot;, num2);
+        data.put(&quot;result&quot;, -1);
+        ResponseInfo responseInfo = new ResponseInfo(203,  &quot;降级结果&quot;, data);
+        return responseInfo;
+    }
+}
+
+</code></pre>
+<p>Feign和Ribbon（RestTemplate方式）</p>
+<ol>
+<li>配置文件不同</li>
+</ol>
+<p>Feign多了它自己的配置</p>
+<pre><code class="language-yml">feign:
+  client:
+    config:
+#      calc-service-provider:  这一级可以写具体的微服务名称或者default，default代表全局配置，影响所有微服务的调用
+      default:
+        connectTimeout: 1000
+        readTimeout: 2000
+  hystrix:
+    enabled: true
+
+</code></pre>
+<ol start="2">
+<li>
+<p>熔断的回调方式不同</p>
+<blockquote>
+<p>（RestTemplate 放在消费者的控制层复写方法加注解建立联系）：[目录](*在需要的方法上边添加注解)</p>
+<p>Feign是通过接口添加另一个实现类也是通过注解建立联系：【目录】（上高亮处）</p>
+</blockquote>
+</li>
+</ol>
+<h1 id="监控">监控</h1>
+<blockquote>
+<p>基于spring-boot-starter-actuator的一项可视化图表工具</p>
+</blockquote>
+<p>消费者工程添加依赖</p>
+<pre><code class="language-xml"> &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+</code></pre>
+<h2 id="dashboard-turbine">Dashboard、turbine</h2>
+<h2 id="1-hystrix-dashboard">1. Hystrix Dashboard</h2>
+<p>Hystrix Dashboard是Hystrix给我们提供的实时查看单机熔断情况的工具。需要配合SpringBoot Actuator使用。</p>
+<h3 id="hystrix-dashboard使用方法">Hystrix Dashboard使用方法</h3>
+<p>Hystrix Dashboard就是一个独立的图表工具，与业务没有任何关联。我们可以单独创建一个工程，引入dashboard的包</p>
+<ol>
+<li>需要的依赖</li>
+</ol>
+<pre><code class="language-xml">&lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-hystrix-dashboard&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+</code></pre>
+<ol start="2">
+<li>
+<p>启动类注解：@EnableHystrixDashboard</p>
+</li>
+<li>
+<p>浏览器中访问：http://localhost:9000/hystrix 就可以打开dashboard首页了</p>
+<figure data-type="image" tabindex="2"><img src="https://img-blog.csdnimg.cn/20191203215429765.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></figure>
+</li>
+</ol>
+<p>dashboard地址和turbine地址说明：</p>
+<blockquote>
+<p>http://localhost:8092/actuator/hystrix.stream</p>
+<p>ping的数据供dashboard收集成图表工具</p>
+<p>把上述地址放到搜索框里面得到以下现象</p>
+</blockquote>
+<figure data-type="image" tabindex="3"><img src="https://img-blog.csdnimg.cn/20191204192818771.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></figure>
+<p>上条地址的图表数据来源如下：</p>
+<p>springboot 提供的监控数据</p>
+<p>首页访问信息(基于actuator的hystrix.stream)</p>
+<p>访问地址：http://localhost:8092/actuator/</p>
+<p>后面可拼的其他路径：</p>
+<blockquote>
+<p>beans、mappings、info、health。。。等</p>
+</blockquote>
+<pre><code class="language-yml">#hystris.stream的配置
+management:
+  server:
+    port: 8092
+  endpoints:
+    web:
+      base-path: /actuator
+      #默认是health、info
+      exposure:
+        include: &quot;*&quot;
+
+</code></pre>
+<p>昨天还有一个知识点没练习完</p>
+<h2 id="2-turbine聚合服务">2. Turbine（聚合服务）</h2>
+<ul>
+<li>DashBoard、turbine、hystrix stream三者之间的关系</li>
+</ul>
+<blockquote>
+<p>在复杂的分布式系统中，相同服务的节点经常需要部署上百甚至上千个，很多时候，运维人员希望能够把相同服务的节点状态以一个整体集群的形式展现出来，这样可以更好的把握整个系统的状态。 为此，Netflix提供了一个开源项目（Turbine）来提供把多个hystrix.stream的内容聚合为一个数据源供Dashboard展示。</p>
+</blockquote>
+<h3 id="turbine与dashboard-hystrix-eventstream的关系">Turbine与Dashboard、Hystrix EventStream的关系</h3>
+<figure data-type="image" tabindex="4"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3dpa2kvTmV0ZmxpeC9IeXN0cml4L2ltYWdlcy9kYXNoYm9hcmQtZGlyZWN0LXZzLXR1cmJpbmUtNjQwLnBuZw?x-oss-process=image/format,png" alt="Turbine与Dashboard关系图"></figure>
+<h3 id="turbine的使用方法">Turbine的使用方法</h3>
+<ol>
+<li>
+<p>引入Turbine依赖</p>
+<pre><code class="language-xml">&lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-netflix-turbine&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+</code></pre>
+</li>
+<li>
+<p>配置Turbine要监控的服务</p>
+<pre><code class="language-yml">server:
+  port: 9005
+  
+#turbine 配置@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+turbine:
+  app-config: calc-service-consumer-hystrix,calc-service-feign-consumer-with-hystrix
+  cluster-name-expression: &quot;'default'&quot;
+  aggregator:
+    cluster-config: default
+
+#eureka配置Turbine需要从Eureka中获取服务列表，然后遍历每个服务每个节点上的hystrix.stream数据，然后汇聚到一起
+eureka:
+  instance:
+    prefer-ip-address: true #在某些情况下，Eureka优先使用IP地址而不是主机名。设置为true，当应用程序向eureka注册时，它将使用其IP地址而不是其主机名
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+    hostname: node1.john.com
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${eureka.client.eureka-server-port}/eureka/
+    eureka-server-port: 8761
+
+#hystrix.stream的配置@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: &quot;*&quot;
+
+
+</code></pre>
+<blockquote>
+<ul>
+<li><code>turbine.appConfig</code>：配置Eureka中的serviceId列表，表明监控哪些服务</li>
+<li><code>turbine.aggregator.clusterConfig</code>：指定聚合哪些集群，多个使用”,”分割，默认为default。可使用http...turbine.streamcluster={clusterConfig之一}访问</li>
+<li><code>turbine.clusterNameExpression</code>：
+<ol>
+<li>clusterNameExpression指定集群名称，默认表达式appName；此时：turbine.aggregator.clusterConfig需要配置想要监控的应用名称；</li>
+<li>当clusterNameExpression default时，turbine.aggregator.clusterConfig可以不写，因为默认就是default；</li>
+<li>当clusterNameExpression metadata[‘cluster’]时，假设想要监控的应用配置了eureka.instance.metadata-map.cluster ABC，则需要配置，同时turbine.aggregator.clusterConfig ABC</li>
+</ol>
+</li>
+</ul>
+</blockquote>
+<ol start="3">
+<li>启动类：</li>
+</ol>
+<pre><code class="language-java">@SpringBootApplication
+@EnableTurbine
+public class TurbineConsumerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(TurbineConsumerApplication.class,args);
+    }
+}
+
+
+</code></pre>
+<ol start="4">
+<li>
+<p>访问turbine.stream<br>
+在浏览器中访问http://localhost:9005/turbine.stream 就可以看到配置到Turbine上的所有微服务产生的流式事件数据</p>
+</li>
+<li>
+<p>在Hystrix Dashboard中查看所有、指定微服务的实时熔断监控。<br>
+将上述地址输入到Hystrix Dashboard中即可查看所有微服务的监控情况，或者加上cluster=[clusterName] 参数，只看某个微服务的情况</p>
+</li>
+<li>
+<p>在dashboard中查看聚合图表数据地址：http://localhost:9005/turbine.stream ?cluster=default</p>
+<figure data-type="image" tabindex="5"><img src="https://img-blog.csdnimg.cn/20191204202949425.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></figure>
+</li>
+</ol>
+</li>
+</ol>
+<h1 id="zuulnetflix-统一网关-地址路由">Zuul(Netflix) - 统一网关、地址路由</h1>
+<p>主要用途：</p>
+<h2 id="1-反向代理">1. 反向代理</h2>
+<h2 id="2-统一权限校验">2. 统一权限校验</h2>
+<h2 id="3-和hystrix的整合">3. 和hystrix的整合</h2>
+<p>​		设置整体的熔断。</p>
+<hr>
+<h2 id="zuul介绍">Zuul介绍</h2>
+<h2 id="在前端调用后台的时候加一层工程看似就访问了一个端口服务也就不存在跨域问题">（在前端调用后台的时候加一层工程（看似就访问了一个端口服务，也就不存在跨域问题））</h2>
+<blockquote>
+<p>Zuul是Netflx开源的微服务网关。可以和Eureka、Ribbon、Hystrix配合使用，一个主要的功能就是可以将后端众多的微服务屏蔽、整合，<mark>对前端提供一套统一的服务(有点像是后端的Facade)</mark>。</p>
+</blockquote>
+<h3 id="反向代理用法">反向代理用法：</h3>
+<ol>
+<li>
+<p>添加依赖</p>
+<pre><code class="language-xml">&lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-zuul&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+</code></pre>
+</li>
+<li>
+<p>配置文件</p>
+<pre><code class="language-yml">server:
+  port: 9100
+spring:
+  application:
+    name: zuul-server
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${eureka.client.eureka-server-port}/eureka/
+    eureka-server-port: 8765
+  instance:
+    prefer-ip-address: true #在某些情况下，Eureka优先使用IP地址而不是主机名。设置为true，当应用程序向eureka注册时，它将使用其IP地址而不是其主机名
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+    hostname: cloud.study.com
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: &quot;*&quot;
+
+zuul:
+  routes:
+    # 这种方式配置路由规则：前面的key是微服务名称，后面是匹配路径（更安全）
+    #service-provider: /calcApi/**
+
+    # 这种方式配置路由规则：第一级的key可以随便取（路由名称），下面可以配置更多key、value（相比上面一种配置更强大）
+    calc-proxy:
+      serviceId: service-provider # 有效的微服务名称
+      path: /calc/**  # 访问路径
+      strip-prefix: false # 是否在网关层面消耗掉指定服务的路由规则前缀
+    #    taotao-rest-proxy:
+    #      serviceId: taotao-rest
+    #      path: /rest/**
+    taotao-rest-proxy-forward: # 使用forward本地转发(就是将匹配到路由规则的请求，转发到网关本地应用中去处理)
+      path: /rest-f/**
+      url: forward:/rest
+    # 比如浏览器访问：http://localhost:9100/api/rest-f/content/getall/89
+    # 会被转发到：http://localhost:9100/rest/content/getall/89
+
+
+  ignored-services: &quot;*&quot; # 忽略所有未显示配置路由规则的微服务
+  prefix: /api
+  strip-prefix: true  # 是否在网关层面消耗掉全局前缀
+
+#淘淘商城测试
+# 使用Zuul代理未接入Eureka的传统服务
+taotao-rest:
+  ribbon:
+    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList #如果不配置ServerList类型为ConfigurationBasedServerList的话就需要禁用ribbon的eureka支持
+    ConnectTimeout: 500
+    ReadTimeout: 2000
+    listOfServers: http://localhost:8081
+
+#和hystrix不同  （配置超时）
+service-provider:   #微服务名称
+  ribbon:
+    ReadTimeout: 2000
+    ConnectTimeout: 500
+
+</code></pre>
+</li>
+<li>
+<p>启动类</p>
+<pre><code class="language-java">@SpringBootApplication
+@EnableZuulProxy
+@EnableEurekaClient
+public class ZuulApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ZuulApplication.class,args);
+    }
+}
+
+</code></pre>
+<p>重点主要在它的application.yml文件中的配置。</p>
+</li>
+</ol>
+<h3 id="zuul的访问超时控制">Zuul的访问超时控制</h3>
+<h4 id="通过serviceid代理的请求">通过ServiceId代理的请求</h4>
+<p>由于通过ServiceId的方式代理的请求(包括手动配置的Ribbon 服务和自动服务发现的服务)会走Ribbon和Hystrix，所以我们要控制超时就包括Ribbon请求的超时和Hystrix的访问超时。</p>
+<pre><code class="language-yml">test-service:
+  ribbon:
+    ReadTimeout:100
+    ConnectTimeout:500
+    MaxAutoRetries:1
+    MaxAutoRetriesNextServer:1
+
+</code></pre>
+<p>上面这段配置通过Zuul访问test-service服务时，Ribbon的ConnectTimeout是500ms，ReadTimeout是100ms，重试次数为1次； Zuul会根据ribbon设置的超时时间和重试次数，自动设置Hystrix的超时时间(上面这段配置, Zuul会把Hystrix的超时时间设置为:(100+500)*2=1200ms<br>
+当然，我们也可以通过添加下面的配置显示指定Hystrix参数</p>
+<pre><code class="language-yml">hystrix:
+  command:
+    service-calc-ribbon:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+
+</code></pre>
+<p>这里如果不显示设置，Zuul会根据ribbon设置的ConnectionTimeout和ReadTimeout自动确定Hystrix的超时时间（所以一般可以通过配置ribbon的超时时间来控制hystrix超时），由于ribbon默认重试次数是1，所以Hystrix的超时时间会被设置为(500+2000)*2=5000</p>
+<h3 id="zuul的核心filter">Zuul的核心——Filter</h3>
+<blockquote>
+<p>Filter是Zuul的核心，用来实现对外服务的控制。Filter的生命周期有4个，分别是“PRE”、“ROUTING”、“POST”、“ERROR”，<br>
+Zuul大部分功能都是通过过滤器来实现的，这些过滤器类型对应于请求的典型生命周期。</p>
+</blockquote>
+<ul>
+<li>PRE： 这种过滤器在请求被路由之前调用。我们可利用这种过滤器实现身份验证、在集群中选择请求的微服务、记录调试信息等。</li>
+<li>ROUTING：这种过滤器将请求路由到微服务。这种过滤器用于构建发送给微服务的请求，并使用Apache HttpClient或Netfilx Ribbon请求微服务。</li>
+<li>POST：这种过滤器在路由到微服务以后执行。这种过滤器可用来为响应添加标准的HTTP Header、收集统计信息和指标、将响应从微服务发送给客户端等。</li>
+<li>ERROR：在其他阶段发生错误时执行该过滤器。 除了默认的过滤器类型，Zuul还允许我们创建自定义的过滤器类型。例如，我们可以定制一种STATIC类型的过滤器，直接在Zuul中生成响应，而不将请求转发到后端的微服务。</li>
+</ul>
+<h4 id="zuul中默认实现的filter">Zuul中默认实现的Filter</h4>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>顺序</th>
+<th>过滤器</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pre</td>
+<td>-3</td>
+<td>ServletDetectionFilter</td>
+<td>标记处理Servlet的类型</td>
+</tr>
+<tr>
+<td>pre</td>
+<td>-2</td>
+<td>Servlet30WrapperFilter</td>
+<td>包装HttpServletRequest请求</td>
+</tr>
+<tr>
+<td>pre</td>
+<td>-1</td>
+<td>FormBodyWrapperFilter</td>
+<td>包装请求体</td>
+</tr>
+<tr>
+<td>route</td>
+<td>1</td>
+<td>DebugFilter</td>
+<td>标记调试标志</td>
+</tr>
+<tr>
+<td>route</td>
+<td>5</td>
+<td>PreDecorationFilter</td>
+<td>处理请求上下文供后续使用</td>
+</tr>
+<tr>
+<td>route</td>
+<td>10</td>
+<td>RibbonRoutingFilter</td>
+<td>serviceId请求转发</td>
+</tr>
+<tr>
+<td>route</td>
+<td>100</td>
+<td>SimpleHostRoutingFilter</td>
+<td>url请求转发</td>
+</tr>
+<tr>
+<td>route</td>
+<td>500</td>
+<td>SendForwardFilter</td>
+<td>forward请求转发</td>
+</tr>
+<tr>
+<td>post</td>
+<td>0</td>
+<td>SendErrorFilter</td>
+<td>处理有错误的请求响应</td>
+</tr>
+<tr>
+<td>post</td>
+<td>1000</td>
+<td>SendResponseFilter</td>
+<td>处理正常的请求响应</td>
+</tr>
+</tbody>
+</table>
+<h4 id="禁用指定的filter">禁用指定的Filter</h4>
+<pre><code class="language-yml">zuul:
+  FormBodyWrapperFilter:
+    pre:
+	  disable: true
+
+</code></pre>
+<h4 id="自定义filter示例">自定义Filter示例</h4>
+<p>我们假设有这样一个场景，因为服务网关应对的是外部的所有请求，为了避免产生安全隐患，我们需要对请求做一定的限制，比如请求中含有Token便让请求继续往下走，如果请求不带Token就直接返回并给出提示。</p>
+<ol>
+<li>
+<p>首先自定义一个Filter，在run()方法中验证参数是否含有Token。</p>
+<pre><code class="language-java">/**
+ * 自定义网关过滤器
+ */
+@Component
+public class TokenFilter extends ZuulFilter {
+
+    /**
+     * 过滤器类型
+     * @return
+     */
+    public String filterType() {
+        return &quot;pre&quot;;
+    }
+
+    /**
+     * 过滤器顺序
+     * @return
+     */
+    public int filterOrder() {
+        return 2;
+    }
+
+    /**
+     * 是否开启过滤
+     * @return
+     */
+    public boolean shouldFilter() {
+        return true;
+    }
+
+    /**
+     * 过滤器中要执行的具体逻辑
+     * @return
+     * @throws ZuulException
+     */
+    public Object run() throws ZuulException {
+
+        RequestContext ctx = RequestContext.getCurrentContext();
+        HttpServletRequest req = ctx.getRequest();
+
+        String token = req.getHeader(&quot;token&quot;);
+        if(token == null) {
+            // 不对其进行路由，直接返回错误
+            ctx.setSendZuulResponse(false);
+            ctx.setResponseStatusCode(403);
+            ctx.setResponseBody(&quot;forbidden&quot;);
+            return null;
+        }
+        // 检查token
+        if(token.startsWith(&quot;abc&quot;)) {
+            ctx.setSendZuulResponse(true);
+            ctx.setResponseStatusCode(200);
+            return null;
+        }
+        // 不对其进行路由，直接返回错误
+        ctx.setSendZuulResponse(false);
+        ctx.setResponseStatusCode(403);
+        ctx.setResponseBody(&quot;invalid token&quot;);
+        return null;
+    }
+}
+
+
+</code></pre>
+<ol start="2">
+<li>将TokenFilter加入到请求拦截队列，在启动类中添加以下代码</li>
+</ol>
+<pre><code class="language-java">@Bean
+public TokenFilter tokenFilter() {
+	return new TokenFilter();
+}
+
+</code></pre>
+<p>通过上面这例子我们可以看出，我们可以使用“PRE”类型的Filter做很多的验证工作，在实际使用中我们可以结合shiro、oauth2.0等技术去做鉴权、验证。</p>
+</li>
+</ol>
+<h1 id="配置中心基于git仓库">配置中心（基于git仓库）</h1>
+<blockquote>
+<h2 id="1-解决重复配置">1. 解决重复配置</h2>
+<h2 id="2-基于web的加密解密">2. 基于web的加密解密</h2>
+<h2 id="3热更新配置动态">3.热更新配置（动态）</h2>
+</blockquote>
+<hr>
+<blockquote>
+<p>单台服务端的更新方式。</p>
+<p>基于Springcloud bus （rabbitmq。。。或 kafka方式的更新配置</p>
+</blockquote>
+<h2 id="解决重复配置">解决重复配置</h2>
+<p>需要依赖：</p>
+<pre><code class="language-xml">&lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-config-server&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- 添加SpringCloud Bus amqp依赖，用于bus通知各个微服务刷新配置 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-bus-amqp&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+</code></pre>
+<p>配置文件：</p>
+<pre><code class="language-yml">#这个文件不是必要的使用bootstrap.yml
+
+server:
+  port: 7000
+spring:
+  application:
+    name: config-server
+    #主要有关配置。
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitee.com/checkChen/Springcloud-config-server.git
+          search-paths: test_repo  #精确到文件夹
+          #也可以是本地地址
+          #uri: file://${user.home}/work/test_repo
+  #          username: xxx
+  #          password: xxx
+  #基于客户端配置消息中间件
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
+encrypt:
+  key: lanou3g  # 配置一个自己的秘钥，用于对称加密算法加密
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh
+
+
+</code></pre>
+<p>启动类：</p>
+<pre><code class="language-java">@SpringBootApplication
+@EnableConfigServer
+public class ConfigApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ConfigApplication.class,args);
+    }
+}
+
+</code></pre>
+<p>模拟查看匹配到的配置文件(后面地址是模糊查询也可以很具体。)</p>
+<blockquote>
+<p>http://localhost:8888/app/dev</p>
+<p>全都不匹配的话有个默认的application.properties/yml</p>
+</blockquote>
+<h3 id="客户端使用springcloud-config">客户端使用springcloud-config：</h3>
+<p>server配置完成接下来consumer使用：</p>
+<p>首先配置文件：</p>
+<blockquote>
+<p>bootstrap.yml是云配置优先级高于application.yml</p>
+</blockquote>
+<p>所需依赖：</p>
+<pre><code class="language-xml">&lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--基于普通consumer新添加依赖--&gt;
+        &lt;!-- 配置中心客户端依赖 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-config-client&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- 为了使用/refresh端点动态刷新配置，需要添加actuator依赖 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-bus-amqp&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+</code></pre>
+<h3 id="配置文件">配置文件</h3>
+<p><strong>application.yml:</strong></p>
+<pre><code class="language-yml">spring:
+  application:
+    name: service-config-consumer
+
+    
+#git上已经配置
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://${eureka.instance.hostname}:${eureka.client.eureka-server-port}/eureka/
+#    eureka-server-port: 8765
+#  instance:
+#    prefer-ip-address: true #在某些情况下，Eureka优先使用IP地址而不是主机名。设置为true，当应用程序向eureka注册时，它将使用其IP地址而不是其主机名
+#    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+#    hostname: cloud.study.com
+
+server:
+  port: 8082
+  
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh  #或者&quot;*&quot;
+
+</code></pre>
+<p><strong>bootstrap.yml:</strong></p>
+<pre><code class="language-yml">spring:
+  cloud:
+    config:
+      uri: http://localhost:7000   #config-server文件地址
+      name: config-calc-consumer
+#      profile: dev
+#  拉取的二级路径profile
+
+</code></pre>
+<h3 id="配置映射参数">配置映射参数</h3>
+<p>在SpringCloudConfig中，</p>
+<ul>
+<li>
+<p>{application}对应<font color="red">客户端</font>配置的“spring.application.name”参数（如果指定了spring.cloud.config.name则以其为准。）；</p>
+</li>
+<li>
+<p>{profile} 对应<font color="red">客户端</font>配置的“spring.profiles.active”参数（如果指定了spring.cloud.config.profile则以其为准。）；</p>
+</li>
+<li>
+<p>{label}对应版本库中的branch(或tag)名称，取决于<font color="red">客户端</font>的“spring.cloud.config.label”参数决定。</p>
+<p>如果分支名称中包含“/”，label配置中应该使用“（_）”替换，如foot/dev配置为foot(_)dev。</p>
+</li>
+</ul>
+<h2 id="git仓库加密解密">git仓库加密解密</h2>
+<p>命令：id_rsa.pub公钥、id_rsa秘钥（公钥的钥匙）</p>
+<pre><code class="language-bash">$ cd ~/.ssh/
+
+$ ls
+id_rsa  id_rsa.pub  known_hosts
+
+$ cat id_rsa
+
+</code></pre>
+<h2 id="配置加密解密">配置加密解密</h2>
+<blockquote>
+<h2 id="数据库如用户名密码">（数据库如：用户名密码）</h2>
+</blockquote>
+<h3 id="方法">方法：</h3>
+<blockquote>
+<p>使用命令行（参考SpringCloud笔记之微服务配置中心Config.pdf）</p>
+<p>使用postman：http://localhost:7000/encrypt</p>
+</blockquote>
+<h3 id="对称加密">对称加密</h3>
+<p>配置文件config-server加密、在客户端接收的发送回来的信息是解密后的。</p>
+<pre><code class="language-yml">encrypt:
+  key: lanou3g  # 配置一个自己的秘钥，用于对称加密算法加密
+
+#加密后的串提交git仓库。(.yml文件必须加引号、.properties文件必须不加引号。)
+password:
+'{cipher}fda4hu54sd7a7df78sadf9aga7d6g'
+</code></pre>
+<h3 id="遇到的问题非法的key需要jce">遇到的问题：非法的key需要jce</h3>
+<blockquote>
+<p>在SpringCloud中实现RSA对称加密需要一些前提条件，首先要给jdk/jre配置JCE安装JCE加密可扩展。替换两个文件</p>
+</blockquote>
+<h3 id="非对称加密">非对称加密</h3>
+<p>参见<a href="https://cloud.spring.io/spring-cloud-static/Greenwich.SR4/single/spring-cloud.html">官网</a>或笔记</p>
+<h2 id="动态更新配置">动态更新配置：</h2>
+<h3 id="单台客户端动态更新">单台客户端动态更新</h3>
+<p>由于SpringCloud Config-Server端在每次客户端拉取配置时都会从远程仓库拉取最新的配置，所以Config- Server端的配置其实已经更新了， 我们要做的是让客户端应用更新配置，如果是单台客户端的话，我们直接通过SpringBoot提供的小下文断电中的：”/refresh“ 断电就可以了。具体步骤如下：</p>
+<ol>
+<li>加入SpringBoot actuator依赖</li>
+<li>在需要支持动态刷新配置的类中添加@RefreshScope注解</li>
+<li>访问http://localhost:port/refresh，即可刷新配置。（不支持get请求、可以使用postman）</li>
+</ol>
+<p>但是工作量很大、容易遗漏、要做到同时让所有客户端都刷新配置很麻烦。基于此SpringCould Config Server给我们提供了一种更便利的方式、基于Spring Cloud Bus的方式充当中间人通知所有客户端（配置变更相关的客户端）更新配置。</p>
+<h3 id="多台客户端动态更新">多台客户端动态更新</h3>
+<h4 id="使用工具环境搭建">使用工具，环境搭建：</h4>
+<blockquote>
+<p>erlang_otp_win64_21.3.exe</p>
+<p>rabbitmq-server-3.7.22.exe</p>
+</blockquote>
+<p>安装之后修改rabbitmq_server-3.7.22\etc下的rabbitmq.config.example文件。</p>
+<figure data-type="image" tabindex="6"><img src="https://img-blog.csdnimg.cn/20191205152014137.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></figure>
+<p>登录密码</p>
+<figure data-type="image" tabindex="7"><img src="https://img-blog.csdnimg.cn/20191205152201927.png" alt="在这里插入图片描述"></figure>
+<p>启动和访问地址</p>
+<p>http://localhost:15672</p>
+<figure data-type="image" tabindex="8"><img src="https://img-blog.csdnimg.cn/20191205152101367.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></figure>
+<p>RabbitMQ 端口</p>
+<p>-   4369 (epmd), 25672 (Erlang distribution)</p>
+<p>-   5672, 5671 (AMQP 0-9-1 without and with TLS)</p>
+<p>-   15672 (if management plugin is enabled)</p>
+<p>-   61613, 61614 (if STOMP is enabled)</p>
+<p>-   1883, 8883 (if MQTT is enabled)</p>
+<figure data-type="image" tabindex="9"><img src="https://img-blog.csdnimg.cn/2019120515212966.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></figure>
+<p>安装步骤：</p>
+<pre><code class="language-ruby">Windows安装ribbitmq步骤：
+https://blog.csdn.net/qq_38931949/article/details/95513014
+https://www.rabbitmq.com/install-windows.html（官方说明）
+
+
+配置中心加密错误： https://bbs.csdn.net/topics/392514733
+解决办法： https://blog.csdn.net/qq_36827957/article/details/81777333
+</code></pre>
+<h4 id="springcloud-config-server端配置">SpringCloud  Config  Server端配置</h4>
+<ol>
+<li>
+<p>添加bus依赖</p>
+<pre><code class="language-xml">&lt;!-- 添加SpringCloud Bus amqp依赖，用于bus通知各个微服务刷新配置 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-bus-amqp&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+</code></pre>
+</li>
+</ol>
+<blockquote>
+<p>这里我们用的是rabbitmq，所以添加的是amqp依赖、如果消息中间件用的是kafka的话就换成bus-kafka依赖。</p>
+</blockquote>
+<ol start="2">
+<li>
+<p>配置消息中间件</p>
+<pre><code class="language-yml">#基于客户端配置消息中间件
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+</code></pre>
+</li>
+<li>
+<p>当配置修改完成，并且push到远程仓库之后，执行下面的请求。</p>
+<blockquote>
+<p>新版地址不同有变化。</p>
+<p>旧版本：http://localhost:7000/bus/refresh</p>
+<p>新版本：http://localhost:7000/actuator/bus-refresh</p>
+<p>必须要配置如下server - config端</p>
+<pre><code class="language-yml">management:
+endpoints:
+ web:
+   exposure:
+     include: bus-refresh  #或者&quot;*&quot;
+</code></pre>
+<p>访问Config Server 的actuator/bus-refresh端点，触发Config 的检查更新。（必须post请求）</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="springcloud-client端">SpringCloud -client端</h4>
+<blockquote>
+<p>重复 1.添加bus依赖 2. 配置消息中间件</p>
+</blockquote>
+<h1 id="课堂知识">课堂知识：</h1>
+<p>查看可调用的服务（可以配个虚假的就是不和服务名保持一致（提高安全性））：http://localhost:9100/actuator/routes   （方式如下）</p>
+<blockquote>
+<p><mark>理解如下：</mark></p>
+<p><strong>此地址用来查看使用zuul代理服务（如：taotao-rest(只是服务的名字)）的访问路径地址    配合（属性strip-prefix: true  # 是否在网关层面消耗掉全局前缀即path：/api——最简化通过zuul的访问地址）</strong></p>
+</blockquote>
+<pre><code class="language-yml"># 这种方式配置路由规则：前面的key是微服务名称，后面是匹配路径（更安全）
+    service-provider: /calcApi/**
+    
+    # 这种方式配置路由规则：第一级的key可以随便取（路由名称），下面可以配置更多key、value（相比上面一种配置更强大）
+    calc-proxy:
+      serviceId: service-provider # 有效的微服务名称
+      path: /calc/**  # 访问路径
+      strip-prefix: false # 是否在网关层面消耗掉指定服务的路由规则前缀
+    
+    
+    
+  ignored-services: &quot;*&quot; # 忽略所有未显示配置路由规则的微服务
+</code></pre>
+<h1 id="遇到的问题-2">遇到的问题</h1>
+<ol>
+<li>所需工具：</li>
+</ol>
+<figure data-type="image" tabindex="10"><img src="https://img-blog.csdnimg.cn/20191204203451601.png" alt="在这里插入图片描述"></figure>
+<ol start="2">
+<li>安装步骤：</li>
+</ol>
+<pre><code class="language-ruby">Windows安装步骤：
+https://blog.csdn.net/qq_38931949/article/details/95513014
+https://www.rabbitmq.com/install-windows.html（官方说明）
+
+
+配置中心加密错误： https://bbs.csdn.net/topics/392514733
+解决办法： https://blog.csdn.net/qq_36827957/article/details/81777333
+</code></pre>
+<ol start="3">
+<li>
+<p>小知识</p>
+<blockquote>
+<p>iml是 intellij idea的工程配置文件，里面是当前 project 的一些配置信息。.Idea 存放项目的配置信息，包括历史记录，版本控制信息等。</p>
+</blockquote>
+</li>
+<li>
+<p>通过配置代理服务</p>
+<pre><code class="language-yml"># 使用Zuul代理未接入Eureka的传统服务
+taotao-rest:
+  ribbon:
+    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList #如果不配置ServerList类型为ConfigurationBasedServerList的话就需要禁用ribbon的eureka支持
+    ConnectTimeout: 500
+    ReadTimeout: 2000
+    listOfServers: http://localhost:8081
+</code></pre>
+</li>
+<li>
+<p>属性：（通过）</p>
+<pre><code class="language-yml">zuul:
+  routes:
+    microserver-calc: /calcs/**  #指定的服务下
+
+  prefix: /api
+  strip-prefix: true  # 是否在网关层面消耗掉全局前缀即/api
+</code></pre>
+</li>
+<li>
+<p>测试forward的路径</p>
+<pre><code class="language-java">@RestController
+//@RequestMapping(&quot;/rest&quot;)
+public class TestController {
+
+    //@RequestMapping(&quot;/content/getall/{id}&quot;)
+  @RequestMapping(&quot;/**&quot;)
+ public void handlerRequest(HttpServletRequest req) {
+        StringBuffer requestURL = req.getRequestURL();
+      //得到完整路径forward后的地址。
+        System.out.println(requestURL.toString());
+    }
+
+}
+
+</code></pre>
+</li>
+<li>
+<p>本地转发(forward);地址栏没变forward只是把结果带到页面：在地址栏<mark>再</mark>拼路径</p>
+<pre><code class="language-yml">zuul:
+  routes:
+    route-name:
+      path: /path-a/**
+      url: forward:/path-b
+      
+      
+      
+      
+taotao-rest-proxy-forward: # 使用forward本地转发(就是将匹配到路由规则的请求，转发到网关本地应用中去处理)
+      path: /rest-f/**
+      url: forward:/rest
+    # 比如浏览器访问：http://localhost:9100/api/rest-f/content/getall/89
+    # 会被转发到：http://localhost:9100/rest/content/getall/89
+
+</code></pre>
+</li>
+<li>
+<p>nginx代理很重要！（实现集群）</p>
+</li>
+</ol>
+<hr>
+<p><span style="color:red;float:right">Author:CheckChen</span></p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#springcloud%E5%AD%A6%E4%B9%A0">SpringCloud学习</a>
+<ul>
+<li><a href="#eureka%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E5%9F%BA%E7%A1%80%E6%90%AD%E5%BB%BA">Eureka注册中心基础搭建</a>
+<ul>
+<li><a href="#netflix-eureka">Netflix Eureka</a></li>
+<li><a href="#netflix-ribbon">Netflix Ribbon</a></li>
+<li><a href="#ribbon%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">Ribbon的使用方法</a></li>
+</ul>
+</li>
+<li><a href="#%E6%90%AD%E5%BB%BA%E5%B7%A5%E7%A8%8B%E8%BF%87%E7%A8%8Bpomymlapplication%E5%BA%94%E7%94%A8%E5%B1%82%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81">搭建工程过程：pom——yml——Application——应用层（业务代码）</a>
+<ul>
+<li><a href="#1-%E7%88%B6%E5%B7%A5%E7%A8%8B%E4%BE%9D%E8%B5%96pom%E6%96%87%E4%BB%B6springcloud-parent">1. *父工程依赖pom文件（SpringCloud-parent）</a></li>
+<li><a href="#2-springcloud-eureka-server%E6%9C%8D%E5%8A%A1%E8%80%85">2. *SpringCloud-eureka-server（服务者）</a></li>
+<li><a href="#%E6%8B%93%E5%B1%95jdk18%E9%85%8D%E7%BD%AE-pomxml">拓展：*jdk1.8配置（ pom.xml）</a></li>
+<li><a href="#3-springcloud-eureka-server-cloud-%E6%A8%A1%E5%9D%97%E9%AB%98%E5%8F%AF%E7%94%A8%E7%9A%84%E6%9C%8D%E5%8A%A1%E8%80%85">3. *springcloud-eureka-server-cloud 模块（高可用的服务者）</a></li>
+<li><a href="#4-providercloud%E6%8F%90%E4%BE%9B%E8%80%85">4. *Provider（cloud提供者）</a></li>
+<li><a href="#5-consumercloud%E6%B6%88%E8%B4%B9%E8%80%85">5. *Consumer（cloud消费者）</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AD%A6%E4%B9%A0%E7%90%86%E8%A7%A3">学习理解：</a>
+<ul>
+<li><a href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1-rpc%E5%92%8Crest%E5%8D%8F%E8%AE%AE">微服务 Rpc和Rest协议</a></li>
+<li><a href="#eureka%E7%9A%84%E8%A7%92%E8%89%B2">Eureka的角色</a></li>
+</ul>
+</li>
+<li><a href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98">遇到的问题：</a>
+<ul>
+<li><a href="#1-%E4%B8%A4%E4%B8%AA%E6%B3%A8%E8%A7%A3">1. *两个注解</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#feign%E5%A3%B0%E6%98%8E%E5%BC%8Frest%E5%AE%A2%E6%88%B7%E7%AB%AF">Feign声明式REST客户端</a>
+<ul>
+<li><a href="#%E5%AE%9E%E7%8E%B0%E8%BF%87%E7%A8%8B">实现过程：</a>
+<ul>
+<li><a href="#%E6%B6%88%E8%B4%B9%E8%80%85%E6%8E%A7%E5%88%B6%E5%B1%82">消费者控制层</a></li>
+<li><a href="#%E6%B6%88%E8%B4%B9%E8%80%85%E7%9A%84feign%E6%8E%A5%E5%8F%A3">消费者的Feign（接口）</a></li>
+<li><a href="#%E6%8F%90%E4%BE%9B%E8%80%85%E7%9A%84%E6%8E%A7%E5%88%B6%E5%B1%82">提供者的控制层</a></li>
+<li><a href="#%E6%8F%90%E4%BE%9B%E8%80%85%E7%9A%84%E5%AE%9E%E7%8E%B0%E7%B1%BB">提供者的实现类</a></li>
+<li><a href="#server%E7%AB%AF%E9%BB%98%E9%BB%98%E7%9A%84%E5%81%9A%E7%9D%80%E8%BF%9E%E6%8E%A5%E6%A1%A5%E6%A2%81%E5%B7%A5%E4%BD%9C">server端默默的做着连接桥梁工作。</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#hystrix-%E6%9C%8D%E5%8A%A1%E7%86%94%E6%96%AD-%E9%99%8D%E7%BA%A7-%E9%99%90%E6%B5%81-%E9%9A%94%E7%A6%BB">Hystrix 服务熔断、降级、限流、隔离</a><br>
+*
+<ul>
+<li><a href="#pom%E6%96%87%E4%BB%B6%E4%BE%9D%E8%B5%96">pom文件依赖</a></li>
+<li><a href="#%E5%AE%8C%E6%95%B4%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">完整配置文件：</a></li>
+<li><a href="#%E9%80%9A%E8%BF%87properties%E4%BF%AE%E6%94%B9%E6%8C%87%E5%AE%9Ahystrixcommand%E7%9A%84%E5%8F%82%E6%95%B0">通过Properties修改指定HystrixCommand的参数</a></li>
+<li><a href="#%E5%90%AF%E5%8A%A8%E7%B1%BBribbon%E6%96%B9%E5%BC%8F">启动类（Ribbon方式）：</a></li>
+<li><a href="#%E5%9C%A8%E9%9C%80%E8%A6%81%E7%9A%84%E6%96%B9%E6%B3%95%E4%B8%8A%E8%BE%B9%E6%B7%BB%E5%8A%A0%E6%B3%A8%E8%A7%A3">==*在需要的方法上边添加注解==</a></li>
+<li><a href="#feign%E6%96%B9%E5%BC%8F">Feign方式</a></li>
+<li><a href="#%E6%88%90%E5%8A%9F%E9%85%8D%E7%BD%AE-%E6%B7%BB%E5%8A%A0hystrix%E7%9A%84fallback%E6%96%B9%E6%B3%95">==成功配置、添加hystrix的fallback方法==</a></li>
+</ul>
+</li>
+<li><a href="#%E7%9B%91%E6%8E%A7">监控</a>
+<ul>
+<li><a href="#dashboard-turbine">Dashboard、turbine</a></li>
+<li><a href="#1-hystrix-dashboard">1. Hystrix Dashboard</a>
+<ul>
+<li><a href="#hystrix-dashboard%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">Hystrix Dashboard使用方法</a></li>
+</ul>
+</li>
+<li><a href="#2-turbine%E8%81%9A%E5%90%88%E6%9C%8D%E5%8A%A1">2. Turbine（聚合服务）</a>
+<ul>
+<li><a href="#turbine%E4%B8%8Edashboard-hystrix-eventstream%E7%9A%84%E5%85%B3%E7%B3%BB">Turbine与Dashboard、Hystrix EventStream的关系</a></li>
+<li><a href="#turbine%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">Turbine的使用方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#zuulnetflix-%E7%BB%9F%E4%B8%80%E7%BD%91%E5%85%B3-%E5%9C%B0%E5%9D%80%E8%B7%AF%E7%94%B1">Zuul(Netflix) - 统一网关、地址路由</a>
+<ul>
+<li><a href="#1-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86">1. 反向代理</a></li>
+<li><a href="#2-%E7%BB%9F%E4%B8%80%E6%9D%83%E9%99%90%E6%A0%A1%E9%AA%8C">2. 统一权限校验</a></li>
+<li><a href="#3-%E5%92%8Chystrix%E7%9A%84%E6%95%B4%E5%90%88">3. 和hystrix的整合</a></li>
+<li><a href="#zuul%E4%BB%8B%E7%BB%8D">Zuul介绍</a></li>
+<li><a href="#%E5%9C%A8%E5%89%8D%E7%AB%AF%E8%B0%83%E7%94%A8%E5%90%8E%E5%8F%B0%E7%9A%84%E6%97%B6%E5%80%99%E5%8A%A0%E4%B8%80%E5%B1%82%E5%B7%A5%E7%A8%8B%E7%9C%8B%E4%BC%BC%E5%B0%B1%E8%AE%BF%E9%97%AE%E4%BA%86%E4%B8%80%E4%B8%AA%E7%AB%AF%E5%8F%A3%E6%9C%8D%E5%8A%A1%E4%B9%9F%E5%B0%B1%E4%B8%8D%E5%AD%98%E5%9C%A8%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98">（在前端调用后台的时候加一层工程（看似就访问了一个端口服务，也就不存在跨域问题））</a>
+<ul>
+<li><a href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E7%94%A8%E6%B3%95">反向代理用法：</a></li>
+<li><a href="#zuul%E7%9A%84%E8%AE%BF%E9%97%AE%E8%B6%85%E6%97%B6%E6%8E%A7%E5%88%B6">Zuul的访问超时控制</a>
+<ul>
+<li><a href="#%E9%80%9A%E8%BF%87serviceid%E4%BB%A3%E7%90%86%E7%9A%84%E8%AF%B7%E6%B1%82">通过ServiceId代理的请求</a></li>
+</ul>
+</li>
+<li><a href="#zuul%E7%9A%84%E6%A0%B8%E5%BF%83filter">Zuul的核心——Filter</a>
+<ul>
+<li><a href="#zuul%E4%B8%AD%E9%BB%98%E8%AE%A4%E5%AE%9E%E7%8E%B0%E7%9A%84filter">Zuul中默认实现的Filter</a></li>
+<li><a href="#%E7%A6%81%E7%94%A8%E6%8C%87%E5%AE%9A%E7%9A%84filter">禁用指定的Filter</a></li>
+<li><a href="#%E8%87%AA%E5%AE%9A%E4%B9%89filter%E7%A4%BA%E4%BE%8B">自定义Filter示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83%E5%9F%BA%E4%BA%8Egit%E4%BB%93%E5%BA%93">配置中心（基于git仓库）</a>
+<ul>
+<li><a href="#1-%E8%A7%A3%E5%86%B3%E9%87%8D%E5%A4%8D%E9%85%8D%E7%BD%AE">1. 解决重复配置</a></li>
+<li><a href="#2-%E5%9F%BA%E4%BA%8Eweb%E7%9A%84%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86">2. 基于web的加密解密</a></li>
+<li><a href="#3%E7%83%AD%E6%9B%B4%E6%96%B0%E9%85%8D%E7%BD%AE%E5%8A%A8%E6%80%81">3.热更新配置（动态）</a></li>
+<li><a href="#%E8%A7%A3%E5%86%B3%E9%87%8D%E5%A4%8D%E9%85%8D%E7%BD%AE">解决重复配置</a>
+<ul>
+<li><a href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BD%BF%E7%94%A8springcloud-config">客户端使用springcloud-config：</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">配置文件</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%98%A0%E5%B0%84%E5%8F%82%E6%95%B0">配置映射参数</a></li>
+</ul>
+</li>
+<li><a href="#git%E4%BB%93%E5%BA%93%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86">git仓库加密解密</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E5%8A%A0%E5%AF%86%E8%A7%A3%E5%AF%86">配置加密解密</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A6%82%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81">（数据库如：用户名密码）</a>
+<ul>
+<li><a href="#%E6%96%B9%E6%B3%95">方法：</a></li>
+<li><a href="#%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86">对称加密</a></li>
+<li><a href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E9%9D%9E%E6%B3%95%E7%9A%84key%E9%9C%80%E8%A6%81jce">遇到的问题：非法的key需要jce</a></li>
+<li><a href="#%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86">非对称加密</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8A%A8%E6%80%81%E6%9B%B4%E6%96%B0%E9%85%8D%E7%BD%AE">动态更新配置：</a>
+<ul>
+<li><a href="#%E5%8D%95%E5%8F%B0%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8A%A8%E6%80%81%E6%9B%B4%E6%96%B0">单台客户端动态更新</a></li>
+<li><a href="#%E5%A4%9A%E5%8F%B0%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8A%A8%E6%80%81%E6%9B%B4%E6%96%B0">多台客户端动态更新</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA">使用工具，环境搭建：</a></li>
+<li><a href="#springcloud-config-server%E7%AB%AF%E9%85%8D%E7%BD%AE">SpringCloud  Config  Server端配置</a></li>
+<li><a href="#springcloud-client%E7%AB%AF">SpringCloud -client端</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E8%AF%BE%E5%A0%82%E7%9F%A5%E8%AF%86">课堂知识：</a></li>
+<li><a href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98-2">遇到的问题</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://cxp-twx.github.io/post/dubbo-xue-xi-bu-zou">
+              <h3 class="post-title">
+                Dubbo学习步骤
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '3818ab196008bdc444d2',
+    clientSecret: '25a6a1be783a52e1a00f165dd3c08fa28fba507a',
+    repo: 'cxp-twx.github.io',
+    owner: 'cxp-twx',
+    admin: ['cxp-twx'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://cxp-twx.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

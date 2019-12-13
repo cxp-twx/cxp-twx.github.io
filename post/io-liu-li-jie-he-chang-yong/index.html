@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Postman的简单使用 | CheckChen</title>
+<title>IO流理解和常用 | CheckChen</title>
 <meta name="description" content="吾日三省吾身" />
 <link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576205079785">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -73,11 +73,11 @@
         <div class="post-detail">
           <article class="post">
             <h2 class="post-title">
-              Postman的简单使用
+              IO流理解和常用
             </h2>
             <div class="post-info">
               <span>
-                2019-02-16
+                2019-03-16
               </span>
               <span>
                 1 min read
@@ -87,14 +87,87 @@
             
             <div class="post-content-wrapper">
               <div class="post-content">
-                <h1 id="postman视图图解">Postman视图图解</h1>
-<p><img src="https://img-blog.csdnimg.cn/20191022212400167.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="全局介绍"><br>
-<img src="https://img-blog.csdnimg.cn/20191022212434802.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="请求方式介绍"></p>
+                <h1 id="io流">IO流</h1>
+<h2 id="什么是io流">什么是IO流</h2>
+<p>IO：input（输入），output（输出）。</p>
+<p>无论输入还是输出都有源头和目的地。</p>
+<p>对于Java来说，输入指的是从哪到哪呢？输出指的是从哪到哪呢？</p>
+<p>Java里的输入：把数据从文件（或者网络）读取到程序里。</p>
+<p>Java里的输出：把程序里的数据写入到文件（或者网络）中。</p>
+<h2 id="java中的io">Java中的IO</h2>
+<p>在Java里的输入输出流有2大类：<strong>字节流、字符流</strong></p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>字符输入流</th>
+<th>字符输出流</th>
+<th>字节输入流</th>
+<th>字节输出流</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>抽象父类</td>
+<td>Reader</td>
+<td>Writer</td>
+<td>InputStream</td>
+<td>OutputStream</td>
+</tr>
+<tr>
+<td>访问文件</td>
+<td>FileReader</td>
+<td>FileWriter</td>
+<td>FileInputStream</td>
+<td>FileOutputStream</td>
+</tr>
+<tr>
+<td>缓冲流</td>
+<td>BufferedReader</td>
+<td>BufferedWriter</td>
+<td>BufferedInputStream</td>
+<td>BufferedOutputStream</td>
+</tr>
+<tr>
+<td>数据流</td>
+<td></td>
+<td></td>
+<td>DataInputStream</td>
+<td>DataOutputStream</td>
+</tr>
+<tr>
+<td>对象流</td>
+<td></td>
+<td></td>
+<td>ObjectInputStream</td>
+<td>ObjectOutputStream</td>
+</tr>
+<tr>
+<td>转换流</td>
+<td>InputStreamReader</td>
+<td>OutputStreamWriter</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>打印流</td>
+<td></td>
+<td>PrintWriter</td>
+<td></td>
+<td>PrintStream</td>
+</tr>
+</tbody>
+</table>
 
               </div>
               <div class="toc-container">
                 <ul class="markdownIt-TOC">
-<li><a href="#postman%E8%A7%86%E5%9B%BE%E5%9B%BE%E8%A7%A3">Postman视图图解</a></li>
+<li><a href="#io%E6%B5%81">IO流</a>
+<ul>
+<li><a href="#%E4%BB%80%E4%B9%88%E6%98%AFio%E6%B5%81">什么是IO流</a></li>
+<li><a href="#java%E4%B8%AD%E7%9A%84io">Java中的IO</a></li>
+</ul>
+</li>
 </ul>
 
               </div>
@@ -105,9 +178,9 @@
         
           <div class="next-post">
             <div class="next">下一篇</div>
-            <a href="https://cxp-twx.github.io/post/mei-ju-jian-jie">
+            <a href="https://cxp-twx.github.io/post/shu-ju-ku-yu-ju">
               <h3 class="post-title">
-                枚举简介
+                数据库语句
               </h3>
             </a>
           </div>

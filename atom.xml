@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://cxp-twx.github.io</id>
     <title>CheckChen</title>
-    <updated>2019-12-13T02:39:57.227Z</updated>
+    <updated>2019-12-13T02:44:53.902Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://cxp-twx.github.io"/>
     <link rel="self" href="https://cxp-twx.github.io/atom.xml"/>
@@ -10,6 +10,1846 @@
     <logo>https://cxp-twx.github.io/images/avatar.png</logo>
     <icon>https://cxp-twx.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, CheckChen</rights>
+    <entry>
+        <title type="html"><![CDATA[SpringMVC详细总结]]></title>
+        <id>https://cxp-twx.github.io/post/springmvc-xiang-xi-zong-jie</id>
+        <link href="https://cxp-twx.github.io/post/springmvc-xiang-xi-zong-jie">
+        </link>
+        <updated>2019-09-09T08:50:08.000Z</updated>
+        <content type="html"><![CDATA[<p><ul class="markdownIt-TOC">
+<li><a href="#springmvc">SpringMVC</a>
+<ul>
+<li><a href="#mvc%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">MVC设计模式</a></li>
+<li><a href="#springmvc%E7%9A%84%E4%BC%98%E5%8A%BF">SpringMVC的优势</a></li>
+<li><a href="#springmvc%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8">SpringMVC简单使用</a></li>
+<li><a href="#springmvc%E4%B8%BB%E8%A6%81%E7%BB%84%E4%BB%B6">SpringMVC主要组件</a>
+<ul>
+<li><a href="#rootapplicationcontext%E5%92%8Cservletapplicationcontext">RootApplicationContext和ServletApplicationContext</a>
+<ul>
+<li><a href="#%E4%B8%A4%E4%B8%AAapplicationcontext%E7%9A%84%E8%81%94%E7%B3%BB%E5%92%8C%E5%8C%BA%E5%88%AB">两个ApplicationContext的联系和区别</a></li>
+</ul>
+</li>
+<li><a href="#1-%E8%A7%86%E5%9B%BE%E8%A7%A3%E6%9E%90%E5%99%A8">1. 视图解析器</a>
+<ul>
+<li><a href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E8%A7%86%E5%9B%BE%E8%A7%A3%E6%9E%90%E5%99%A8">常用的视图解析器</a></li>
+</ul>
+</li>
+<li><a href="#2-%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92">2. 参数传递</a>
+<ul>
+<li><a href="#%E9%A1%B5%E9%9D%A2%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E5%88%B0controller">页面参数传递到Controller</a>
+<ul>
+<li><a href="#requestparam">@RequestParam</a></li>
+<li><a href="#requestheader">@RequestHeader</a></li>
+<li><a href="#pathvariable">@PathVariable</a></li>
+<li><a href="#requestattribute">@RequestAttribute</a></li>
+<li><a href="#sessionattribute">@SessionAttribute</a></li>
+<li><a href="#cookievalue">@CookieValue</a></li>
+</ul>
+</li>
+<li><a href="#controller%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%92%E5%88%B0%E9%A1%B5%E9%9D%A2">Controller中的数据传递到页面</a>
+<ul>
+<li><a href="#model">Model</a></li>
+<li><a href="#modelandview">ModelAndView</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#3-%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8">3. 视图控制器</a>
+<ul>
+<li><a href="#%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E7%94%A8%E6%B3%95">视图控制器的作用和用法</a></li>
+</ul>
+</li>
+<li><a href="#4-%E8%AE%BE%E7%BD%AEweb%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%BB%98%E8%AE%A4%E6%AC%A2%E8%BF%8E%E9%A1%B5">4. 设置Web项目的默认欢迎页</a>
+<ul>
+<li><a href="#%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E5%A4%84%E7%90%86">静态资源处理</a></li>
+</ul>
+</li>
+<li><a href="#5-%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E8%BD%AC%E5%8F%91">5. 重定向和转发</a>
+<ul>
+<li><a href="#%E5%9C%A8servlet%E5%AE%9E%E7%8E%B0%E9%87%8D%E5%AE%9A%E5%90%91%E5%92%8C%E8%BD%AC%E5%8F%91">在Servlet实现重定向和转发：</a></li>
+<li><a href="#%E5%9C%A8springmvc%E4%B8%AD%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91%E5%A5%BD%E5%92%8C%E9%87%8D%E5%AE%9A%E5%90%91">在SpringMVC中请求转发好和重定向</a>
+<ul>
+<li><a href="#%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91%E6%9C%89%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F">请求转发有三种方式</a></li>
+<li><a href="#%E9%87%8D%E5%AE%9A%E5%90%91%E6%9C%89%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F">重定向有两种方式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#6-restfull%E6%9C%8D%E5%8A%A1%E6%8E%A5%E5%8F%A3%E5%BC%80%E5%8F%91">6. RESTFull服务接口开发</a>
+<ul>
+<li><a href="#%E5%B8%B8%E7%94%A8restfull%E6%B3%A8%E8%A7%A3">常用RESTFull注解</a></li>
+</ul>
+</li>
+<li><a href="#7-%E8%BF%94%E5%9B%9Ejson%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%95%B0%E6%8D%AE-%E6%B6%88%E6%81%AF%E8%BD%AC%E6%8D%A2%E5%99%A8">7. 返回JSON格式的数据--消息转换器</a><br>
+*
+<ul>
+<li><a href="#%E6%B6%88%E6%81%AF%E8%BD%AC%E6%8D%A2%E5%99%A8%E6%98%AF%E4%BB%80%E4%B9%88">消息转换器是什么</a></li>
+<li><a href="#%E5%A6%82%E4%BD%95%E9%85%8D%E7%BD%AE%E4%B8%80%E4%B8%AA%E8%BD%AC%E6%8D%A2json%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%B6%88%E6%81%AF%E8%BD%AC%E6%8D%A2%E5%99%A8">如何配置一个转换JSON格式的消息转换器</a></li>
+</ul>
+</li>
+<li><a href="#8-%E9%80%9A%E8%BF%87%E7%BD%91%E9%A1%B5%E6%A8%A1%E6%8B%9Frestfull%E8%AF%B7%E6%B1%82">8. 通过网页模拟RESTFull请求</a>
+<ul>
+<li><a href="#resttemplate%E5%B7%A5%E5%85%B7%E7%B1%BB">RestTemplate工具类</a></li>
+</ul>
+</li>
+<li><a href="#9-%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82%E4%B9%B1%E7%A0%81">9. 处理请求乱码</a></li>
+<li><a href="#10-%E5%9C%A8springmvc%E6%96%B9%E6%B3%95%E4%B8%AD%E6%94%AF%E6%8C%81%E7%9A%84%E5%8F%82%E6%95%B0">10. 在SpringMVC方法中支持的参数</a><br>
+*
+<ul>
+<li><a href="#%E6%B3%A8%E5%85%A5%E5%8E%9F%E7%94%9Fservlet%E5%AF%B9%E8%B1%A1">注入原生Servlet对象</a></li>
+<li><a href="#%E4%BB%A5%E6%B5%81%E7%9A%84%E6%96%B9%E5%BC%8F%E8%AF%BB%E5%8F%96%E8%AF%B7%E6%B1%82%E4%BD%93-%E4%BB%A5%E6%B5%81%E7%9A%84%E6%96%B9%E5%BC%8F%E5%93%8D%E5%BA%94%E5%88%B0%E5%AE%A2%E6%88%B7%E7%AB%AF">以流的方式读取请求体、以流的方式响应到客户端</a></li>
+<li><a href="#%E8%AF%BB%E5%8F%96%E8%AF%B7%E6%B1%82%E4%BD%93%E5%92%8C%E8%AF%B7%E6%B1%82%E5%A4%B4%E6%95%B0%E6%8D%AE">读取请求体和请求头数据</a></li>
+<li><a href="#%E5%90%91%E9%A1%B5%E9%9D%A2%E4%BC%A0%E5%8F%82">向页面传参</a></li>
+</ul>
+</li>
+<li><a href="#11-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0">11. 文件上传</a>
+<ul>
+<li><a href="#%E8%AF%B4%E6%98%8E">说明</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8Eapache-fileupload%E9%80%9A%E7%94%A8%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%8C%85">基于Apache Fileupload通用文件上传包</a></li>
+<li><a href="#%E5%9F%BA%E4%BA%8Eservlet30%E6%A0%87%E5%87%86api%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0">基于Servlet3.0标准API文件上传</a></li>
+<li><a href="#%E6%96%87%E4%BB%B6%E5%90%8D%E4%B8%8A%E4%BC%A0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98">文件名上传乱码问题</a></li>
+</ul>
+</li>
+<li><a href="#12-%E6%8B%A6%E6%88%AA%E5%99%A8">12. 拦截器</a>
+<ul>
+<li><a href="#%E6%8B%A6%E6%88%AA%E5%99%A8-vs-%E8%BF%87%E6%BB%A4%E5%99%A8">拦截器 VS 过滤器</a></li>
+<li><a href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%8B%A6%E6%88%AA%E5%99%A8">如何使用拦截器</a>
+<ul>
+<li><a href="#%E5%AE%9A%E4%B9%89%E6%8B%A6%E6%88%AA%E5%99%A8%E7%B1%BB">定义拦截器类</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%8B%A6%E6%88%AA%E5%99%A8">配置拦截器</a>
+<ul>
+<li><a href="#%E5%85%A8%E5%B1%80%E6%8B%A6%E6%88%AA%E5%99%A8">全局拦截器</a></li>
+<li><a href="#%E6%8B%A6%E6%88%AA%E6%8C%87%E5%AE%9A%E8%AF%B7%E6%B1%82%E7%9A%84%E6%8B%A6%E6%88%AA%E5%99%A8">拦截指定请求的拦截器</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#springmvc%E5%87%BA%E9%94%99%E7%82%B9">SpringMVC出错点：</a>
+<ul>
+<li><a href="#%E5%B1%95%E7%A4%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE">展示数据库数据：</a></li>
+<li><a href="#springmvc%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E6%94%BE%E8%A1%8C">SpringMVC静态资源放行</a></li>
+<li><a href="#spring-mvc%E7%9A%84controller%E5%B1%82%E8%8E%B7%E5%8F%96jsp%E9%A1%B5%E9%9D%A2%E5%8F%82%E6%95%B0">Spring MVC的controller层获取jsp页面参数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</p>
+<h1 id="springmvc">SpringMVC</h1>
+<h2 id="mvc设计模式">MVC设计模式</h2>
+<blockquote>
+<ul>
+<li>MVC里面的M指的是：
+<ul>
+<li>Model（通常包含bean、dao(mapper)、service）；</li>
+</ul>
+</li>
+<li>V指的是
+<ul>
+<li>View：视图层，视图层主要的技术（JSP、HTML、FreeMaker、Themeleaf）；</li>
+</ul>
+</li>
+<li>C指的是
+<ul>
+<li>Controller，控制层。控制层不负责具体数据、逻辑的处理和运算，它只负责将Model层的结果返回给对应的视图层去展示。</li>
+</ul>
+</li>
+</ul>
+<p>在JavaWeb阶段， Controller层指的就是Servlet； View层指的就是JSP或者HTML;  Model层指的就是bean、dao、service。</p>
+<p>在J2EE阶段，Controller层指的就是SpringMVC、Structs1\2；  View层不变还是主流的页面展示技术; Model层包括bean、mybatis、service。</p>
+</blockquote>
+<h2 id="springmvc的优势">SpringMVC的优势</h2>
+<ul>
+<li>SpringMVC是一款很轻量级的框架，要使用它的组件我们往往只需要定义一些最简单的Java类，然后添加某些注解就可以了</li>
+<li>SpringMVC的参数注入只直接注入到方法中，可以很好的做到不同请求间数据的隔离，而Struts2是注入到类实例变量上，不同的请求可能会覆盖参数。</li>
+<li>SpringMVC可以很轻易的和Spring整合，而Struts需要做比较复杂的配置。</li>
+</ul>
+<h2 id="springmvc简单使用">SpringMVC简单使用</h2>
+<ol>
+<li>
+<p>添加依赖</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;
+    &lt;version&gt;5.2.0.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+</li>
+<li>
+<p>在web.xml中配置DispatcherServlet</p>
+<pre><code class="language-xml">&lt;servlet&gt;
+    &lt;servlet-name&gt;aa&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+    &lt;!-- 指定SpringMVC 配置文件位置，DispatcherServlet初始化时会初始化Spring上下文（WebApplicationContext） --&gt;
+    &lt;!-- 默认配置文件寻找位置：/WEB-INF/{servlet-name}-servlet.xml，如果名字符合默认寻找规则，可以不指定配置文件路径 --&gt;
+    &lt;!--&lt;init-param&gt;
+      &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+      &lt;param-value&gt;/WEB-INF/aa-servlet.xml&lt;/param-value&gt;
+    &lt;/init-param&gt;--&gt;
+    &lt;!-- 配置容器启动时初始化DispatcherServlet --&gt;
+    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+  &lt;/servlet&gt;
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;aa&lt;/servlet-name&gt;
+    &lt;!-- 映射路径配置成/，代表当前Servlet是一个默认Servlet，就是当其他Servlet都无法处理请求时，由默认Servlet出马 --&gt;
+    &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+&lt;!--    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;--&gt;
+  &lt;/servlet-mapping&gt;
+</code></pre>
+</li>
+<li>
+<p>配置SpringMVC  dispatcher-servlet.xml</p>
+<p>SpringMVC大部分组件都有默认配置，我们一般简单应用只需要指定视图解析器就行了</p>
+<p>dispatcher-servlet.xml</p>
+<pre><code class="language-xml">&lt;!-- 配置视图解析器，用于将Handler方法中返回的视图名解析成真正可展示的页面 --&gt;
+&lt;mvc:view-resolvers&gt;
+    &lt;bean class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;
+        &lt;property name=&quot;prefix&quot; value=&quot;/&quot; /&gt;
+        &lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot; /&gt;
+    &lt;/bean&gt;
+&lt;/mvc:view-resolvers&gt;
+</code></pre>
+</li>
+<li>
+<p>定义Controller</p>
+<p>新建一个普通类，然后添加<code>@Controller</code>注解，就可以了</p>
+</li>
+<li>
+<p>定义请求处理方法(Handler)</p>
+<p>在Controller类中定义一个普通的方法，添加<code>@RequestMapping</code>注解就可以了</p>
+</li>
+</ol>
+<h2 id="springmvc主要组件">SpringMVC主要组件</h2>
+<ul>
+<li>
+<h3 id="rootapplicationcontext和servletapplicationcontext">RootApplicationContext和ServletApplicationContext</h3>
+</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9kb2NzLnNwcmluZy5pby9zcHJpbmcvZG9jcy81LjIuMC5SRUxFQVNFL3NwcmluZy1mcmFtZXdvcmstcmVmZXJlbmNlL2ltYWdlcy9tdmMtY29udGV4dC1oaWVyYXJjaHkucG5n?x-oss-process=image/format,png" alt="父子上下文概念"></figure>
+<ul>
+<li>
+<h4 id="两个applicationcontext的联系和区别">两个ApplicationContext的联系和区别</h4>
+</li>
+</ul>
+<h3 id="1-视图解析器">1. 视图解析器</h3>
+<p>视图解析器的作用是将请求处理方法中的返回值解析成一个真正可以渲染的页面。</p>
+<h4 id="常用的视图解析器">常用的视图解析器</h4>
+<ul>
+<li>
+<p>InternalResourceViewResolver</p>
+<p>内部资源解析器： 用于将返回值对应到项目路径下的某个可显示的页面。比如方法返回值是index字符串，那么<code>InternalResourceViewResolver</code>解析器会在index前加上指定的前缀，在index后加上指定的后缀来拼接成指向某个视图的路径。</p>
+<pre><code class="language-xml">&lt;!-- 配置视图解析器，用于将Handler方法中返回的视图名解析成真正可展示的页面 --&gt;
+&lt;mvc:view-resolvers&gt;
+    &lt;bean class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;
+        &lt;property name=&quot;prefix&quot; value=&quot;/&quot; /&gt;
+        &lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot; /&gt;
+    &lt;/bean&gt;
+&lt;/mvc:view-resolvers&gt;
+</code></pre>
+</li>
+</ul>
+<h3 id="2-参数传递">2. 参数传递</h3>
+<h4 id="页面参数传递到controller">页面参数传递到Controller</h4>
+<ul>
+<li>
+<h5 id="requestparam">@RequestParam</h5>
+</li>
+</ul>
+<p>获取请求参数，包括通过GET请求中的查询参数、POST请求中的参数等</p>
+<pre><code class="language-java">@RequestMapping(&quot;/hello&quot;)
+public String toHelloPage(@RequestParam String message, Model model) {
+	model.addAttribute(&quot;msg&quot;, message);
+	return &quot;hello_springmvc&quot;;
+}
+
+
+// 当方法参数名和请求参数不一样时，可以使用注解的参数对应起来
+@RequestMapping(&quot;/hello&quot;)
+public String toHelloPage(@RequestParam(&quot;message&quot;) String msg, Model model) {
+	model.addAttribute(&quot;msg&quot;, message);
+	return &quot;hello_springmvc&quot;;
+}
+</code></pre>
+<blockquote>
+<p>访问: http://localhost:8080/hello?message=zhangsan 时，message参数会自动注入到方法的message参数中。</p>
+</blockquote>
+<ul>
+<li>
+<h5 id="requestheader">@RequestHeader</h5>
+</li>
+</ul>
+<p>获取请求头中的参数，如浏览器默认自带的userAgent就是请求头参数</p>
+<pre><code class="language-java">@RequestMapping(&quot;/hello&quot;)
+public String toHelloPage(@RequestHeader String userAgent, Model model) {
+	model.addAttribute(&quot;msg&quot;, userAgent);
+	return &quot;hello_springmvc&quot;;
+}
+
+
+// 当方法参数名和请求头参数不一样时，可以使用注解的参数对应起来
+@RequestMapping(&quot;/hello&quot;)
+public String toHelloPage(@RequestHeader(&quot;userAgent&quot;) String ua, Model model) {
+	model.addAttribute(&quot;msg&quot;, ua);
+	return &quot;hello_springmvc&quot;;
+}
+</code></pre>
+<blockquote>
+<p>会自动将请求头中的userAgent参数注入到方法中</p>
+</blockquote>
+<ul>
+<li>
+<h5 id="pathvariable">@PathVariable</h5>
+</li>
+</ul>
+<p>获取请求地址中的参数，注入到方法参数中</p>
+<pre><code class="language-java">@RequestMapping(&quot;/hello/{sname}&quot;)
+public String toHelloPage(@PathVariable String sname, Model model) {
+	model.addAttribute(&quot;msg&quot;, sname);
+	return &quot;hello_springmvc&quot;;
+}
+
+
+// 当方法参数名和请求地址中参数不一样时，可以使用注解的参数对应起来
+@RequestMapping(&quot;/hello/{sname}&quot;)
+public String toHelloPage(@PathVariable(&quot;sname&quot;) String sn, Model model) {
+	model.addAttribute(&quot;msg&quot;, sn);
+	return &quot;hello_springmvc&quot;;
+}
+</code></pre>
+<blockquote>
+<p>访问：http://localhost:8080/hello/zhangsan  会自动将zhangsan注入到方法的参数中</p>
+</blockquote>
+<ul>
+<li>
+<h5 id="requestattribute">@RequestAttribute</h5>
+</li>
+</ul>
+<p>jsp中</p>
+<pre><code class="language-jsp">&lt;%
+        request.setAttribute(&quot;sname&quot;, &quot;虞姬req&quot;);
+        request.getRequestDispatcher(&quot;/param/req_scope&quot;).forward(request, response);
+%&gt;
+</code></pre>
+<p>Controller中</p>
+<pre><code class="language-java">/**
+  * 请求作用域中的参数的传递
+  * @return
+  */
+@RequestMapping(&quot;/req_scope&quot;)
+public String requestScopeParamShow(@RequestAttribute String sname, Model model) {
+    model.addAttribute(&quot;sname&quot;, sname);
+    model.addAttribute(&quot;type&quot;, &quot;请求作用域参数&quot;);
+    return &quot;param_show&quot;;
+}
+</code></pre>
+<blockquote>
+<p>获取请求作用域中的参数</p>
+</blockquote>
+<ul>
+<li>
+<h5 id="sessionattribute">@SessionAttribute</h5>
+</li>
+</ul>
+<blockquote>
+<p>获取Session作用域中的参数，用法和上面请求作用域中使用类似</p>
+</blockquote>
+<ul>
+<li>
+<h5 id="cookievalue">@CookieValue</h5>
+</li>
+</ul>
+<p>jsp中代码</p>
+<pre><code class="language-jsp">cookie参数传递：&lt;br /&gt;
+&lt;%
+response.addCookie(new Cookie(&quot;sname&quot;, &quot;yuji_cookie&quot;));
+%&gt;
+&lt;a href=&quot;/param/cookie&quot;&gt;发起请求&lt;/a&gt;
+
+</code></pre>
+<p>Controller中</p>
+<pre><code class="language-java">/**
+  * Cookie中的参数的传递
+  * @return
+  */
+@RequestMapping(&quot;/cookie&quot;)
+public String cookieParamShow(@CookieValue String sname, Model model) {
+    model.addAttribute(&quot;sname&quot;, sname);
+    model.addAttribute(&quot;type&quot;, &quot;cookie参数&quot;);
+    return &quot;param_show&quot;;
+}
+
+</code></pre>
+<blockquote>
+<p>获取Cookie中的指定数据</p>
+</blockquote>
+<blockquote>
+<p>上面这几个注解都是用于在方法的参数上标注，用于获取不同种类的参数</p>
+</blockquote>
+<h4 id="controller中的数据传递到页面">Controller中的数据传递到页面</h4>
+<ul>
+<li>
+<h5 id="model">Model</h5>
+</li>
+</ul>
+<p>handler方法定义：</p>
+<pre><code class="language-java">@RequestMapping(&quot;/show_msg&quot;)
+public String showMessage(Model model) {
+    model.addAttribute(&quot;msg&quot;, &quot;我是通过model传过来的参数&quot;);
+    return &quot;message_page&quot;;
+}
+</code></pre>
+<p>message_page.jsp</p>
+<pre><code class="language-jsp">&lt;h1&gt;
+    获取后台参数： ${msg}
+&lt;/h1&gt;
+</code></pre>
+<ul>
+<li>
+<h5 id="modelandview">ModelAndView</h5>
+</li>
+</ul>
+<pre><code class="language-java">/**
+ * ModelAndView其实是将数据Model和视图View做了一个封装，底层实现原理一样
+ */
+@RequestMapping(&quot;/show_msg&quot;)
+public ModelAndView showMessage(ModelAndView mv) {
+    mv.addObject(&quot;msg&quot;, &quot;我是通过model传过来的参数&quot;);
+    mv.setViewName(&quot;message_page&quot;);
+    return mv;
+}
+</code></pre>
+<blockquote>
+<p>Model和ModelAndView传递的参数本质上也是用请求作用域来实现的，所以仅对请求转发有效。</p>
+</blockquote>
+<h3 id="3-视图控制器">3. 视图控制器</h3>
+<p>用于通过配置的方式简化我们项目中不含业务逻辑的页面跳转，省去了我们写一个空方法的步骤。</p>
+<h4 id="视图控制器的作用和用法">视图控制器的作用和用法</h4>
+<p>试想一下，如果我们的工程中有这样的一个需求，比如当用户点了某个链接和按钮的时候，我们需要做一个页面跳转，这个跳转的目标可能是一个公开目录的页面也可能是私有目录（/WEB-INF/下）的页面、还可能是跳转到后台Controller的某个方法中，我们如何实现？</p>
+<p>示例：比如我们想将登陆页设置为一个项目默认欢迎页面</p>
+<p>方案一：在Controller中添加一个拦截/的handler方法</p>
+<pre><code class="language-java">@RequestMapping(&quot;/&quot;)
+public String toWelcomePage() {
+    return &quot;login&quot;;
+}
+
+</code></pre>
+<p>方法二：使用视图控制器</p>
+<p>在dispatcher-servlet.xml（SpringMVC配置文件）配置中添加</p>
+<pre><code class="language-xml">&lt;mvc:view-controller path=&quot;/&quot; view-name=&quot;login&quot; /&gt;
+
+</code></pre>
+<ul>
+<li>path: 指定要匹配的访问路径</li>
+<li>view-name: 返回的逻辑视图名</li>
+<li>status-code: 设置响应状态码。(注：不能通过只设置状态码，不设置view-name实现只返回code，没有页面的处理)</li>
+</ul>
+<blockquote>
+<p>view-name不仅可以是逻辑视图名，还可以添加forward、redirect前缀，通过转发或重定向的方式跳转到一个具体的路径，如：&lt;mvc:view-controller path=&quot;/&quot; view-anme=&quot;forward:/WEB-INF/login.jsp&quot; /&gt;</p>
+</blockquote>
+<!-- SpringMVC 第二天 -->
+<h3 id="4-设置web项目的默认欢迎页">4. 设置Web项目的默认欢迎页</h3>
+<ul>
+<li>
+<p>在web.xml中使用<welcome-file-list>标签指定</p>
+</li>
+<li>
+<p>使用上面提到的视图控制器</p>
+<pre><code class="language-xml">&lt;mvc:view-controller path=&quot;/&quot; view-name=&quot;逻辑视图名&quot; /&gt;
+&lt;!-- 当工程中存在Tomcat默认欢迎页同名文件时此种方式可能失效，比如index.html、index.jsp、index.htm --&gt;
+
+</code></pre>
+</li>
+</ul>
+<h4 id="静态资源处理">静态资源处理</h4>
+<pre><code class="language-xml">&lt;!-- 针对静态资源的处理 --&gt;
+    &lt;!-- http://localhost:8080/static/css/index.css --&gt;
+&lt;mvc:resources mapping=&quot;/static/**&quot; location=&quot;/static/&quot; /&gt;
+
+</code></pre>
+<h3 id="5-重定向和转发">5. 重定向和转发</h3>
+<h4 id="在servlet实现重定向和转发">在Servlet实现重定向和转发：</h4>
+<p>重定向：response.sendRedirect(&quot;xxx.jsp&quot;);</p>
+<p>转发： request.getRequestDispatcher(&quot;xxx.jsp&quot;).forward(request, response);</p>
+<h4 id="在springmvc中请求转发好和重定向">在SpringMVC中请求转发好和重定向</h4>
+<ul>
+<li>
+<h5 id="请求转发有三种方式">请求转发有三种方式</h5>
+</li>
+<li>
+<p>在Handler方法中直接返回逻辑视图名称</p>
+</li>
+<li>
+<p>在Handler方法中返回&quot;forward:路径&quot;</p>
+</li>
+<li>
+<p>在Handler方法中返回InternalResourceView对象</p>
+</li>
+</ul>
+<blockquote>
+<p>其中第二种和第三种作用一样， 都是将路径用请求转发的方式跳转，返回的路径时不经过视图解析器处理的；而第一种虽然也是通过请求转发方式跳转，但是返回值会作为逻辑视图名称，经过视图解析器处理后，才渲染。</p>
+</blockquote>
+<ul>
+<li>
+<h5 id="重定向有两种方式">重定向有两种方式</h5>
+</li>
+<li>
+<p>在Handler方法中返回&quot;redirect:路径&quot;</p>
+</li>
+<li>
+<p>在Handler方法中返回RedirectView对象</p>
+</li>
+</ul>
+<blockquote>
+<p>这两种方法效果一样。 注意使用重定向的方式跳转页面，Model中的数据就无法带到页面了（因为Model底层也是用请求作用域来传递参数的）。</p>
+</blockquote>
+<h3 id="6-restfull服务接口开发">6. RESTFull服务接口开发</h3>
+<p>SpringMVC给我们提供了一系列的注解用于支持RESTFull风格的服务开发</p>
+<h4 id="常用restfull注解">常用RESTFull注解</h4>
+<ul>
+<li>
+<p><code>@RestController</code></p>
+<p>该注解本身是一个组合注解，由<code>@Controller</code>和<code>@ResponseBody</code>两个注解组成，所以拥有这两个注解的作用。 在类上声明后，该类会变成一个Controller类，同时，方法的返回值会作为响应体经过消息转换器直接响应给客户端，而不会将其作为视图渲染。</p>
+<pre><code class="language-java">@RestController // 这个注解其实是组合了下面两个注解的作用
+//@Controller
+//@ResponseBody
+public class UserRestController {
+
+}
+
+</code></pre>
+</li>
+<li>
+<p><code>@GetMapping</code> :</p>
+<p>作用： 申明当前handler方法只匹配GET请求</p>
+<p>使用示例</p>
+<pre><code class="language-java">@GetMapping(&quot;/{id}&quot;)
+public User getUserById(@PathVariable Integer id) {
+    return userService.findById(id);
+}
+
+</code></pre>
+</li>
+<li>
+<p><code>@PostMapping</code>: 申明当前handler方法只匹配POST请求</p>
+</li>
+<li>
+<p><code>@DeleteMapping</code>: 申明当前handler方法只匹配DELETE请求</p>
+</li>
+<li>
+<p><code>@PutMapping</code>: 申明当前handler方法只匹配PUT请求</p>
+</li>
+</ul>
+<blockquote>
+<p>上面四个注解分别对应HTTP的一种请求方法，使用方法类似。</p>
+</blockquote>
+<p>上面四个注解其实是一种快捷注解， 等效于使用下面代码：</p>
+<pre><code class="language-java">@RequestMapping(value = &quot;/user&quot;, method = RequestMethod.GET)
+@RequestMapping(value = &quot;/user&quot;, method = RequestMethod.POST)
+@RequestMapping(value = &quot;/user&quot;, method = RequestMethod.PUT)
+@RequestMapping(value = &quot;/user&quot;, method = RequestMethod.DELETE)
+
+</code></pre>
+<ul>
+<li>@PathVariable: 获取请求地址中的变量，注入到方法参数中</li>
+</ul>
+<h3 id="7-返回json格式的数据-消息转换器">7. 返回JSON格式的数据--消息转换器</h3>
+<h5 id="消息转换器是什么">消息转换器是什么</h5>
+<p>之前我们在写普通Controller时，handler方法的返回值要是就是一个String（逻辑视图名），要么就是一个ModelAndView、View对象。</p>
+<p>而我们使用了RestController之后，方法的返回值已经不会被作为视图去渲染了，这时候我们的方法其实可以返回任意类型的数据。这些数据会直接通过响应体以流的方式返回给客户端。</p>
+<p>我们知道Java中的对象是不能直接用流的方式读取的，需要序列化。比如我们的handler方法返回了一个User类型，SpringMVC就不知道如果将这个类型返回给客户端了。这时就需要我们通过配置消息转换器来完成这种类型对象的返回处理。 而在RESTFull服务中，对象绝大部分传递方式就是通过JSON格式。</p>
+<h5 id="如何配置一个转换json格式的消息转换器">如何配置一个转换JSON格式的消息转换器</h5>
+<ul>
+<li>
+<p>使用SpringMVC默认的Jackson库</p>
+<ol>
+<li>
+<p>引入依赖</p>
+<pre><code class="language-xml">&lt;!-- jackson依赖，用于将handler方法返回的对象直接转换成JSON数据 --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+    &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+    &lt;version&gt;2.9.7&lt;/version&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+</li>
+<li>
+<p>开启mvc注解支持</p>
+<pre><code class="language-xml">&lt;mvc:annotation-driven /&gt;
+
+</code></pre>
+</li>
+<li>
+<p>定义Controller类</p>
+<pre><code class="language-java">@RestController
+@RequestMapping(&quot;/user&quot;)
+public class UserRestController {
+    
+    @GetMapping(&quot;/{id}&quot;)
+    public User getUserById(Integer id) {
+        return userService.findById(id);
+    }
+    
+}
+</code></pre>
+</li>
+</ol>
+<blockquote>
+<p>Jackson是SpringMVC默认的JSON格式消息转换器， 所以在不配置额外转json参数时，我们可以直接只引入jackson依赖，再开启mvc直接支持就可以了。而第三方的转换库如FastJSON就必须显示配置MessageConverter</p>
+</blockquote>
+</li>
+<li>
+<p>使用阿里巴巴的FastJSON库</p>
+<ol>
+<li>
+<p>引入依赖</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+     &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+     &lt;artifactId&gt;fastjson&lt;/artifactId&gt;
+     &lt;version&gt;1.2.57&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+</li>
+<li>
+<p>配置MessageConverter</p>
+<pre><code class="language-xml">&lt;mvc:annotation-driven&gt;
+    &lt;mvc:message-converters&gt;
+        &lt;bean class=&quot;com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter&quot;&gt;
+            &lt;property name=&quot;defaultCharset&quot; value=&quot;UTF-8&quot; /&gt;
+            &lt;property name=&quot;fastJsonConfig&quot;&gt;
+                &lt;!-- 设置转换JSON的参数 --&gt;
+                &lt;bean class=&quot;com.alibaba.fastjson.support.config.FastJsonConfig&quot;&gt;
+                    &lt;property name=&quot;dateFormat&quot; value=&quot;yyyy-MM-dd HH:mm:ss&quot; /&gt;
+                &lt;/bean&gt;
+            &lt;/property&gt;
+            &lt;property name=&quot;supportedMediaTypes&quot;&gt;
+            &lt;!-- 指定转换完JSON后返回的响应头和编码，添加text/html是为了处理在IE下application/json会弹出下载框问题 --&gt;
+                &lt;list&gt;
+                    &lt;!--&lt;value&gt;text/html;charset=UTF-8&lt;/value&gt;--&gt;                
+                    &lt;value&gt;application/json;charset=UTF-8&lt;/value&gt;
+                &lt;/list&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+    &lt;/mvc:message-converters&gt;
+&lt;/mvc:annotation-driven&gt;
+</code></pre>
+</li>
+<li>
+<p>定义Controller类</p>
+<pre><code class="language-java">@RestController
+@RequestMapping(&quot;/user&quot;)
+public class UserRestController {
+    
+    @GetMapping(&quot;/{id}&quot;)
+    public User getUserById(Integer id) {
+        return userService.findById(id);
+    }
+    
+}
+
+</code></pre>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="8-通过网页模拟restfull请求">8. 通过网页模拟RESTFull请求</h3>
+<p>通过SpringMVC给我们提供的一个过滤器，我们可以用表单模拟各种RESTFull的请求，使用方法如下：</p>
+<ol>
+<li>
+<p>在web.xml中添加过滤器</p>
+<pre><code class="language-xml">&lt;filter&gt;
+    &lt;filter-name&gt;httpMethodFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.springframework.web.filter.HiddenHttpMethodFilter&lt;/filter-class&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;httpMethodFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+
+</code></pre>
+</li>
+<li>
+<p>在表单中添加name为_method的hidden域，并将表单的method设置为post</p>
+<pre><code class="language-html">&lt;!-- 使用表单模拟发起一个DELETE请求，删除user表中id为57的数据 --&gt;
+&lt;form action=&quot;/user/57&quot; method=&quot;post&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;_method&quot; value=&quot;delete&quot; /&gt;
+    &lt;input type=&quot;number&quot; name=&quot;id&quot; /&gt;
+    &lt;input type=&quot;text&quot; name=&quot;username&quot; /&gt;
+    &lt;input type=&quot;submit&quot; /&gt;
+&lt;/form&gt;
+
+</code></pre>
+</li>
+</ol>
+<blockquote>
+<p>由于RESTFull请求通常发生在服务于服务之间的调用，所以有些请求用浏览器不太好模拟，建议使用专业的网络测试工具postman来进行测试。</p>
+</blockquote>
+<h4 id="resttemplate工具类">RestTemplate工具类</h4>
+<p>SpringMVC帮我们封装的一个Rest请求工具，可以使用一个URI地址发起网络请求，并且将结果封装成一个指定的对象。</p>
+<h3 id="9-处理请求乱码">9. 处理请求乱码</h3>
+<p>SpringMVC给我们提供了一个专门用来解决post请求乱码的过滤器，我们只需将其配置到web.xml中，就可以避免post请求乱码，免去了我们自己写过滤器的麻烦</p>
+<p>在web.xml中</p>
+<pre><code class="language-xml">&lt;!-- 解决POST请求乱码 --&gt;
+&lt;filter&gt;
+    &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;encoding&lt;/param-name&gt;
+        &lt;param-value&gt;UTF-8&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;forceEncoding&lt;/param-name&gt;
+        &lt;param-value&gt;true&lt;/param-value&gt;
+    &lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+
+</code></pre>
+<blockquote>
+<p>注意： 如果项目中配置了多个过滤器，建议将此过滤器放到所有过滤器的最上面。</p>
+</blockquote>
+<h3 id="10-在springmvc方法中支持的参数">10. 在SpringMVC方法中支持的参数</h3>
+<p>SpringMVC的handler方法中支持诸如很多特殊类型的参数，常用的有</p>
+<ul>
+<li>
+<h5 id="注入原生servlet对象">注入原生Servlet对象</h5>
+</li>
+<li>
+<p>javax.servlet.ServletRequest</p>
+</li>
+<li>
+<p>javax.servlet.ServletResponse</p>
+</li>
+<li>
+<p>javax.serlvet.http.HttpSession</p>
+</li>
+<li>
+<h5 id="以流的方式读取请求体-以流的方式响应到客户端">以流的方式读取请求体、以流的方式响应到客户端</h5>
+</li>
+<li>
+<p><s>java.io.InputStream、java.io.Reader</s></p>
+</li>
+<li>
+<p><s>java.io.OutputStream、java.io.Writer</s></p>
+</li>
+<li>
+<h5 id="读取请求体和请求头数据">读取请求体和请求头数据</h5>
+</li>
+<li>
+<p>HttpEntity</p>
+</li>
+<li>
+<h5 id="向页面传参">向页面传参</h5>
+</li>
+<li>
+<p>java.util.Map，org.springframework.ui.Model、org.springframework.ui.ModelMap</p>
+</li>
+</ul>
+<!-- SpringMVC 第三天 -->
+<h3 id="11-文件上传">11. 文件上传</h3>
+<ul>
+<li>
+<h4 id="说明">说明</h4>
+</li>
+</ul>
+<p>在Java中，主流的文件上传方式有两种，分别是通用文件上传(commons-fileupload)和Servlet3.0方式的文件上传。SpringMVC分别对着两种方式都做了支持。</p>
+<ul>
+<li>CommonsMultipartResolver</li>
+<li>StandardServletMultipartResolver</li>
+</ul>
+<blockquote>
+<p>除此之外SpringMVC对文件上传的接口做了统一的封装，使用<code>MultipartFile</code>接口代替了通用上传中的<code>FileItem</code>和Servlet3.0中的<code>Part</code>，使得开发人员在业务代码中可以使用统一的接口处理，而不用管底层用的是哪种文件上传实现方式。</p>
+</blockquote>
+<ul>
+<li>
+<h4 id="基于apache-fileupload通用文件上传包">基于Apache Fileupload通用文件上传包</h4>
+</li>
+</ul>
+<ol>
+<li>
+<p>添加依赖</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;commons-fileupload&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-fileupload&lt;/artifactId&gt;
+    &lt;version&gt;1.4&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;commons-io&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-io&lt;/artifactId&gt;
+    &lt;version&gt;2.6&lt;/version&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+</li>
+<li>
+<p>在SpringMVC配置文件中添加MultipartResolver文件上传解析器</p>
+<pre><code class="language-xml">&lt;!-- 配置基于apache fileupload的通用文件上传器（注意：id属性不可省略） --&gt;
+&lt;bean id=&quot;multipartResolver&quot; class=&quot;org.springframework.web.multipart.commons.CommonsMultipartResolver&quot;&gt;
+    &lt;!-- 指定文件上传编码 --&gt;
+    &lt;property name=&quot;defaultEncoding&quot; value=&quot;UTF-8&quot; /&gt;
+&lt;/bean&gt;
+
+</code></pre>
+</li>
+<li>
+<p>在Controller中编写文件上传逻辑代码</p>
+<pre><code class="language-java">@RequestMapping(&quot;/upload&quot;)
+public String upload(@RequestParam(&quot;myFile&quot;) MultipartFile file, HttpServletRequest req, Model model) {
+    try {
+        // 使用SpringMVC给我们提供的工具类获取项目中upload文件夹在硬盘上的绝对路径
+        String uploadPath = WebUtils.getRealPath(req.getServletContext(), &quot;/upload/&quot;);
+        // 将上传的文件写到上传目录
+        file.transferTo(new File(uploadPath+file.getOriginalFilename()));
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+</code></pre>
+</li>
+</ol>
+<ul>
+<li>
+<h4 id="基于servlet30标准api文件上传">基于Servlet3.0标准API文件上传</h4>
+</li>
+</ul>
+<ol>
+<li>
+<p>开启Servlet文件上传支持</p>
+<p>web.xml</p>
+<pre><code class="language-xml">&lt;servlet&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+    &lt;!-- 开启Servlet文件上传支持 --&gt;
+    &lt;multipart-config /&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
+</code></pre>
+</li>
+<li>
+<p>在SpringMVC中配置MultipartResolver</p>
+<pre><code class="language-xml">&lt;!-- 配置基于Servlet3.0文件上传器（注意：id属性不可省略） --&gt;
+&lt;bean id=&quot;multipartResolver&quot; class=&quot;org.springframework.web.multipart.support.StandardServletMultipartResolver&quot; /&gt;
+</code></pre>
+</li>
+<li>
+<p>在Controller中编写文件上传逻辑代码</p>
+<blockquote>
+<p>实现方式同通用上传代码一样。</p>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>
+<h4 id="文件名上传乱码问题">文件名上传乱码问题</h4>
+</li>
+<li>
+<p>使用通用上传方式的解决方法</p>
+<p>在配置的CommonsMultipartResolver bean中注入属性</p>
+<pre><code class="language-xml">&lt;!-- 配置基于apache fileupload的通用文件上传器（注意：id属性不可省略） --&gt;
+&lt;bean id=&quot;multipartResolver&quot; class=&quot;org.springframework.web.multipart.commons.CommonsMultipartResolver&quot;&gt;
+    &lt;!-- 指定文件上传编码 --&gt;
+    &lt;property name=&quot;defaultEncoding&quot; value=&quot;UTF-8&quot; /&gt;
+&lt;/bean&gt;
+</code></pre>
+</li>
+<li>
+<p>使用Servlet3.0标准上传方式的解决方法</p>
+<p>通过配置SpringMVC提供的编码过滤器解决</p>
+<p>web.xml</p>
+<pre><code class="language-xml">&lt;filter&gt;
+    &lt;filter-name&gt;characterFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;encoding&lt;/param-name&gt;
+        &lt;param-value&gt;UTF-8&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;forceEncoding&lt;/param-name&gt;
+        &lt;param-value&gt;true&lt;/param-value&gt;
+    &lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;characterFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+
+</code></pre>
+<blockquote>
+<p>本质上还是设置请求的编码 request.setCharacterEncoding(&quot;UTF-8&quot;);</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="12-拦截器">12. 拦截器</h3>
+<ul>
+<li>
+<h4 id="拦截器-vs-过滤器">拦截器 VS 过滤器</h4>
+</li>
+</ul>
+<p>过滤器是Servlet规范中提供的一项技术。不依赖于任何第三方框架。它的作用主要用来做两件事： 加工请求、过滤请求。</p>
+<p>拦截器是SpringMVC自己封装的一项基于Handler拦截的结束。也就是说只有在SpringMVC框架里面才有拦截器的概念。拦截器拦截的对象是Handler。它的全称是 HandlerInterceptor。</p>
+<p>加上拦截器以后，请求处理流程：  request -&gt; DispatcherServlet -&gt; HandlerMapping -&gt; HandlerExecutionChain(包含了目标handler和若干个拦截器) -&gt; HandlerAdapter -&gt; 循环调用HandlerExecutionChain对象中所有拦截器的prehandler方法 -&gt; 如果preHandler返回false，那么handler将不会被调用。反之，才会正常调用。</p>
+<ul>
+<li>
+<h4 id="如何使用拦截器">如何使用拦截器</h4>
+</li>
+<li>
+<h5 id="定义拦截器类">定义拦截器类</h5>
+</li>
+</ul>
+<p>新建一个类实现HandlerInterceptor接口</p>
+<pre><code class="language-java">/**
+ * 定义拦截器步骤：
+ *      1. 定义一个普通类，实现HandlerInterceptor接口
+ *      2. 按需实现接口中的方法
+ *      3. 在SpringMVC配置文件中通过&lt;mvc:interceptors&gt;&lt;/mvc:interceptors&gt;配置拦截器
+ */
+public class NotAllowedInterceptor implements HandlerInterceptor {
+
+    /**
+     * 此回调方法在执行Handler之前被调用
+     * @param request
+     * @param response
+     * @param handler
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println(&quot;进入NotAllowedInterceptor, 凡是我能拦截到的请求，一律不准通过!&quot;);
+        return false;
+    }
+
+    /**
+     * 此回调方法在执行Handler之后被调用
+     * @param request
+     * @param response
+     * @param handler
+     * @param modelAndView
+     * @throws Exception
+     */
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+
+    }
+
+    /**
+     * 此回调方法在DispatcherServlet最终响应之前被调用
+     * @param request
+     * @param response
+     * @param handler
+     * @param ex
+     * @throws Exception
+     */
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+
+    }
+}
+</code></pre>
+<h5 id="配置拦截器">配置拦截器</h5>
+<ul>
+<li>
+<h6 id="全局拦截器">全局拦截器</h6>
+</li>
+</ul>
+<pre><code class="language-xml">&lt;mvc:interceptors&gt;
+    &lt;!-- 这种方式配置的拦截器会拦截所有请求 --&gt;
+    &lt;bean class=&quot;com.lanou3g.springmvc.interceptor.NotAllowedInterceptor&quot; /&gt;
+&lt;/mvc:interceptors&gt;
+</code></pre>
+<ul>
+<li>
+<h6 id="拦截指定请求的拦截器">拦截指定请求的拦截器</h6>
+</li>
+</ul>
+<pre><code class="language-xml">&lt;mvc:interceptors&gt;
+    &lt;mvc:interceptor&gt;
+        &lt;!-- 拦截的请求 --&gt;
+        &lt;mvc:mapping path=&quot;/admin/**&quot; /&gt;
+        &lt;!-- 不拦截的请求 --&gt;
+        &lt;mvc:exclude-mapping path=&quot;/intercepor/**&quot;/&gt;
+        &lt;!-- 配置我们定义的实现了HandlerInterceptor接口的类 --&gt;
+        &lt;bean class=&quot;com.lanou3g.springmvc.interceptor.NotAllowedInterceptor&quot; /&gt;
+    &lt;/mvc:interceptor&gt;
+&lt;/mvc:interceptors&gt;
+</code></pre>
+<h2 id="springmvc出错点">SpringMVC出错点：</h2>
+<h3 id="展示数据库数据">展示数据库数据：</h3>
+<pre><code class="language-xml">&lt;!--Spring-MVC 查询数据库要在web.xml加的代码--&gt;
+    &lt;!--父上下文的配置--&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;classpath*:applicationContext.xml&lt;/param-value&gt;
+    &lt;/context-param&gt;
+
+    &lt;!-- 监听器配置 --&gt;
+    &lt;listener&gt;
+        &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+    &lt;/listener&gt;
+
+</code></pre>
+<p><strong><mark>Controller负责具体的业务模块流程的控制；Service层负责业务模块的逻辑应用设计</mark></strong></p>
+<p><strong>总结：具体的一个项目中有：controller层调用了Service层的方法，Service层调用Dao层的方法，其中调用的参数是使用Entity(实体类)层进行传递的。</strong></p>
+<h3 id="springmvc静态资源放行">SpringMVC静态资源放行</h3>
+<p>这种放行方式只能在页面展示不能下载</p>
+<p><strong><mark>&lt;mvc:default-servlet-handler /&gt;</mark></strong></p>
+<p>还有一种办法</p>
+<pre><code class="language-xml">&lt;!--放行静态资源！--&gt;&lt;mvc:resources mapping=&quot;/static/**&quot; location=&quot;/static/&quot;/&gt;
+</code></pre>
+<h3 id="spring-mvc的controller层获取jsp页面参数">Spring MVC的controller层获取jsp页面参数</h3>
+<ul>
+<li>方式有两种，一种为使用@RequestParam，一种为使用request.getParameter(“param”)来获取</li>
+</ul>
+<hr>
+<p>。。。。。。好长。。。。。。<br>
+<img src="https://img-blog.csdnimg.cn/20191102174707557.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[idea控制台日志打印]]></title>
+        <id>https://cxp-twx.github.io/post/idea-kong-zhi-tai-ri-zhi-da-yin</id>
+        <link href="https://cxp-twx.github.io/post/idea-kong-zhi-tai-ri-zhi-da-yin">
+        </link>
+        <updated>2019-08-18T07:48:42.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="logbackxml-文件">logback.xml 文件</h2>
+<p>对于查看运行的SQL语句极有帮助！<br>
+<img src="https://img-blog.csdnimg.cn/20191102165141764.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="效果"><br>
+配合的依赖：</p>
+ <!--打印日志-->
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+  &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+  &lt;version&gt;1.2.3&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>放在resources目录下的XML文件：</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;configuration&gt;
+    &lt;property name=&quot;HOME_LOG&quot; value=&quot;logs&quot;/&gt;
+    &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+        &lt;layout class=&quot;ch.qos.logback.classic.PatternLayout&quot;&gt;
+            &lt;Pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/Pattern&gt;
+        &lt;/layout&gt;
+    &lt;/appender&gt;
+    &lt;appender name=&quot;RollingFile&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
+        &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt;
+            &lt;level&gt;TRACE&lt;/level&gt;
+        &lt;/filter&gt; &lt;!-- 测试部署时使用如下配置 --&gt; &lt;!-- 可让每天产生一个日志文件，最多 30 个，更早的删除 --&gt;
+        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;
+            &lt;fileNamePattern&gt;${HOME_LOG}/log-%d{yyyy-MM-dd}.log&lt;/fileNamePattern&gt;
+            &lt;maxHistory&gt;10&lt;/maxHistory&gt;
+        &lt;/rollingPolicy&gt; &lt;!-- RollingFileAppender 一般情况下需要配置两个参数： RollingPolicy，负责滚动。TriggeringPolicy，决定是否以及何时进行滚动 TimeBasedRollingPolicy比较特殊，它同时继承了RollingPolicy和TriggerPolicy。 --&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n&lt;/pattern&gt;
+        &lt;/encoder&gt; &lt;!-- 正式部署时使用此配置 --&gt; &lt;!-- &lt;file&gt;${app.home}/logs/log.log&lt;/file&gt; &lt;append&gt;true&lt;/append&gt; &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.FixedWindowRollingPolicy&quot;&gt; &lt;fileNamePattern&gt;${app.home}/logs/log.%i.log.zip &lt;/fileNamePattern&gt; &lt;minIndex&gt;1&lt;/minIndex&gt; &lt;maxIndex&gt;7&lt;/maxIndex&gt; &lt;/rollingPolicy&gt; &lt;encoder&gt; &lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n &lt;/pattern&gt; &lt;/encoder&gt; &lt;triggeringPolicy class=&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;&gt; &lt;maxFileSize&gt;50MB&lt;/maxFileSize&gt; &lt;/triggeringPolicy&gt; --&gt;
+    &lt;/appender&gt;
+    &lt;logger name=&quot;com.lanou3g&quot; level=&quot;DEBUG&quot;/&gt;
+    &lt;logger name=&quot;org.springframework&quot; level=&quot;ERROR&quot;/&gt;
+    &lt;logger name=&quot;org.mybatis.spring&quot; level=&quot;ERROR&quot;/&gt;
+    &lt;logger name=&quot;org.apache&quot; level=&quot;ERROR&quot;/&gt;
+    &lt;logger name=&quot;ch.qos.logback&quot; level=&quot;ERROR&quot;/&gt;
+    &lt;root level=&quot;debug&quot;&gt;
+        &lt;appender-ref ref=&quot;STDOUT&quot;/&gt;
+        &lt;appender-ref ref=&quot;RollingFile&quot;/&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Java反射（使用场景非常多！）]]></title>
+        <id>https://cxp-twx.github.io/post/java-fan-she-shi-yong-chang-jing-fei-chang-duo</id>
+        <link href="https://cxp-twx.github.io/post/java-fan-she-shi-yong-chang-jing-fei-chang-duo">
+        </link>
+        <updated>2019-07-17T06:48:04.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="反射">反射</h1>
+<h3 id="生活中的反射">生活中的反射</h3>
+<p>太阳光照射到镜子上，会发生反射。反射时光的方向会发生改变（略微的反向）。</p>
+<p>代码中的反射，改变了我们使用对象的方式。之前：对象调方法，对象设置属性。反射刚好反了一下。方法调用对象，属性调用对象。</p>
+<p>在Java中反射是比较底层的内容，<strong>想要实现反射需要使用Class类</strong>。</p>
+<h3 id="什么是class类">什么是Class类</h3>
+<p>类是相同事物的抽象。类在描述一类事物。例如：人都有姓名，性别，年龄，还有吃饭、睡觉、打豆豆。</p>
+<p>通过创建对象，可以形成各种不同的人。</p>
+<p>类是由谁来描述的呢？Class就是描述类的类。类也有共性，属性，方法，构造器，父类，接口。每一个类都有对应一个Class实例。你可以认为一个Class对象对应的是一个xx.class文件。</p>
+<p>Class没有创建方法，每个类的Class实例是在这个类的class文件加载到内存中的时候，由ClassLoader创建。我们只能获取Class类的对象。</p>
+<p><strong>Class类有以下几种获取方式：</strong></p>
+<ol>
+<li>
+<p>类名.class</p>
+<blockquote>
+<p>基本数据类型也可以获取对应的Class实例  用法是int.class   double.class  普通类获取Class对象的方法：String.class   Person.class</p>
+</blockquote>
+</li>
+<li>
+<p>对象.getClass()</p>
+</li>
+<li>
+<p>Class.forName(&quot;类的完整字符串描述&quot;)</p>
+</li>
+</ol>
+<pre><code class="language-java">		//获取Class对象的方式一： 类名.class
+		Class class1 = int.class;
+		System.out.println(class1);
+		Class class2 = String.class;
+		System.out.println(class2);
+		Class class3 = Person.class;
+		System.out.println(class3);
+		
+		//获取Class对象的方式二： 对象.getClass();
+		String str = &quot;hello&quot;;
+		Class class4 = str.getClass();
+		System.out.println(class4);
+		System.out.println(class4 == class2);
+		Person p = new Person();
+		Class class5 = p.getClass();
+		System.out.println(class5);
+		System.out.println(class3 == class5);
+		
+		
+		//获取Class对象的方式三： Class.forName(&quot;完整类名&quot;)
+		Class class6 = Class.forName(&quot;java.util.ArrayList&quot;);
+		System.out.println(class6);
+		
+		Class class7 = Class.forName(&quot;com.lanou.lessonclass.Person&quot;);
+		System.out.println(class7);
+</code></pre>
+<h3 id="反射-2">反射</h3>
+<p>在Java中提供了一套机制，这种机制允许你通过Class对象来获取类的全部信息（属性，方法，构造器，接口，父类，注解等等），获取之后，你可以对他们做你想做的事情。哪怕是私有的也可以操作。</p>
+<h4 id="通过class对象获取类的属性">通过Class对象获取类的属性</h4>
+<p>在Java中Filed类是用于描述属性的类。</p>
+<p>通过Class对象获取类的属性的方式有4个：</p>
+<p>getFields()  //获取类中所有的public属性（含继承链上的public属性）</p>
+<p>getField(String name)  //获取类中指定名称的public属性。（含继承链上的 public属性）</p>
+<p>getDeclaredFields()  //获取类中所有的属性（不含继承链上的属性）</p>
+<p><strong>getDeclaredFiled(String name)</strong> //获取类中指定名称的属性</p>
+<h4 id="通过class对象获取类的构造器">通过Class对象获取类的构造器</h4>
+<p>在Java中Constructor类用于描述类的构造器。</p>
+<p>通过Class对象获取类的构造器的方式有4个：</p>
+<p>getConstructor(Class ...parameterTypes)  // 获取本类中指定参数的public构造器</p>
+<p>getConstructors()	//获取本类中全部的public构造器</p>
+<p><strong>getDeclaredConstructor(Class...parameterTypes)</strong> //获取本类中指定参数的构造器</p>
+<p>getDeclaredConstructors()	//获取本类中全部的构造器。</p>
+<h4 id="通过class对象获取类的方法">通过Class对象获取类的方法</h4>
+<p>在Java中Method是用于描述类的方法。</p>
+<p>通过Class对象获取类的方法的方式有4种：</p>
+<p>getMethods()	//	获取全部的public方法（含继承链上的方法）</p>
+<p>getMethod(String methodName, Class...parameterTypes) //获取指定名称的public方法</p>
+<p>getDeclaredMethods() 	//获取本类中所有的方法</p>
+<p><strong>getDeclaredMethod(String methodName, Class...paremeterTypes)</strong> //获取本类中指定名称的方法。</p>
+<h3 id="反射的作用">反射的作用</h3>
+<p>反射给的第一感觉：脱了裤子放屁！</p>
+<p>实际上反射的价值就在于能动态获取信息！</p>
+<p>虽然写了很多很多代码，但是代码一旦写成，复用性很高。而且不需要导包！因为Class.forName(&quot;类名&quot;)可以以字符串的方式获取类名，再通过类名得到类的Class对象。</p>
+<p>反射多用于写框架，几乎所有的框架底层都是靠反射实现的。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[单例设计模式]]></title>
+        <id>https://cxp-twx.github.io/post/dan-li-she-ji-mo-shi</id>
+        <link href="https://cxp-twx.github.io/post/dan-li-she-ji-mo-shi">
+        </link>
+        <updated>2019-06-13T02:42:36.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="单例">单例</h1>
+<h3 id="什么是单例">什么是单例？</h3>
+<p>单例指的是单个实例。如果一个类只能创建一个对象，这样的类叫单例类，这个类的对象就是单例。</p>
+<h3 id="如何把一个类定义成单例类呢">如何把一个类定义成单例类呢？</h3>
+<ol>
+<li>构造器私有化。（禁用new）。提供一个私有的构造器，这样外界就无法创建对象了。</li>
+<li>提供一个获取本类对象的静态方法。（方法内部要保证对象的唯一性）。</li>
+</ol>
+<h4 id="懒汉模式的单例">懒汉模式的单例</h4>
+<p>所谓懒汉模式，也叫懒加载，也叫延迟加载，即：在<strong>首次用到的时候才加载</strong>。懒汉模式的好处：节省内存空间，首次用到的时候才创建对象，如果一直没有用到，就一直不创建对象。缺点：代码较多。</p>
+<pre><code class="language-java">public class Singleton {
+
+	// 第二步定义一个 本类类型的静态属性。
+	private static Singleton s = null;
+
+	// 第一步 禁用new，让外界无法创建对象
+	private Singleton() {
+
+	}
+
+	//第三步 提供一个获取本类对象的方法
+	public static Singleton sharedSingleton() {
+		//如果s为空，说明尚未创建对象，如果s不为空，说明已经创建过对象，直接使用对象即可。
+		if(s == null) {
+			s = new Singleton();
+		}
+		return s;	
+	}
+}
+</code></pre>
+<p>上述代码定义了一个单例类，这个类只能创建一个对象（通过Singleton.sharedSingleton()创建对象）。</p>
+<blockquote>
+<p>上述的单例类在单线程模式下是没有问题的，但是在多线程环境中，有可能会出现不止一个对象。在多个线程中同时获取对象时，有可能不止一个对象产生（即执行了多次new）。</p>
+</blockquote>
+<p>可以通过添加同步代码块（或同步方法）的方式来应对多线程环境。</p>
+<pre><code class="language-java">public class Singleton {
+
+	// 第二步定义一个 本类类型的静态属性。
+	private static Singleton s = null;
+
+	// 第一步 禁用new，让外界无法创建对象
+	private Singleton() {
+
+	}
+
+	// 第三步 提供一个获取本类对象的方法(多线程安全的写法)
+	public static synchronized Singleton sharedSingleton() {
+		// 如果s为空，说明尚未创建对象，如果s不为空，说明已经创建过对象，直接使用对象即可。
+		if (s == null) {
+			s = new Singleton();
+		}
+		return s;
+	}
+
+}
+</code></pre>
+<p>上述代码是同步代码块的方式解决多线程环境下有可能产生多个对象的问题。</p>
+<blockquote>
+<p>在某个线程执行 Singleton.sharedSingleton()的时候，加锁，这样别的线程就会处于等待状态，从而保证只创建一个对象。但是问题是，唯一的对象创建出来以后，每次调用Singleton.sharedSingleton()获取对象的时候仍然会加锁，无形之中降低了获取单例对象的效率。</p>
+</blockquote>
+<p>改进代码如下：</p>
+<pre><code class="language-java">public class Singleton {
+
+	// 第二步定义一个 本类类型的静态属性。
+	private static Singleton s = null;
+
+	// 第一步 禁用new，让外界无法创建对象
+	private Singleton() {
+
+	}
+
+	// 第三步 提供一个获取本类对象的方法(多线程安全的写法)
+	public static Singleton sharedSingleton() {
+		// 如果s为空，说明尚未创建对象，如果s不为空，说明已经创建过对象，直接使用对象即可。
+		if (s == null) {
+			synchronized (Singleton.class) {
+				if(s == null) {
+					s = new Singleton();
+				}
+			}
+		}
+		return s;
+	}
+}
+</code></pre>
+<p>这个代码既保证了创建对象时的唯一性，又提升了获取对象的效率。即创建对象的时候上锁，一旦对象创建完毕以后，获取对象就不会触发上锁的代码。</p>
+<h4 id="饿汉模式的单例">饿汉模式的单例</h4>
+<p>在类加载的时候，就把对象创建好，用的时候，直接返回这个类的对象。</p>
+<pre><code class="language-java">public class Singleton2 {
+	//第二步，创建一个对象
+	private static Singleton2 s = new Singleton2();
+	
+	//第一步，禁用new
+	private Singleton2() {
+		
+	}
+	
+	//返回这个类的对象
+	public static Singleton2 sharedSington2() {
+		return s;
+	}
+}
+</code></pre>
+<p>饿汉模式的好处：代码少，多线程下是安全的。缺点：只要类一加载，对象就创建出来了，哪怕后面一直没有调用Singleton2.sharedSingleton2();对象也存在于内存中。</p>
+<blockquote>
+<p>面试的时候，面试官想让你写懒汉模式。实际开发中都写饿汉模式。系统的单例类也通常写饿汉模式。饿汉模式的缺点是个伪命题，既然你写了单例类，肯定是项目中要使用单例对象。</p>
+</blockquote>
+<h4 id="变形的懒汉模式">变形的懒汉模式</h4>
+<pre><code class="language-java">public class Singleton3 {
+	//第一步 禁用new
+	private Singleton3() {
+		
+	}
+	
+	//第二步 定义一个静态内部类
+	private static class SingletonLoader {
+		static Singleton3 s = new Singleton3();
+	}
+	
+	//第三步 提供一个获取单例对象的方法
+	public Singleton3 sharedSingleton3() {
+		return SingletonLoader.s;
+	}
+}
+</code></pre>
+<p>这种模式结合了懒汉模式的延迟加载优点以及饿汉模式代码简洁以及多线程安全的特点。</p>
+<h3 id="单例有什么用">单例有什么用？</h3>
+<p>只能创建一个实例的类有什么用呢？</p>
+<p>单例是比较常用的设计模式，主要处理不同类（不同页面）之间传递数据。</p>
+<h4 id="单例传值的思路">单例传值的思路</h4>
+<p>把要存储的值以及要读取的值都放到单例对象里。只需要给单例对象添加属性以及getter、setter方法即可。存的时候使用单例对象的setter方法，读取的时候，使用单例对象的getter方法。</p>
+<pre><code class="language-java">public class Singleton {
+	
+	private String privence;//用于存取省份
+	private String city;//用于存取城市
+	private String street;//用于存取区
+	
+	public String getPrivence() {
+		return privence;
+	}
+
+	public void setPrivence(String privence) {
+		this.privence = privence;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	// 第二步定义一个 本类类型的静态属性。
+	private static Singleton s = null;
+
+	// 第一步 禁用new，让外界无法创建对象
+	private Singleton() {
+
+	}
+
+	// 第三步 提供一个获取本类对象的方法(多线程安全的写法)
+	public static Singleton sharedSingleton() {
+		// 如果s为空，说明尚未创建对象，如果s不为空，说明已经创建过对象，直接使用对象即可。
+		if (s == null) {
+			synchronized (Singleton.class) {
+				if(s == null) {
+					s = new Singleton();
+				}
+			}
+		}
+		return s;
+	}
+
+}
+</code></pre>
+<pre><code class="language-java">public class TestSingleton {
+
+	public static void main(String[] args) {
+		//假定第一个页面要把省份传递给第二个页面。
+		//不直接传给第二个页面，而是把省份信息放到单例对象里。
+		Singleton s1 = Singleton.sharedSingleton();
+		s1.setPrivence(&quot;河南&quot;);
+		
+		
+		//这是第二个页面,我要根据省份来确定显示哪些城市。
+		Singleton s2 = Singleton.sharedSingleton();
+		String privence = s2.getPrivence();
+		//显示该省份的城市列表。
+		//假定已经选择某个城市，不直接把城市传递给第三个页面，而是存到单例里。
+		s2.setCity(&quot;郑州市&quot;);
+		
+		//这是第三个页面，我要根据城市来确定显示哪些区。
+		Singleton s3 = Singleton.sharedSingleton();
+		String city = s3.getCity();
+		s3.setStreet(&quot;高新区&quot;);
+		//显示该城市下的全部区。
+		//假定已经选择了区，要把选择的省市区都返回到最初的页面。不是把每个页面的数据返回到最初的页面
+		//而是这些信息放单例里，最初的页面去单例里取就可以了。	
+		
+		//假定这是最初的页面，你要显示用户选择的省市区。
+		Singleton s4 = Singleton.sharedSingleton();
+		String p = s4.getPrivence();
+		String c = s4.getCity();
+		String s = s4.getStreet();
+		
+	}
+
+}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Java接口]]></title>
+        <id>https://cxp-twx.github.io/post/java-jie-kou</id>
+        <link href="https://cxp-twx.github.io/post/java-jie-kou">
+        </link>
+        <updated>2019-05-16T06:46:01.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="java接口interface">Java接口(interface)</h1>
+<h2 id="一-什么是接口">一、什么是接口?</h2>
+<h3 id="1-生活中的接口">1、生活中的接口</h3>
+<p>USB接口</p>
+<figure data-type="image" tabindex="1"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly90aW1nc2EuYmFpZHUuY29tL3RpbWc_aW1hZ2UmcXVhbGl0eT04MCZzaXplPWI5OTk5XzEwMDAwJnNlYz0xNTY0MzEwNjg1MDY3JmRpPTBmZTFmNGMyZDZkNGYzODk3ZGQzNzhjNDQwMTUyN2Y1JmltZ3R5cGU9MCZzcmM9aHR0cCUzQSUyRiUyRmltZzEuY2FjaGUubmV0ZWFzZS5jb20lMkZjYXRjaHBpYyUyRkYlMkZGRSUyRkZFMUI1RkQyMjJDMEY3MEIwNzAyRDhDRkEyQTNFRUUxLmpwZw?x-oss-process=image/format,png" alt="USB接口"></figure>
+<p>USB接口可以连接U盘, 移动硬盘, 鼠标, 键盘, 手机,...</p>
+<blockquote>
+<p>U盘, 移动硬盘, 鼠标, 键盘, 手机等之所以能连接USB, 是因为这些硬件在制造的时候已经遵循了USB的<strong>连接标准.</strong></p>
+</blockquote>
+<h3 id="2-java中的接口">2、Java中的接口</h3>
+<p>Java中的接口与生活中的接口一样, 也是用于定义标准.</p>
+<p>既然是定义标准, 也就意味着接口中只规定有哪些方法, 但是并不提供这些方法的具体实现. 谁用这套标准谁来实现.</p>
+<h3 id="3-其他编程语言中的接口">3、其他编程语言中的接口</h3>
+<p>除了Java有接口的概念以外, 很多编程语言都有接口的概念.</p>
+<p>Java中用interface来表示接口</p>
+<p>C#、C++、PHP等语言中也是使用interface来表示接口</p>
+<p>Objective-C中使用protocol来表示接口.</p>
+<h2 id="二-java中如何定义接口">二、Java中如何定义接口</h2>
+<p>既然接口是一套标准，如何制定这套标准呢？</p>
+<h3 id="1-使用interface定义接口">1、使用interface定义接口</h3>
+<p>在java中使用interface关键之定义接口，具体语法格式如下：</p>
+<pre><code class="language-java">public interface 接口名{
+ 方法的声明   
+}
+</code></pre>
+<p>接口的示例如下:</p>
+<pre><code class="language-java">public interface Driver{
+    public void drive(Car car);//开车
+}
+</code></pre>
+<p>上面定义了一个接口叫Driver(即:司机), 接口里规定了司机必须会开车, 也就是说谁想要成为司机, 谁必须要会开车.</p>
+<h2 id="2-如何使用接口-implements">2、如何使用接口---(implements)</h2>
+<p>接口是一套标准, 内部只声明方法, 不提供实现. 谁要使用接口谁负责实现接口.实现接口使用<strong>implements</strong>关键字.</p>
+<p>实现接口的语法格式如下:</p>
+<pre><code class="language-java">public class Programmer implements Driver{
+    ...
+    public void drive(Car car){
+        System.out.println(&quot;程序员在小心翼翼的开车回家&quot;);
+    }
+}
+</code></pre>
+<p>上面的代码是Programmer类(即:程序员类)实现了Driver接口, 所谓的实现接口, 指的是实现接口中定义的全部方法.</p>
+<p>由于程序员类实现了司机接口中的全部方法, 因此具备了司机所需要的全部技能, 所以程序员不再是普通的程序员, 而是一个会开车的程序员.(既是司机又是程序员)</p>
+<p>再看下面的代码:</p>
+<pre><code class="language-java">public class Actor implements Driver{
+    ...
+    public void drive(Car car){
+        System.out.println(&quot;演员在开车兜风&quot;);
+    }
+}
+</code></pre>
+<p>上面的代码是Actor类(即:演员类)实现了Driver接口, 因此演员也不是普通的演员, 而是一个会开车的演员.</p>
+<h3 id="3-一个类实现多个接口-不会开车的厨师不是好程序员">3、一个类实现多个接口---(不会开车的厨师不是好程序员)</h3>
+<p>定义另外一个接口Cook（即:厨师）</p>
+<pre><code class="language-java">public interface Cook{
+    public void cook();//做饭
+    public void washFoodMaterial();//洗菜
+}
+</code></pre>
+<p>定义一个类(Programmer)同时实现Driver接口和Cook接口.</p>
+<pre><code class="language-java">public class Programmer implements Driver, Cook{
+    ...
+    public void drive(Car car){
+        System.out.println(&quot;程序员在小心翼翼的开车回家&quot;);
+    }
+    public void cook(){
+        System.out.println(&quot;程序员做了美味的饭菜&quot;);
+    }
+    public void washFoodMaterial(){
+        System.out.println(&quot;洗菜&quot;);
+    }
+}
+</code></pre>
+<p>上述代码Programmer实现了Driver和Cook接口, 即:实现了2个接口中规定的全部方法. 因此程序员具备了司机的技能和厨师的技能. 可以认为此程序员具备3种身份: 程序员,司机以及厨师.</p>
+<h2 id="三-接口有什么用">三、接口有什么用?</h2>
+<h3 id="1-实现多继承">1、实现多继承</h3>
+<p>众所周知, Java只允许类单继承, 并不支持类的多继承.</p>
+<p><strong>接口提供了一种间接实现多继承方式.只需要让类实现多个接口即可.</strong></p>
+<blockquote>
+<p>注意接口实现的多继承与C++中的多继承不同, C++是真正意义上的多继承, 每个父类的属性和方法都会继承, 而接口实现的多继承更多是继承方法, 因为接口中不能定义属性(能定义类常量).</p>
+</blockquote>
+<h3 id="2-多态">2、多态</h3>
+<p>多态是面向对象的一个重要特征, 它允许父类引用指向子类对象.</p>
+<p>既然接口可以实现继承乃至多继承, 因此可以把接口看做是实现类的父类, 进而产生多态的效果.</p>
+<pre><code class="language-java">Driver zhangsan =  new Progarmmer();
+</code></pre>
+<p>上述代码就是把 程序员看作了司机, 之所以程序员能看作司机, 是因为程序员实现了Driver接口, 具有了司机全部的功能(方法).</p>
+<h2 id="四-接口的注意事项">四、接口的注意事项</h2>
+<h3 id="1-接口里面的方法都必须是-public-abstract类型的">1、接口里面的方法都必须是 public abstract类型的</h3>
+<blockquote>
+<p>即便你没有写修饰符，也会默认给你加上public abstract。</p>
+</blockquote>
+<h3 id="2-接口可以看成一个特殊的抽象类">2、接口可以看成一个特殊的抽象类</h3>
+<p>接口里的所有方法都是抽象方法。这个类可以看成是一个抽象类，因此接口不能创建对象。只能有实现类创建类。</p>
+<blockquote>
+<p>实现类就是实现接口的类。</p>
+</blockquote>
+<h3 id="3-接口里面可以有属性">3、接口里面可以有属性</h3>
+<p>接口里可以有属性，但是属性必须是<strong>public static final</strong>修饰的属性，也就是说接口里面只能定义 静态常量。既然是常量，命名方式应该全部大写。访问方式参考static的访问方式。</p>
+<h3 id="4-接口可以继承别的接口">4、接口可以继承别的接口</h3>
+<p>接口可以继承别的接口，在定义接口的时候使用extends关键字来继承别的接口。</p>
+<p>一旦一个接口继承了别的接口，那么这个接口的实现类也要把继承的方法实现了。</p>
+<h3 id="五-接口与抽象类有什么异同">五、接口与抽象类有什么异同</h3>
+<h4 id="1-能否定义属性">1、能否定义属性</h4>
+<p>抽象类：抽象能定义静态属性以及非静态属性。</p>
+<p>接口：只能定义静态属性，并且这个静态属性必须是final类型的静态属性。本质上是常量。</p>
+<p>抽象类：能对属性进行读取以及写入操作。</p>
+<p>接口：只能读取属性的值，但是不能更改属性的值。</p>
+<h4 id="2-访问修饰符">2、访问修饰符</h4>
+<p>属性修饰符：</p>
+<p>​	抽象类：public, 默认， protected， private ；  static   final</p>
+<p>​	接口： 只能是public； static  final。</p>
+<p>方法修饰符：</p>
+<p>​	抽象类：public， 默认， protected ， private。static ，final, abstract</p>
+<p>​	接口：public abstract</p>
+<h4 id="3-能否有构造器">3、能否有构造器</h4>
+<p>抽象类： 可以有。</p>
+<p>接口：不可以。虽然接口可以看成类但是接口不是类。</p>
+<h4 id="4-能否包含抽象方法">4、能否包含抽象方法</h4>
+<p>抽象类：可以包含</p>
+<p>接口: 可以包含，必须是抽象方法</p>
+<h4 id="5-能否包含非抽象方法">5、能否包含非抽象方法</h4>
+<p>抽象类： 可以。</p>
+<p>接口：不可以。</p>
+<h4 id="6-是否可以包含初始化块">6、是否可以包含初始化块</h4>
+<p>抽象类：可以。</p>
+<p>接口：不可以。</p>
+<h4 id="7-是否可以包含内部类">7、是否可以包含内部类</h4>
+<p>抽象类：可以。</p>
+<p>接口：可以</p>
+<h4 id="8-继承">8、继承</h4>
+<p>抽象类：一个普通类只能继承一个抽象类。</p>
+<p>接口：一个普通类可以实现多个接口。</p>
+<h3 id="六-什么时候用接口什么时候用抽象类">六、什么时候用接口？什么时候用抽象类？</h3>
+<h4 id="接口的核心用途">接口的核心用途</h4>
+<p>定义一些方法，供实现类去实现。</p>
+<h4 id="抽象类的核心用途">抽象类的核心用途</h4>
+<p>定义一些方法以及一些属性，供子类继承。</p>
+<blockquote>
+<p>如果只是想增加几个方法，优先使用接口。让你的类去实现某个接口（接口里是你想要增加的方法）。</p>
+<p>如果既要增加方法又要增加属性，使用抽象类。让你的类继承抽象类，这样就可以获得抽象类中的属性，而且还可以实现抽象类中的方法。</p>
+<p>有一种情况，只能用接口不能用抽象类。-----多继承。你要实现的方法分别在多个接口里，你可以使用实现接口的方式来完成。但是你不能继承多个类。</p>
+</blockquote>
+<p>抽象类以及接口都是在讲述如何去设计项目中的类。</p>
+<p><strong>如果既要增加方法又要增加属性，使用抽象类。如果只想要方法，使用接口。</strong></p>
+<h2 id="练习">练习</h2>
+<h4 id="1定义一个接口shout叫声接口中定义一个叫声方法shout定义dogcat类分别实现shout接口">1.定义一个接口Shout（叫声），接口中定义一个叫声方法shout，定义Dog，Cat类分别实现Shout接口。</h4>
+<h4 id="2定义一个接口driver司机接口中定义一个开车方法drive定义一个person类让person实现driver接口">2.定义一个接口Driver（司机），接口中定义一个开车方法drive，定义一个Person类，让Person实现Driver接口。</h4>
+<h4 id="3定义一个接口keeper保安接口中定义一个opendoor-patrol和closedoor方法让上述person类实现keeper接口">3.定义一个接口Keeper（保安），接口中定义一个openDoor、patrol和closeDoor方法，让上述Person类实现Keeper接口。</h4>
+<h4 id="4-定义一个接口racer赛车手让racer接口继承driver接口racer接口内定义race方法-定义一个programmer类让这个类实现racer接口">4、定义一个接口Racer（赛车手），让Racer接口继承Driver接口，Racer接口内定义race方法。定义一个Programmer类，让这个类实现Racer接口。</h4>
+<h4 id="5-定义person类包含姓名年龄身高属性定义student类继承于person类定义teacher类继承于person类-定义一个接口mycomparable接口中定义int-comparetoperson-other方法-让student和teacher分别实现mycomparable接口student的compareto方法按年龄比较大小teacher的compareto按身高比较大小">5、定义Person类（包含姓名，年龄，身高属性），定义Student类继承于Person类，定义Teacher类继承于Person类。定义一个接口MyComparable，接口中定义int compareTo(Person other)方法。让Student和Teacher分别实现MyComparable接口，Student的compareTo方法按年龄比较大小，Teacher的compareTo按身高比较大小。</h4>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Java抽象类]]></title>
+        <id>https://cxp-twx.github.io/post/java-chou-xiang-lei</id>
+        <link href="https://cxp-twx.github.io/post/java-chou-xiang-lei">
+        </link>
+        <updated>2019-05-13T02:47:28.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="抽象类">抽象类</h1>
+<h3 id="什么是类">什么是类？</h3>
+<p>具有相同特征和行为的事物的统称，称为类。</p>
+<h3 id="类有什么作用">类有什么作用？</h3>
+<p>类的作用是创建对象。</p>
+<h3 id="类里可以包含哪些内容">类里可以包含哪些内容？</h3>
+<ol>
+<li>属性（静态属性，非静态属性）</li>
+<li>方法（静态方法，非静态方法）</li>
+<li>构造器</li>
+<li>代码块（静态代码块，非静态代码块）</li>
+<li>类</li>
+</ol>
+<h3 id="什么是抽象类">什么是抽象类？</h3>
+<p>抽象类和普通的类非常相似。普通类能包含的内容，抽象类都可以包含。</p>
+<p>唯一的不同点就是，<strong>抽象类不能创建对象</strong>。</p>
+<h1 id="如何创建一个抽象类">如何创建一个抽象类？</h1>
+<p>创建抽象类，只需要在创建类的时候，添加一个关键字<strong>abstract</strong>.</p>
+<p>语法格式如下：</p>
+<pre><code class="language-java">public abstract class Shape{
+    ....
+}
+</code></pre>
+<p>抽象类的特点：<strong>不能创建对象，不能创建对象，不能创建对象</strong></p>
+<h3 id="抽象类有什么用">抽象类有什么用？</h3>
+<p>类不就是用来创建对象的吗？抽象类不能创建对象有什么用？</p>
+<p><strong>抽象类的最大价值就是被子类继承</strong></p>
+<p>抽象类可以定义公共的信息，例如 形状类的 周长，面积，边的个数。</p>
+<h3 id="哪些信息写到抽象类里">哪些信息写到抽象类里？</h3>
+<p>需要有某些方法，但是这个类（父类）实现这些方法没有意义，不写方法体还会报错，这样的方法要写在抽象类里，而且这个方法要声明为抽象方法。</p>
+<blockquote>
+<p>一个类中如果有抽象方法， 这个类必须定义为抽象类！</p>
+<p>思考一下为什么要定义成抽象类？</p>
+</blockquote>
+<p>假如包含抽象方法的类不定义成抽象类，那它就是一个普通类，普通类可以创建对象，创建完对象以后，对象可以调用这个类方法。万一调用到了这个抽象方法会怎么样？会报错！为什么会报错，因为这个抽象方法没有方法体。为了避免这个问题，不能让含有抽象方法的类去创建对象。从语法上，怎么样才能让一个类不能创建对象呢？定义成抽象类。</p>
+<h3 id="抽象方法">抽象方法</h3>
+<p>什么是抽象方法？</p>
+<p>一个方法如果你只想声明一下，不想去实现它（本质上不是你不想实现它，而是你不知道应该怎么去实现它，这个时候应该交给子类去实现），这个方法可以定义为抽象方法。</p>
+<p>抽象方法的特点：</p>
+<p>​	只有方法的声明，没有方法体。</p>
+<p>如何定义抽象方法：</p>
+<p>​	在方法的返回值之前添加abstract关键字。</p>
+<p>语法格式如下：</p>
+<pre><code class="language-java">public abstract 返回值类型  方法名(参数列表);
+</code></pre>
+<blockquote>
+<p>一旦一个方法定义为抽象方法，你不能去实现。想实现都不能实现。</p>
+</blockquote>
+<h2 id="abstract-不能和哪些关键字同时出现">abstract 不能和哪些关键字同时出现？</h2>
+<h3 id="private">private</h3>
+<p>abstract不能和private同时出现。</p>
+<p>private修饰的方法是私有的，子类根本就不知道有这个方法。</p>
+<p>abstract修饰的方法是希望子类去实现。</p>
+<h3 id="static">static</h3>
+<p>abstract不能和static同时出现。</p>
+<p>abstract修饰的方法只有声明，没有实现（没有方法体）。</p>
+<p>static 不创建对象，用类名就可以调用。</p>
+<p>虽然抽象类不能创建对象，但是 static修饰的方法可以不用对象去调用，用类名可以直接调用，那调用了一个没有实现的方法会怎么样呢？会报错。怎么办？避免调用，所以说抽象方法不能定义为static。</p>
+<h3 id="final">final</h3>
+<p>abstract不能和final同时出现。</p>
+<p>abstract修饰的方法希望子类去实现的。</p>
+<p>final修饰的方法表示已经是最终实现了，子类不能重写了。</p>
+<h2 id="抽象类的注意事项">抽象类的注意事项</h2>
+<ol>
+<li>如果一个类继承了抽象类，这个类应该实现抽象中定义的全部的抽象方法。例如：Triangle继承了抽象类Shape，要实现Shape中定义的全部抽象方法。</li>
+<li>如果一个类继承了抽象类，但是这个类并没有实现全部的抽象方法，意味着这个类包含抽象方法，那这个类也必须定义为抽象类。它尚未实现的方法教给它的子类去实现。</li>
+</ol>
+<h1 id="核心要点">核心要点</h1>
+<ol>
+<li>抽象方法 只有方法的声明，没有方法体。</li>
+<li>包含抽象方法的类必须定位抽象类。</li>
+<li>抽象类不能创建对象。</li>
+<li>abstract不能和static、final、private中任何一个同时出现。</li>
+</ol>
+<h1 id="测试题">测试题</h1>
+<ol>
+<li>抽象类中可以不包含抽象方法吗？  对的</li>
+<li>抽象方法可以不在抽象类中吗？  不可以</li>
+<li>抽象类可以定义为私有类吗？  不可以    abstract不能和private同时出现</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[IO流理解和常用]]></title>
+        <id>https://cxp-twx.github.io/post/io-liu-li-jie-he-chang-yong</id>
+        <link href="https://cxp-twx.github.io/post/io-liu-li-jie-he-chang-yong">
+        </link>
+        <updated>2019-03-16T07:46:52.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="io流">IO流</h1>
+<h2 id="什么是io流">什么是IO流</h2>
+<p>IO：input（输入），output（输出）。</p>
+<p>无论输入还是输出都有源头和目的地。</p>
+<p>对于Java来说，输入指的是从哪到哪呢？输出指的是从哪到哪呢？</p>
+<p>Java里的输入：把数据从文件（或者网络）读取到程序里。</p>
+<p>Java里的输出：把程序里的数据写入到文件（或者网络）中。</p>
+<h2 id="java中的io">Java中的IO</h2>
+<p>在Java里的输入输出流有2大类：<strong>字节流、字符流</strong></p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>字符输入流</th>
+<th>字符输出流</th>
+<th>字节输入流</th>
+<th>字节输出流</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>抽象父类</td>
+<td>Reader</td>
+<td>Writer</td>
+<td>InputStream</td>
+<td>OutputStream</td>
+</tr>
+<tr>
+<td>访问文件</td>
+<td>FileReader</td>
+<td>FileWriter</td>
+<td>FileInputStream</td>
+<td>FileOutputStream</td>
+</tr>
+<tr>
+<td>缓冲流</td>
+<td>BufferedReader</td>
+<td>BufferedWriter</td>
+<td>BufferedInputStream</td>
+<td>BufferedOutputStream</td>
+</tr>
+<tr>
+<td>数据流</td>
+<td></td>
+<td></td>
+<td>DataInputStream</td>
+<td>DataOutputStream</td>
+</tr>
+<tr>
+<td>对象流</td>
+<td></td>
+<td></td>
+<td>ObjectInputStream</td>
+<td>ObjectOutputStream</td>
+</tr>
+<tr>
+<td>转换流</td>
+<td>InputStreamReader</td>
+<td>OutputStreamWriter</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>打印流</td>
+<td></td>
+<td>PrintWriter</td>
+<td></td>
+<td>PrintStream</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[数据库语句]]></title>
+        <id>https://cxp-twx.github.io/post/shu-ju-ku-yu-ju</id>
+        <link href="https://cxp-twx.github.io/post/shu-ju-ku-yu-ju">
+        </link>
+        <updated>2019-03-16T05:44:19.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="数据库">数据库</h1>
+<h3 id="什么是数据库">什么是数据库？</h3>
+<p>用于存储数据的仓库。更重要的是，它能够对数据进行分类，而且可以快速找到这些数据。</p>
+<h3 id="数据库分类">数据库分类</h3>
+<ol>
+<li>
+<p>关系型数据库。</p>
+<p>关系就是一张二维表。数据库主要靠表来存储数据，有些时候表与表之间有关联关系。</p>
+<p>mysql, Oracle, SQL Server</p>
+</li>
+<li>
+<p>非关系型数据库。no-sql数据库    （not  only  sql）</p>
+<p>mongodb， redis</p>
+</li>
+</ol>
+<p>目前主流的数据库：mysql，oracle。</p>
+<h3 id="如何操作数据库">如何操作数据库</h3>
+<ol>
+<li>首先要有一个数据库服务器。---mysql安装包（32位和64位）。</li>
+<li>启动mysql服务。（net start mysql,  或者右键我的电脑-&gt;管理-&gt;服务-&gt;标准-&gt;myslq-&gt;右键启动）</li>
+<li>登陆数据库服务器。（mysql  -uroot  -p你的密码）</li>
+<li>做数据库的操作。（DDL，DCL，DML）</li>
+<li>退出数据库服务器。（exit）</li>
+</ol>
+<h3 id="数据库的常用命令">数据库的常用命令</h3>
+<p>SQL（Structured  Query  Language）结构化查询语言。它是一门语言，这门语言用于操作数据库。</p>
+<p>表是数据操作的基本单元。</p>
+<p>表中的几个概念：</p>
+<p>字段，也叫属性，也叫列名。</p>
+<p>记录，一条记录用于表示一个完整信息，也称为元组。</p>
+<ol>
+<li>
+<p>创建数据库</p>
+<p>create database 数据库名</p>
+<p>例如： create database  lanounbest;</p>
+</li>
+<li>
+<p>查看全部的数据库</p>
+<p>show databases;</p>
+</li>
+<li>
+<p>进入数据库（切换数据库）</p>
+</li>
+<li>
+<p>use 数据库名;</p>
+<p>例如：use  lanounbest;</p>
+</li>
+<li>
+<p>查看数据库中有哪些表</p>
+<p>show tables;</p>
+</li>
+<li>
+<p>删除数据库</p>
+<p>drop database 数据库名;</p>
+<p>例如：drop database lanounbest;</p>
+</li>
+<li>
+<p>创建表</p>
+<p>create table  表名(字段名  类型, 字段名 类型,....)</p>
+<pre><code class="language-sql">create table `user`(
+	`id` int(10)  primary key auto_increment,
+	`username` varchar(30) not null unique,
+	`password` varchar(16) not null,
+	`nickname` varchar(10),
+	`email` varchar(30) unique,
+	`create_time` datetime,
+	`last_login_time` datetime,
+	`status` int(5) default 1
+);
+</code></pre>
+</li>
+<li>
+<p>添加数据（插入数据）</p>
+<p>insert into 表名(列名, 列名, 列名,...) values (值,值,值,...),(值,值,值,...),...</p>
+<pre><code class="language-sql">insert into `user`(`username`, `password`) 
+values('qiaoshouyuan', '123456'),(&quot;huleilei&quot;,&quot;woaiwanjingwei&quot;);
+</code></pre>
+<p>insert into 表名 values(值,值,值...),(值,值,值,...),...</p>
+<pre><code class="language-sql">insert into `user` values (null,'liuxiang','liguang', '极客刘', 'liuxiang@163.com',
+ '2019-08-21 11:49:39', '2019-08-21 12:25:13', 1);
+</code></pre>
+</li>
+<li>
+<p>更新数据</p>
+<p>update  表名  set  列 = 值,  列 = 值, ... where 条件</p>
+<pre><code class="language-sql">update user set nickname = '老崔',password = '8888' where id = 3;
+</code></pre>
+</li>
+<li>
+<p>删除数据</p>
+<p>delete from 表名 where 条件</p>
+<pre><code class="language-sql">delete from user where id = 1;
+</code></pre>
+</li>
+<li>
+<p>删除表</p>
+<p>drop table 表名</p>
+<pre><code class="language-sql">drop table user;
+</code></pre>
+</li>
+<li>
+<p>查询数据</p>
+<p>查询指定列的数据（所有行）</p>
+<p>select  列名, 列名,... from  表名</p>
+<p>查询所有列的数据（所有行）</p>
+<p>select * from 表名</p>
+<p>查询指定列的数据（所有行，部分列起了别名）</p>
+<p>select  列名 as 新的列名, 列名 新的列名,... from  表名</p>
+</li>
+<li>
+<p>带条件的查询语句</p>
+<p>select  列名,列名,...  from  表名  where 条件</p>
+<p>条件可以是关系运算   &gt;  =   &gt;=    &lt;  &lt;=    !=</p>
+<p>条件可以是模糊查询条件   like      %    _</p>
+<p>条件可以支持  and   or</p>
+<p>条件可以支持 between ..and</p>
+<p>条件可以支持 in( )</p>
+</li>
+<li>
+<p>分组查询（group  by）</p>
+<p>分组查询是对查询结果进行分组。分组一旦成功，查询结果里相同的值只会出现一次。</p>
+<p>通常，分组后不再对单独数据进行查询，而是对整个组进行查询。可以查询 max(列名)   min(列名)   avg（列名） sum(列名)</p>
+</li>
+<li>
+<p>排序(order by)</p>
+<p>select 列名,.. from 表名 order by   列名  desc , 列名</p>
+</li>
+<li>
+<p>限制条数（分页查询）</p>
+<p>取前5条数据</p>
+<p>select  * from 表名  where  条件  limit 5;</p>
+<p>从指定下标开始取，取若干条</p>
+<p><strong>select  *  from  表名  where 条件  limit  其实下标, 条数</strong></p>
+</li>
+<li></li>
+</ol>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Postman的简单使用]]></title>
         <id>https://cxp-twx.github.io/post/postman-de-jian-dan-shi-yong</id>
@@ -202,2819 +2042,6 @@ public final class Season extends Enum
 <h3 id="枚举的总结">枚举的总结</h3>
 <p>枚举就是一种数据类型，只不过这种数据类型把<strong>可能出现的值提前定义好了</strong>，用的时候拿类直接访问即可。枚举多用于switch...case和if语句。</p>
 <figure data-type="image" tabindex="1"><img src="https://img-blog.csdnimg.cn/20191022211621386.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[异常处理]]></title>
-        <id>https://cxp-twx.github.io/post/yi-chang-chu-li</id>
-        <link href="https://cxp-twx.github.io/post/yi-chang-chu-li">
-        </link>
-        <updated>2018-12-13T09:43:48.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="异常处理">异常处理</h1>
-<h3 id="什么异常">什么异常？</h3>
-<p>在生活中：平时上下班都平常，今天上班的时候，路上有一起车祸，导致你上班迟到。</p>
-<p>所谓异常：就出现了出乎意料的事情。</p>
-<p>在代码里：所谓异常也是程序在编写或者运行过程中出现了出乎意料的事情。</p>
-<p>比如：你做3D彩票系统，你提示别人输入数字，结果别人输入的还是字符串，出现了crash。</p>
-<p>再比如：你把元素放到ArrayList中，但是你给的下标超出了元素的个数，程序也会出现异常。</p>
-<h3 id="异常的分类">异常的分类</h3>
-<p>在Java中异常一共分为2大类：Error、Exception。</p>
-<p>早整个异常体系了，有如下继承关系</p>
-<p>Throwable 它是所有异常和错误的父类。</p>
-<p>​		Error：它是Throwable的子类。 代表错误，一般指的是系统错误，或者虚拟机错误。错误例如：内存不足，JVM出现问题，也属于错误。错误往往不是程序员能解决的，所以无需解决。</p>
-<p>​		Exception：也是Throwable的子类。 代表异常，异常分为2类，运行期异常，另外一类叫非运行期异常。</p>
-<p>​				RunTimeException：运行期异常。编译期并不会报错，运行的时候才会报错。</p>
-<p>​				其他：非运行期异常。编译期就报错。错误不处理，无法运行程序。</p>
-<h4 id="error的示例">Error的示例</h4>
-<pre><code class="language-java">public static void main(String[] args) throws FileNotFoundException {
-		long[] arr = new long[1024*1024*100*4];//内存不足的错误
-	}
-}
-
-</code></pre>
-<h4 id="exception的示例">Exception的示例</h4>
-<h5 id="runtimeexception示例">RunTimeException示例</h5>
-<pre><code class="language-java">public class Test {
-
-	public static void main(String[] args) throws FileNotFoundException {
-		
-		int[] arr1 = {1,2,3,4};
-		System.out.println(arr1[4]);//运行期异常， 数组下标越界
-		
-		int m = 100;
-		int n = 0;
-		System.out.println(m / n );//运行期异常， 除数为0的异常
-	}
-
-}
-</code></pre>
-<h5 id="非运行期异常的示例">非运行期异常的示例</h5>
-<pre><code class="language-java">public class Test {
-
-	public static void main(String[] args) throws FileNotFoundException {	
-		FileInputStream fis = new FileInputStream(&quot;C:\\Users\\neal\\Desktop\\a.docx&quot;);//非运行期异常，文件没有找到异常
-	}
-}
-</code></pre>
-<h3 id="异常的处理">异常的处理</h3>
-<p><strong>如果程序出现了异常，但是并没有对异常进行处理，虚拟机就会处理异常</strong>。虚拟机的处理方式就是结束出现异常的线程。在多线程的环境下，如果A线程出现了异常，只是结束A线程的运行，B，C等线程都能正常的执行。</p>
-<p>异常的处理有2种方式：</p>
-<p>方式一：try ...catch...finally  直接处理异常</p>
-<p>方式二：thows	抛出异常，交给这个方法的调用者处理。</p>
-<blockquote>
-<p>如果有一个a方法，a方法内部可能出现异常，但是a方法内部通过thows抛出了异常，相当于告诉调用a方法的那段代码，a方法有可能有异常，但是我没有处理，交给调用a方法的代码去处理。</p>
-</blockquote>
-<h4 id="trycatchfinally">try...catch...finally</h4>
-<p>把有可能出现异常的代码，放到try代码块中。try的作用是试图找到和发现异常。一旦try代码块中有异常，会执行对应的catch代码块。</p>
-<pre><code class="language-java">public class Test {
-
-	public static void main(String[] args) {
-		
-		int m = 100;
-		int n = 0;
-		int result = 0;
-		int[] arr = {1,2,3};
-		try {
-			result = m / n;
-			int num = arr[3];
-		}catch(ArithmeticException e) {
-//			System.out.println(e.getMessage());
-//			System.out.println(e.getLocalizedMessage());
-//			System.out.println(e);
-			n = 1;
-			result = m / n;
-		}catch(ArrayIndexOutOfBoundsException e) {
-			int num = arr[0];
-			System.out.println(num);
-		}
-		
-		System.out.println(result);
-	}
-}
-</code></pre>
-<blockquote>
-<p>try中一旦发现异常，就会立即跳转到对应的catch块中进行异常处理。try中没有执行到的代码，不再执行。换句话说，try只能捕获第一个异常。</p>
-<p>如果有多个异常，写多个try..catch..finally代码段。</p>
-<p>多个catch是可以合并的。只需要把catch中的异常范围写的更大即可。</p>
-</blockquote>
-<p>因为try一旦发现异常，就立即进入了catch块，导致try中的部分代码没法执行。异常处理提供了finally来解决这个问题。</p>
-<p>finally也是一个代码块，无论try有没有异常，finally中的代码都会执行。</p>
-<p>情形一：try中没有出现异常，catch不执行，finally执行。</p>
-<p>情形二：try中出现异常，执行对应的catch，catch执行以后，执行finally。</p>
-<p>所以可以把必须要执行的代码写在finally里面。</p>
-<pre><code class="language-java">public class Test {
-
-	public static void main(String[] args) {
-		
-		int m = 100;
-		int n = 10;
-		int result = 0;
-		int[] arr = {1,2,3};
-		try {
-			result = m / n;
-			int num = arr[2];
-		}catch(RuntimeException e) {
-//			System.out.println(e.getMessage());
-//			System.out.println(e.getLocalizedMessage());
-//			System.out.println(e);
-			n = 1;
-			result = m / n;
-		}finally{
-			System.out.println(&quot;我是finally&quot;);
-		}
-		
-		System.out.println(result);
-	}
-}
-</code></pre>
-<h3 id="小节">小节</h3>
-<p>Java中异常分为Error和Exception两类</p>
-<p>Exception分为RuntimeException和非RuntimeException。</p>
-<p>try..catch..finally可以处理异常。</p>
-<p>​	try中写，可能出现的异常。</p>
-<p>​	catch中写，如何处理异常。异常是可以分开捕获，异常还可以合起来捕获。</p>
-<p>​	finally中写那些一定要执行的代码。</p>
-<h4 id="throws">throws</h4>
-<p>throws是第二种异常处理的方式。这种处理方式，相当于自己没有做出处理，把处理的事情交给了它的上一级（调用者）来处理。</p>
-<h4 id="为什么要使用throws">为什么要使用throws？</h4>
-<p>一般调用者更清楚异常出来以后应该做什么事情。</p>
-<h4 id="throws如何使用">throws如何使用？</h4>
-<p>当有异常存在的时候，如果这个异常不适合你处理，适合你的上层（调用者）处理，你应该把这个异常处理的权利交给你的上层。上层就会得到这个异常，它有2种选择：第一，通过try..catch..finally处理异常，第二，继续上抛，抛给它的调用者。</p>
-<pre><code class="language-java">public class TestException {
-
-	public static void main(String[] args) throws FileNotFoundException {
-		
-		//readFile(&quot;C:\\Users\\neal\\Desktop\\微信小程序.md&quot;);
-//		try {
-//			readFile2(&quot;C:\\Users\\neal\\Desktop\\微信小程序.md&quot;);
-//		} catch (FileNotFoundException e) {
-//			
-//		}
-		
-		readFile2(&quot;C:\\Users\\neal\\Desktop\\微信小程序.md&quot;);
-		
-	}
-	
-	public static void readFile2(String filePath) throws FileNotFoundException {
-		FileInputStream fis = new FileInputStream(filePath);
-		System.out.println(fis);
-	}
-	
-	public static void readFile(String filePath) {
-		try {
-			FileInputStream fis = new FileInputStream(filePath);
-		} catch (FileNotFoundException e) {
-			System.out.println(&quot;打开文件失败，文件不存在&quot;);
-			e.printStackTrace();
-		}
-		
-	}
-}
-</code></pre>
-<h4 id="throws的特点">throws的特点</h4>
-<p>throws本质上是在做一个声明，它在告诉调用者，我内部的代码可能有某种异常产生。用于警醒调用者。</p>
-<p>throws出现在方法参数列表的后面，throws 后面跟着的是具体的异常的类名。</p>
-<p>补充一句，throws 后面的异常可以是多个，多个异常之间用逗号隔开。</p>
-<p>再补充一句，throws后面的异常可以合并为父异常。</p>
-<h3 id="throw">throw</h3>
-<p>throw是个动词，它的作用是抛出一个具体的异常。</p>
-<p>用法：throw 异常对象；</p>
-<blockquote>
-<p>你平时代码里出错时控制台打印的这些异常信息，都是系统API里提前写了throw e的原因。</p>
-</blockquote>
-<h4 id="throw-和throws区别">throw 和throws区别</h4>
-<ol>
-<li>throw是用来抛出异常的。后面跟的是一个具体的异常对象。 throws是用来声明方法内可能会有异常。</li>
-<li>throw写在方法内，throws写在方法的参数列表后面。</li>
-</ol>
-<h3 id="自定义异常">自定义异常</h3>
-<p>虽然系统已经提供了很多写好的异常类，但是由于项目不同，需求不同等，所以可能出现的异常也不同（可能你出现的异常，系统之前没有定义过这样的类）。为了解决这个问题，系统提供了自定义异常的语法。</p>
-<h4 id="如何自定义异常">如何自定义异常</h4>
-<p>创建一个类，继承于某个异常类即可。</p>
-<h5 id="自定义一个运行期异常">自定义一个运行期异常：</h5>
-<pre><code class="language-java">public class ChooseOutOfBoundsException extends RuntimeException {
-
-	private static final long serialVersionUID = 1L;
-
-	public ChooseOutOfBoundsException(String message) {
-		super(message);
-	}
-
-}
-</code></pre>
-<p>自定义异常的使用：</p>
-<pre><code class="language-java">public class Test {
-	
-	public static void main(String[] args) {
-		System.out.println(&quot;请输入您的选择（1-7）：&quot;);
-		int n = getChoose();
-		System.out.println(n);
-	}
-	
-	public static int getChoose() {
-		Scanner sc = new Scanner(System.in);
-		int choose = sc.nextInt();
-		if(choose &gt; 7 || choose &lt; 1) {
-			ChooseOutOfBoundsException e = new ChooseOutOfBoundsException(&quot;您选择的数字超出了范围[1,7]&quot;);
-			throw e;
-		}
-		return choose;
-	}
-}
-</code></pre>
-<h5 id="自定义一个非运行期异常">自定义一个非运行期异常</h5>
-<pre><code class="language-java">public class ChooseOutOfBoundsException2 extends Exception {
-	private static final long serialVersionUID = 1L;
-
-	public ChooseOutOfBoundsException2(String message) {
-		super(message);
-	}
-	
-}
-</code></pre>
-<p>使用非运行期异常</p>
-<pre><code class="language-java">public class Test2 {
-
-	public static void main(String[] args) {
-		System.out.println(&quot;请输入1-7的数：&quot;);
-		int n = 0;
-		try {
-			n = getChoose();
-		} catch (ChooseOutOfBoundsException2 e) {
-			System.out.println(&quot;你真调皮&quot;);
-			//e.printStackTrace();
-		}
-		System.out.println(n);
-	}
-	
-	public static int getChoose() throws ChooseOutOfBoundsException2 {
-		Scanner sc = new Scanner(System.in);
-		int choose = sc.nextInt();
-		if(choose &gt; 7 || choose &lt; 1) {
-			ChooseOutOfBoundsException2 e = new ChooseOutOfBoundsException2(&quot;选择超出范围[1,7]&quot;);
-			throw e;
-		}
-		return choose;
-	}
-
-}
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="https://img-blog.csdnimg.cn/20191022211334228.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Spring 记录]]></title>
-        <id>https://cxp-twx.github.io/post/spring-ji-lu</id>
-        <link href="https://cxp-twx.github.io/post/spring-ji-lu">
-        </link>
-        <updated>2018-12-13T06:40:50.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="spring小记">spring小记</h1>
-<ul>
-<li>
-<h3 id="各个注解-整合junit-事务-动态代理-aop-jdbctemplate">（各个注解、整合junit、事务）、动态代理、AOP、jdbcTemplate)</h3>
-</li>
-</ul>
-<h2 id="注解分类">注解分类：</h2>
-<p>​    1.用于创建对象</p>
-<p>​    2.用于注入数据</p>
-<p>​    3.改变作用范围</p>
-<p>​    4.生命周期</p>
-<h3 id="11-注解详解">1.1 注解详解：</h3>
-<pre><code class="language-java">/**
- * 账户的业务层实现类
- *
- * 曾经XML的配置：
- *  &lt;bean id=&quot;accountService&quot; class=&quot;com.itheima.service.impl.AccountServiceImpl&quot;
- *        scope=&quot;&quot;  init-method=&quot;&quot; destroy-method=&quot;&quot;&gt;
- *      &lt;property name=&quot;&quot;  value=&quot;&quot; | ref=&quot;&quot;&gt;&lt;/property&gt;
- *  &lt;/bean&gt;
- *
- * 用于创建对象的
- *      他们的作用就和在XML配置文件中编写一个&lt;bean&gt;标签实现的功能是一样的
- *      @Component:
- *          作用：用于把当前类对象存入spring容器中
- *          属性：
- *              value：用于指定bean的id。当我们不写时，它的默认值是当前类名，且首字母改小写。
- *      @Controller：一般用在表现层
- *      @Service：一般用在业务层
- *      @Repository：一般用在持久层
- *      以上三个注解他们的作用和属性与Component是一模一样。
- *      他们三个是spring框架为我们提供明确的三层使用的注解，使我们的三层对象更加清晰
- *
- *
- * 用于注入数据的
- *      他们的作用就和在xml配置文件中的bean标签中写一个&lt;property&gt;标签的作用是一样的
- *      @Autowired:
- *          作用：自动按照类型注入。只要容器中有唯一的一个bean对象类型和要注入的变量类型匹配，就可以注入成功
- *                如果ioc容器中没有任何bean的类型和要注入的变量类型匹配，则报错。
- *                如果Ioc容器中有多个类型匹配时：
- *          出现位置：
- *              可以是变量上，也可以是方法上
- *          细节：
- *              在使用注解注入时，set方法就不是必须的了。
- *      @Qualifier:
- *          作用：在按照类中注入的基础之上再按照名称注入。它在给类成员注入时不能单独使用，需要配合Autowired一起。但是在给方法参数注入时可以（见1.3）
- *          属性：
- *              value：用于指定注入bean的id。
- *      @Resource
- *          作用：直接按照bean的id注入。它可以独立使用
- *          属性：
- *              name：用于指定bean的id。
- *      以上三个注入都只能注入其他bean类型的数据，而基本类型和String类型无法使用上述注解实现。
- *      另外，集合类型的注入只能通过XML来实现。
- *
- *      @Value
- *          作用：用于注入基本类型和String类型的数据
- *          属性：
- *              value：用于指定数据的值。它可以使用spring中SpEL(也就是spring的el表达式）
- *                      SpEL的写法：${表达式}
- *          问题：jsp、mybatis、spring中都有el表达式，如何区分el表达式是谁的？看写在哪，卸载jsp中就去jsp四大域 
- *               中取值
- *
- * 用于改变作用范围的
- *      他们的作用就和在bean标签中使用scope属性实现的功能是一样的
- *      @Scope
- *          作用：用于指定bean的作用范围
- *          属性：
- *              value：指定范围的取值。常用取值：singleton prototype
- *
- * 和生命周期相关 （了解）
- *      他们的作用就和在bean标签中使用init-method和destroy-methode的作用是一样的
- *      @PreDestroy
- *          作用：用于指定销毁方法
- *      @PostConstruct
- *          作用：用于指定初始化方法
- */
-@Service(&quot;accountService&quot;)
-//@Scope(&quot;prototype&quot;)
-public class AccountServiceImpl implements IAccountService {
-
-//    @Autowired
-//    @Qualifier(&quot;accountDao1&quot;)
-    @Resource(name = &quot;accountDao2&quot;)
-    private IAccountDao accountDao = null;
-
-    @PostConstruct
-    public void  init(){
-        System.out.println(&quot;初始化方法执行了&quot;);
-    }
-
-    @PreDestroy
-    public void  destroy(){
-        System.out.println(&quot;销毁方法执行了&quot;);
-    }
-
-    public void  saveAccount(){
-        accountDao.saveAccount();
-    }
-}
-</code></pre>
-<h3 id="12-配置注解">1.2 配置注解</h3>
-<pre><code>/**
- * 该类是一个配置类，它的作用和bean.xml是一样的
- * spring中的新注解
- * Configuration
- *     作用：指定当前类是一个配置类
- *     细节：当配置类作为AnnotationConfigApplicationContext对象创建的参数时，该注解可以不写。
- * ComponentScan
- *      作用：用于通过注解指定spring在创建容器时要扫描的包
- *      属性：
- *          value：它和basePackages的作用是一样的，都是用于指定创建容器时要扫描的包。
- *                 我们使用此注解就等同于在xml中配置了:
- *                      &lt;context:component-scan base-package=&quot;com.itheima&quot;&gt;&lt;/context:component-scan&gt;
- *  Bean
- *      作用：用于把当前方法的返回值作为bean对象存入spring的ioc容器中
- *      属性:
- *          name:用于指定bean的id。当不写时，默认值是当前方法的名称
- *      细节：
- *          当我们使用注解配置方法时，如果方法有参数，spring框架会去容器中查找有没有可用的bean对象。
- *          查找的方式和Autowired注解的作用是一样的
- *  Import
- *      作用：用于导入其他的配置类
- *      属性：
- *          value：用于指定其他配置类的字节码。
- *                  当我们使用Import的注解之后，有Import注解的类就父配置类，而导入的都是子配置类
- *  PropertySource
- *      作用：用于指定properties文件的位置
- *      属性：
- *          value：指定文件的名称和路径。
- *                  关键字：classpath，表示类路径下
- */
-//@Configuration
-@ComponentScan(&quot;com.itheima&quot;)
-@Import(JdbcConfig.class)
-@PropertySource(&quot;classpath:jdbcConfig.properties&quot;)
-public class SpringConfiguration {
-
-
-}
-</code></pre>
-<p><strong>什么时候选择注解、什么时候选择xml配置呢？</strong></p>
-<p><mark>存在于jar包中的，选择xml配置</mark></p>
-<p><mark>自己写的就用注解配置</mark></p>
-<h3 id="13-配置数据源形式的注解">1.3 配置数据源形式的注解</h3>
-<pre><code class="language-java">/**
- * 和spring连接数据库相关的配置类
- */
-public class JdbcConfig {
-
-    @Value(&quot;${jdbc.driver}&quot;)
-    private String driver;
-
-    @Value(&quot;${jdbc.url}&quot;)
-    private String url;
-
-    @Value(&quot;${jdbc.username}&quot;)
-    private String username;
-
-    @Value(&quot;${jdbc.password}&quot;)
-    private String password;
-
-    /**
-     * 用于创建一个QueryRunner对象
-     * @param dataSource
-     * @return
-     */
-    @Bean(name=&quot;runner&quot;)
-    @Scope(&quot;prototype&quot;)
-    public QueryRunner createQueryRunner(@Qualifier(&quot;ds2&quot;) DataSource dataSource){
-        return new QueryRunner(dataSource);
-    }
-
-    /**
-     * 创建数据源对象
-     * @return
-     */
-    @Bean(name=&quot;ds2&quot;)
-    public DataSource createDataSource(){
-        try {
-            ComboPooledDataSource ds = new ComboPooledDataSource();
-            ds.setDriverClass(driver);
-            ds.setJdbcUrl(url);
-            ds.setUser(username);
-            ds.setPassword(password);
-            return ds;
-        }catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Bean(name=&quot;ds1&quot;)
-    public DataSource createDataSource1(){
-        try {
-            ComboPooledDataSource ds = new ComboPooledDataSource();
-            ds.setDriverClass(driver);
-            ds.setJdbcUrl(&quot;jdbc:mysql://localhost:3306/eesy02&quot;);
-            ds.setUser(username);
-            ds.setPassword(password);
-            return ds;
-        }catch (Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-}
-</code></pre>
-<h3 id="14-spring整合junit测试的配置">1.4 spring整合junit测试的配置</h3>
-<pre><code class="language-java">1、应用程序的入口
-	main方法
-2、junit单元测试中，没有main方法也能执行
-	junit集成了一个main方法
-	该方法就会判断当前测试类中哪些方法有 @Test注解
-	junit就让有Test注解的方法执行
-3、junit不会管我们是否采用spring框架
-	在执行测试方法时，junit根本不知道我们是不是使用了spring框架
-	所以也就不会为我们读取配置文件/配置类创建spring核心容器
-4、由以上三点可知
-	当测试方法执行时，没有Ioc容器，就算写了Autowired注解，也无法实现注入
-/**
- * 使用Junit单元测试：测试我们的配置
- * Spring整合junit的配置
- *      1、导入spring整合junit的jar(坐标)
- *      2、使用Junit提供的一个注解把原有的main方法替换了，替换成spring提供的
- *             @Runwith
- *      3、告知spring的运行器，spring和ioc创建是基于xml还是注解的，并且说明位置
- *          @ContextConfiguration
- *                  locations：指定xml文件的位置，加上classpath关键字，表示在类路径下
- *                  classes：指定注解类所在地位置
- *
- *   当我们使用spring 5.x版本的时候，要求junit的jar必须是4.12及以上
- */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SpringConfiguration.class)
-public class AccountServiceTest {
-
-    @Autowired
-    private IAccountService as = null;
-
-
-    @Test
-    public void testFindAll() {
-        //3.执行方法
-        List&lt;Account&gt; accounts = as.findAllAccount();
-        for(Account account : accounts){
-            System.out.println(account);
-        }
-    }
-
-    @Test
-    public void testFindOne() {
-        //3.执行方法
-        Account account = as.findAccountById(1);
-        System.out.println(account);
-    }
-
-    @Test
-    public void testSave() {
-        Account account = new Account();
-        account.setName(&quot;test anno&quot;);
-        account.setMoney(12345f);
-        //3.执行方法
-        as.saveAccount(account);
-
-    }
-
-    @Test
-    public void testUpdate() {
-        //3.执行方法
-        Account account = as.findAccountById(4);
-        account.setMoney(23456f);
-        as.updateAccount(account);
-    }
-
-    @Test
-    public void testDelete() {
-        //3.执行方法
-        as.deleteAccount(4);
-    }
-}
-</code></pre>
-<h2 id="spring声明式事务">Spring声明式事务</h2>
-<pre><code class="language-java">/**
- * 和事务管理相关的工具类，它包含了，开启事务，提交事务，回滚事务和释放连接
- */
-public class TransactionManager {
-
-    private ConnectionUtils connectionUtils;
-
-    public void setConnectionUtils(ConnectionUtils connectionUtils) {
-        this.connectionUtils = connectionUtils;
-    }
-
-    /**
-     * 开启事务
-     */
-    public  void beginTransaction(){
-        try {
-            connectionUtils.getThreadConnection().setAutoCommit(false);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 提交事务
-     */
-    public  void commit(){
-        try {
-            connectionUtils.getThreadConnection().commit();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 回滚事务
-     */
-    public  void rollback(){
-        try {
-            connectionUtils.getThreadConnection().rollback();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-
-    /**
-     * 释放连接
-     */
-    public  void release(){
-        try {
-            connectionUtils.getThreadConnection().close();//还回连接池中
-            connectionUtils.removeConnection();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-}
-/**
- * 账户的业务层实现类
- *
- * 事务控制应该都是在业务层
- */
-public class AccountServiceImpl_OLD implements IAccountService{
-
-    private IAccountDao accountDao;
-    private TransactionManager txManager;
-
-    public void setTxManager(TransactionManager txManager) {
-        this.txManager = txManager;
-    }
-
-    public void setAccountDao(IAccountDao accountDao) {
-        this.accountDao = accountDao;
-    }
-
-    @Override
-    public List&lt;Account&gt; findAllAccount() {
-        try {
-            //1.开启事务
-            txManager.beginTransaction();
-            //2.执行操作
-            List&lt;Account&gt; accounts = accountDao.findAllAccount();
-            //3.提交事务
-            txManager.commit();
-            //4.返回结果
-            return accounts;
-        }catch (Exception e){
-            //5.回滚操作
-            txManager.rollback();
-            throw new RuntimeException(e);
-        }finally {
-            //6.释放连接
-            txManager.release();
-        }
-
-    }
-
-    @Override
-    public Account findAccountById(Integer accountId) {
-        try {
-            //1.开启事务
-            txManager.beginTransaction();
-            //2.执行操作
-            Account account = accountDao.findAccountById(accountId);
-            //3.提交事务
-            txManager.commit();
-            //4.返回结果
-            return account;
-        }catch (Exception e){
-            //5.回滚操作
-            txManager.rollback();
-            throw new RuntimeException(e);
-        }finally {
-            //6.释放连接
-            txManager.release();
-        }
-    }
-
-    @Override
-    public void saveAccount(Account account) {
-        try {
-            //1.开启事务
-            txManager.beginTransaction();
-            //2.执行操作
-            accountDao.saveAccount(account);
-            //3.提交事务
-            txManager.commit();
-        }catch (Exception e){
-            //4.回滚操作
-            txManager.rollback();
-        }finally {
-            //5.释放连接
-            txManager.release();
-        }
-
-    }
-
-    @Override
-    public void updateAccount(Account account) {
-        try {
-            //1.开启事务
-            txManager.beginTransaction();
-            //2.执行操作
-            accountDao.updateAccount(account);
-            //3.提交事务
-            txManager.commit();
-        }catch (Exception e){
-            //4.回滚操作
-            txManager.rollback();
-        }finally {
-            //5.释放连接
-            txManager.release();
-        }
-
-    }
-
-    @Override
-    public void deleteAccount(Integer acccountId) {
-        try {
-            //1.开启事务
-            txManager.beginTransaction();
-            //2.执行操作
-            accountDao.deleteAccount(acccountId);
-            //3.提交事务
-            txManager.commit();
-        }catch (Exception e){
-            //4.回滚操作
-            txManager.rollback();
-        }finally {
-            //5.释放连接
-            txManager.release();
-        }
-
-    }
-
-    @Override
-    public void transfer(String sourceName, String targetName, Float money) {
-        try {
-            //1.开启事务
-            txManager.beginTransaction();
-            //2.执行操作
-
-            //2.1根据名称查询转出账户
-            Account source = accountDao.findAccountByName(sourceName);
-            //2.2根据名称查询转入账户
-            Account target = accountDao.findAccountByName(targetName);
-            //2.3转出账户减钱
-            source.setMoney(source.getMoney()-money);
-            //2.4转入账户加钱
-            target.setMoney(target.getMoney()+money);
-            //2.5更新转出账户
-            accountDao.updateAccount(source);
-
-            int i=1/0;
-
-            //2.6更新转入账户
-            accountDao.updateAccount(target);
-            //3.提交事务
-            txManager.commit();
-
-        }catch (Exception e){
-            //4.回滚操作
-            txManager.rollback();
-            e.printStackTrace();
-        }finally {
-            //5.释放连接
-            txManager.release();
-        }
-
-
-    }
-}
-</code></pre>
-<h2 id="动态代理">动态代理</h2>
-<h3 id="15基于接口的动态代理">1.5基于接口的动态代理</h3>
-<pre><code class="language-java">/**
- * 一个生产者
- */
-public class Producer implements IProducer{
-
-    /**
-     * 销售
-     * @param money
-     */
-    public void saleProduct(float money){
-        System.out.println(&quot;销售产品，并拿到钱：&quot;+money);
-    }
-
-    /**
-     * 售后
-     * @param money
-     */
-    public void afterService(float money){
-        System.out.println(&quot;提供售后服务，并拿到钱：&quot;+money);
-    }
-}
-</code></pre>
-<pre><code class="language-Java">/**
- * 对生产厂家要求的接口
- */
-public interface IProducer {
-
-    /**
-     * 销售
-     * @param money
-     */
-    public void saleProduct(float money);
-
-    /**
-     * 售后
-     * @param money
-     */
-    public void afterService(float money);
-}
-/**
- * 模拟一个消费者
- */
-public class Client {
-
-    public static void main(String[] args) {
-        final Producer producer = new Producer();
-
-        /**
-         * 动态代理：
-         *  特点：字节码随用随创建，随用随加载
-         *  作用：不修改源码的基础上对方法增强
-         *  分类：
-         *      基于接口的动态代理
-         *      基于子类的动态代理
-         *  基于接口的动态代理：
-         *      涉及的类：Proxy
-         *      提供者：JDK官方
-         *  如何创建代理对象：
-         *      使用Proxy类中的newProxyInstance方法
-         *  创建代理对象的要求：
-         *      被代理类最少实现一个接口，如果没有则不能使用
-         *  newProxyInstance方法的参数：
-         *      ClassLoader：类加载器
-         *          它是用于加载代理对象字节码的。和被代理对象使用相同的类加载器。固定写法。
-         *      Class[]：字节码数组
-         *          它是用于让代理对象和被代理对象有相同方法。固定写法。
-         *      InvocationHandler：用于提供增强的代码
-         *          它是让我们写如何代理。我们一般都是些一个该接口的实现类，通常情况下都是匿名内部类，但不是必须的。
-         *          此接口的实现类都是谁用谁写。
-         */
-       IProducer proxyProducer = (IProducer) Proxy.newProxyInstance(producer.getClass().getClassLoader(),
-                producer.getClass().getInterfaces(),
-                new InvocationHandler() {
-                    /**
-                     * 作用：执行被代理对象的任何接口方法都会经过该方法
-                     * 方法参数的含义
-                     * @param proxy   代理对象的引用
-                     * @param method  当前执行的方法
-                     * @param args    当前执行方法所需的参数
-                     * @return        和被代理对象方法有相同的返回值
-                     * @throws Throwable
-                     */
-                    @Override
-                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        //提供增强的代码
-                        Object returnValue = null;
-
-                        //1.获取方法执行的参数
-                        Float money = (Float)args[0];
-                        //2.判断当前方法是不是销售
-                        if(&quot;saleProduct&quot;.equals(method.getName())) {
-                            returnValue = method.invoke(producer, money*0.8f);
-                        }
-                        return returnValue;
-                    }
-                });
-        proxyProducer.saleProduct(10000f);
-    }
-}
-</code></pre>
-<h3 id="16基于子类的动态代理">1.6基于子类的动态代理</h3>
-<pre><code class="language-java">/**
- * 一个生产者
- */
-public class Producer {
-
-    /**
-     * 销售
-     * @param money
-     */
-    public void saleProduct(float money){
-        System.out.println(&quot;销售产品，并拿到钱：&quot;+money);
-    }
-
-    /**
-     * 售后
-     * @param money
-     */
-    public void afterService(float money){
-        System.out.println(&quot;提供售后服务，并拿到钱：&quot;+money);
-    }
-}
-/**
- * 模拟一个消费者
- */
-public class Client {
-
-    public static void main(String[] args) {
-        final Producer producer = new Producer();
-
-        /**
-         * 动态代理：
-         *  特点：字节码随用随创建，随用随加载
-         *  作用：不修改源码的基础上对方法增强
-         *  分类：
-         *      基于接口的动态代理
-         *      基于子类的动态代理
-         *  基于子类的动态代理：
-         *      涉及的类：Enhancer
-         *      提供者：第三方cglib库
-         *  如何创建代理对象：
-         *      使用Enhancer类中的create方法
-         *  创建代理对象的要求：
-         *      被代理类不能是最终类
-         *  create方法的参数：
-         *      Class：字节码
-         *          它是用于指定被代理对象的字节码。
-         *
-         *      Callback：用于提供增强的代码
-         *          它是让我们写如何代理。我们一般都是些一个该接口的实现类，通常情况下都是匿名内部类，但不是必须的。
-         *          此接口的实现类都是谁用谁写。
-         *          我们一般写的都是该接口的子接口实现类：MethodInterceptor
-         */
-        Producer cglibProducer = (Producer)Enhancer.create(producer.getClass(), new MethodInterceptor() {
-            /**
-             * 执行北地阿里对象的任何方法都会经过该方法
-             * @param proxy
-             * @param method
-             * @param args
-             *    以上三个参数和基于接口的动态代理中invoke方法的参数是一样的
-             * @param methodProxy ：当前执行方法的代理对象
-             * @return
-             * @throws Throwable
-             */
-            @Override
-            public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-                //提供增强的代码
-                Object returnValue = null;
-
-                //1.获取方法执行的参数
-                Float money = (Float)args[0];
-                //2.判断当前方法是不是销售
-                if(&quot;saleProduct&quot;.equals(method.getName())) {
-                    returnValue = method.invoke(producer, money*0.8f);
-                }
-                return returnValue;
-            }
-        });
-        cglibProducer.saleProduct(12000f);
-    }
-}
-</code></pre>
-<h2 id="用动态代理实现事务控制">用动态代理实现事务控制</h2>
-<p>Java代码：</p>
-<pre><code class="language-java">/**
- * 账户的业务层实现类
- *
- * 事务控制应该都是在业务层
- */
-public class AccountServiceImpl implements IAccountService{
-
-    private IAccountDao accountDao;
-
-    public void setAccountDao(IAccountDao accountDao) {
-        this.accountDao = accountDao;
-    }
-
-    @Override
-    public List&lt;Account&gt; findAllAccount() {
-       return accountDao.findAllAccount();
-    }
-
-    @Override
-    public Account findAccountById(Integer accountId) {
-        return accountDao.findAccountById(accountId);
-
-    }
-
-    @Override
-    public void saveAccount(Account account) {
-        accountDao.saveAccount(account);
-    }
-
-    @Override
-    public void updateAccount(Account account) {
-        accountDao.updateAccount(account);
-    }
-
-    @Override
-    public void deleteAccount(Integer acccountId) {
-        accountDao.deleteAccount(acccountId);
-    }
-
-    @Override
-    public void transfer(String sourceName, String targetName, Float money) {
-        System.out.println(&quot;transfer....&quot;);
-            //2.1根据名称查询转出账户
-            Account source = accountDao.findAccountByName(sourceName);
-            //2.2根据名称查询转入账户
-            Account target = accountDao.findAccountByName(targetName);
-            //2.3转出账户减钱
-            source.setMoney(source.getMoney()-money);
-            //2.4转入账户加钱
-            target.setMoney(target.getMoney()+money);
-            //2.5更新转出账户
-            accountDao.updateAccount(source);
-
-//            int i=1/0;
-
-            //2.6更新转入账户
-            accountDao.updateAccount(target);
-    }
-}
-/**
- * 用于创建Service的代理对象的工厂
- */
-public class BeanFactory {
-
-    private IAccountService accountService;
-
-    private TransactionManager txManager;
-
-    public void setTxManager(TransactionManager txManager) {
-        this.txManager = txManager;
-    }
-
-
-    public final void setAccountService(IAccountService accountService) {
-        this.accountService = accountService;
-    }
-
-    /**
-     * 获取Service代理对象
-     * @return
-     */
-    public IAccountService getAccountService() {
-        return (IAccountService)Proxy.newProxyInstance(accountService.getClass().getClassLoader(),
-                accountService.getClass().getInterfaces(),
-                new InvocationHandler() {
-                    /**
-                     * 添加事务的支持
-                     *
-                     * @param proxy
-                     * @param method
-                     * @param args
-                     * @return
-                     * @throws Throwable
-                     */
-                    @Override
-                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
-                        if(&quot;test&quot;.equals(method.getName())){
-                            return method.invoke(accountService,args);
-                        }
-
-                        Object rtValue = null;
-                        try {
-                            //1.开启事务
-                            txManager.beginTransaction();
-                            //2.执行操作
-                            rtValue = method.invoke(accountService, args);
-                            //3.提交事务
-                            txManager.commit();
-                            //4.返回结果
-                            return rtValue;
-                        } catch (Exception e) {
-                            //5.回滚操作
-                            txManager.rollback();
-                            throw new RuntimeException(e);
-                        } finally {
-                            //6.释放连接
-                            txManager.release();
-                        }
-                    }
-                });
-
-    }
-}
-
-</code></pre>
-<p>xml配置：</p>
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
-
-    &lt;!--配置代理的service--&gt;
-    &lt;bean id=&quot;proxyAccountService&quot; factory-bean=&quot;beanFactory&quot; factory-method=&quot;getAccountService&quot;&gt;&lt;/bean&gt;
-
-    &lt;!--配置beanfactory--&gt;
-    &lt;bean id=&quot;beanFactory&quot; class=&quot;com.itheima.factory.BeanFactory&quot;&gt;
-        &lt;!-- 注入service --&gt;
-        &lt;property name=&quot;accountService&quot; ref=&quot;accountService&quot;&gt;&lt;/property&gt;
-        &lt;!-- 注入事务管理器 --&gt;
-        &lt;property name=&quot;txManager&quot; ref=&quot;txManager&quot;&gt;&lt;/property&gt;
-    &lt;/bean&gt;
-
-     &lt;!-- 配置Service --&gt;
-    &lt;bean id=&quot;accountService&quot; class=&quot;com.itheima.service.impl.AccountServiceImpl&quot;&gt;
-        &lt;!-- 注入dao --&gt;
-        &lt;property name=&quot;accountDao&quot; ref=&quot;accountDao&quot;&gt;&lt;/property&gt;
-    &lt;/bean&gt;
-
-    &lt;!--配置Dao对象--&gt;
-    &lt;bean id=&quot;accountDao&quot; class=&quot;com.itheima.dao.impl.AccountDaoImpl&quot;&gt;
-        &lt;!-- 注入QueryRunner --&gt;
-        &lt;property name=&quot;runner&quot; ref=&quot;runner&quot;&gt;&lt;/property&gt;
-        &lt;!-- 注入ConnectionUtils --&gt;
-        &lt;property name=&quot;connectionUtils&quot; ref=&quot;connectionUtils&quot;&gt;&lt;/property&gt;
-    &lt;/bean&gt;
-
-    &lt;!--配置QueryRunner--&gt;
-    &lt;bean id=&quot;runner&quot; class=&quot;org.apache.commons.dbutils.QueryRunner&quot; scope=&quot;prototype&quot;&gt;&lt;/bean&gt;
-
-    &lt;!-- 配置数据源 --&gt;
-    &lt;bean id=&quot;dataSource&quot; class=&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;&gt;
-        &lt;!--连接数据库的必备信息--&gt;
-        &lt;property name=&quot;driverClass&quot; value=&quot;com.mysql.jdbc.Driver&quot;&gt;&lt;/property&gt;
-        &lt;property name=&quot;jdbcUrl&quot; value=&quot;jdbc:mysql://localhost:3306/eesy&quot;&gt;&lt;/property&gt;
-        &lt;property name=&quot;user&quot; value=&quot;root&quot;&gt;&lt;/property&gt;
-        &lt;property name=&quot;password&quot; value=&quot;1234&quot;&gt;&lt;/property&gt;
-    &lt;/bean&gt;
-
-    &lt;!-- 配置Connection的工具类 ConnectionUtils --&gt;
-    &lt;bean id=&quot;connectionUtils&quot; class=&quot;com.itheima.utils.ConnectionUtils&quot;&gt;
-        &lt;!-- 注入数据源--&gt;
-        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;
-    &lt;/bean&gt;
-
-    &lt;!-- 配置事务管理器--&gt;
-    &lt;bean id=&quot;txManager&quot; class=&quot;com.itheima.utils.TransactionManager&quot;&gt;
-        &lt;!-- 注入ConnectionUtils --&gt;
-        &lt;property name=&quot;connectionUtils&quot; ref=&quot;connectionUtils&quot;&gt;&lt;/property&gt;
-    &lt;/bean&gt;
-&lt;/beans&gt;
-</code></pre>
-<h2 id="spring-aop">Spring-AOP</h2>
-<p>​    连接点：所有被动态代理的业务层的方法</p>
-<p>​    切入点：被增强的方法</p>
-<p>​    所以：所有的切入点都是连接点，反之则不一定</p>
-<figure data-type="image" tabindex="1"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9vc2NpbWcub3NjaGluYS5uZXQvb3NjbmV0L2NiNzJmZGFiY2I3MGJjMTE4YzAxMjkwOTUyNTlhMTY3YzNkLmpwZw?x-oss-process=image/format,png" alt="img"></figure>
-<h3 id="17-aop-相关术语">1.7 AOP 相关术语：</h3>
-<figure data-type="image" tabindex="2"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9vc2NpbWcub3NjaGluYS5uZXQvb3NjbmV0L2VkN2M0MzNlNjQzNGIyYzA4YTNmMjVlZmQzOWI3NjZmNzZhLmpwZw?x-oss-process=image/format,png" alt="img"></figure>
-<h3 id="18-spring-aop配置">1.8 spring-AOP配置</h3>
-<p>Java代码：</p>
-<pre><code class="language-java">/**
- * 通知类：用于记录日志的工具类，它里面提供了公共的代码
- */
-public class Logger {
-
-    /**
-     * 用于打印日志：计划让其在切入点方法执行之前执行（切入点方法就是业务层方法）
-     */
-    public  void printLog(){
-        System.out.println(&quot;Logger类中的pringLog方法开始记录日志了。。。&quot;);
-    }
-}
-/**
- * 账户的业务层接口
- */
-public interface IAccountService {
-
-    /**
-     * 模拟保存账户
-     */
-   void saveAccount();
-
-    /**
-     * 模拟更新账户
-     * @param i
-     */
-   void updateAccount(int i);
-
-    /**
-     * 删除账户
-     * @return
-     */
-   int  deleteAccount();
-}
-/**
- * 账户的业务层实现类
- */
-public class AccountServiceImpl implements IAccountService{
-
-    @Override
-    public void saveAccount() {
-        System.out.println(&quot;执行了保存&quot;);
-    }
-
-    @Override
-    public void updateAccount(int i) {
-        System.out.println(&quot;执行了更新&quot;+i);
-
-    }
-
-    @Override
-    public int deleteAccount() {
-        System.out.println(&quot;执行了删除&quot;);
-        return 0;
-    }
-}
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-       xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;
-       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop.xsd&quot;&gt;
-
-    
-</code></pre>
-<p>xml配置：</p>
-<pre><code class="language-xml">&lt;!-- 配置srping的Ioc,把service对象配置进来--&gt;
-    &lt;bean id=&quot;accountService&quot; class=&quot;com.itheima.service.impl.AccountServiceImpl&quot;&gt;&lt;/bean&gt;
-
-    &lt;!--spring中基于XML的AOP配置步骤
-        1、把通知Bean也交给spring来管理
-        2、使用aop:config标签表明开始AOP的配置
-        3、使用aop:aspect标签表明配置切面
-                id属性：是给切面提供一个唯一标识
-                ref属性：是指定通知类bean的Id。
-        4、在aop:aspect标签的内部使用对应标签来配置通知的类型
-               我们现在示例是让printLog方法在切入点方法执行之前之前：所以是前置通知
-               aop:before：表示配置前置通知
-                    method属性：用于指定Logger类中哪个方法是前置通知
-                    pointcut属性：用于指定切入点表达式，该表达式的含义指的是对业务层中哪些方法增强
-
-            切入点表达式的写法：
-                关键字：execution(表达式)
-                表达式：
-                    访问修饰符  返回值  包名.包名.包名...类名.方法名(参数列表)
-                标准的表达式写法：
-                    public void com.itheima.service.impl.AccountServiceImpl.saveAccount()
-                访问修饰符可以省略
-                    void com.itheima.service.impl.AccountServiceImpl.saveAccount()
-                返回值可以使用通配符，表示任意返回值
-                    * com.itheima.service.impl.AccountServiceImpl.saveAccount()
-                包名可以使用通配符，表示任意包。但是有几级包，就需要写几个*.
-                    * *.*.*.*.AccountServiceImpl.saveAccount())
-                包名可以使用..表示当前包及其子包
-                    * *..AccountServiceImpl.saveAccount()
-                类名和方法名都可以使用*来实现通配
-                    * *..*.*()
-                参数列表：
-                    可以直接写数据类型：
-                        基本类型直接写名称           int
-                        引用类型写包名.类名的方式   java.lang.String
-                    可以使用通配符表示任意类型，但是必须有参数
-                    可以使用..表示有无参数均可，有参数可以是任意类型
-                全通配写法：
-                    * *..*.*(..)
-
-                实际开发中切入点表达式的通常写法：
-                    切到业务层实现类下的所有方法
-                        * com.itheima.service.impl.*.*(..)
-    --&gt;
-
-    &lt;!-- 配置Logger类 --&gt;
-    &lt;bean id=&quot;logger&quot; class=&quot;com.itheima.utils.Logger&quot;&gt;&lt;/bean&gt;
-
-    &lt;!--配置AOP--&gt;
-    &lt;aop:config&gt;
-        &lt;!--配置切面 --&gt;
-        &lt;aop:aspect id=&quot;logAdvice&quot; ref=&quot;logger&quot;&gt;
-            &lt;!-- 配置通知的类型，并且建立通知方法和切入点方法的关联--&gt;
-            &lt;aop:before method=&quot;printLog&quot; pointcut=&quot;execution(* com.itheima.service.impl.*.*(..))&quot;&gt;&lt;/aop:before&gt;
-        &lt;/aop:aspect&gt;
-    &lt;/aop:config&gt;
-
-&lt;/beans&gt;
-</code></pre>
-<h3 id="19-通用切入点表达式">1.9 通用切入点表达式</h3>
-<p>xml 配置：</p>
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-
--&lt;beans xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd&quot; xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns=&quot;http://www.springframework.org/schema/beans&quot;&gt;
-
-&lt;!-- 配置srping的Ioc,把service对象配置进来--&gt;
-
-
-&lt;bean class=&quot;com.itheima.service.impl.AccountServiceImpl&quot; id=&quot;accountService&quot;/&gt;
-
-&lt;!-- 配置Logger类 --&gt;
-
-
-&lt;bean class=&quot;com.itheima.utils.Logger&quot; id=&quot;logger&quot;/&gt;
-
-&lt;!--配置AOP--&gt;
-
-
-
--&lt;aop:config&gt;
-
-&lt;!-- 配置切入点表达式 id属性用于指定表达式的唯一标识。expression属性用于指定表达式内容 此标签写在aop:aspect标签内部只能当前切面使用。 它还可以写在aop:aspect外面，此时就变成了所有切面可用 --&gt;
-
-
-&lt;aop:pointcut id=&quot;pt1&quot; expression=&quot;execution(* com.itheima.service.impl.*.*(..))&quot;/&gt;
-
-&lt;!--配置切面 --&gt;
-
-
-
--&lt;aop:aspect id=&quot;logAdvice&quot; ref=&quot;logger&quot;&gt;
-
-&lt;!-- 配置前置通知：在切入点方法执行之前执行 &lt;aop:before method=&quot;beforePrintLog&quot; pointcut-ref=&quot;pt1&quot; &gt;&lt;/aop:before&gt;--&gt;
-
-
-&lt;!-- 配置后置通知：在切入点方法正常执行之后值。它和异常通知永远只能执行一个 &lt;aop:after-returning method=&quot;afterReturningPrintLog&quot; pointcut-ref=&quot;pt1&quot;&gt;&lt;/aop:after-returning&gt;--&gt;
-
-
-&lt;!-- 配置异常通知：在切入点方法执行产生异常之后执行。它和后置通知永远只能执行一个 &lt;aop:after-throwing method=&quot;afterThrowingPrintLog&quot; pointcut-ref=&quot;pt1&quot;&gt;&lt;/aop:after-throwing&gt;--&gt;
-
-
-&lt;!-- 配置最终通知：无论切入点方法是否正常执行它都会在其后面执行 &lt;aop:after method=&quot;afterPrintLog&quot; pointcut-ref=&quot;pt1&quot;&gt;&lt;/aop:after&gt;--&gt;
-
-
-&lt;!-- 配置环绕通知 详细的注释请看Logger类中--&gt;
-
-
-&lt;aop:around pointcut-ref=&quot;pt1&quot; method=&quot;aroundPringLog&quot;/&gt;
-
-&lt;/aop:aspect&gt;
-
-&lt;/aop:config&gt;
-
-&lt;/beans&gt;
-
-</code></pre>
-<p>Java代码：</p>
-<pre><code class="language-java">public class Logger {
-
-    /**
-     * 前置通知
-     */
-    public  void beforePrintLog(){
-        System.out.println(&quot;前置通知Logger类中的beforePrintLog方法开始记录日志了。。。&quot;);
-    }
-
-    /**
-     * 后置通知
-     */
-    public  void afterReturningPrintLog(){
-        System.out.println(&quot;后置通知Logger类中的afterReturningPrintLog方法开始记录日志了。。。&quot;);
-    }
-    /**
-     * 异常通知
-     */
-    public  void afterThrowingPrintLog(){
-        System.out.println(&quot;异常通知Logger类中的afterThrowingPrintLog方法开始记录日志了。。。&quot;);
-    }
-
-    /**
-     * 最终通知
-     */
-    public  void afterPrintLog(){
-        System.out.println(&quot;最终通知Logger类中的afterPrintLog方法开始记录日志了。。。&quot;);
-    }
-
-    /**
-     * 环绕通知
-     * 问题：
-     *      当我们配置了环绕通知之后，切入点方法没有执行，而通知方法执行了。
-     * 分析：
-     *      通过对比动态代理中的环绕通知代码，发现动态代理的环绕通知有明确的切入点方法调用，而我们的代码中没有。
-     * 解决：
-     *      Spring框架为我们提供了一个接口：ProceedingJoinPoint。该接口有一个方法proceed()，此方法就相当于明确调用切入点方法。
-     *      该接口可以作为环绕通知的方法参数，在程序执行时，spring框架会为我们提供该接口的实现类供我们使用。
-     *
-     * spring中的环绕通知：
-     *      它是spring框架为我们提供的一种可以在代码中手动控制增强方法何时执行的方式。
-     */
-    public Object aroundPringLog(ProceedingJoinPoint pjp){
-        Object rtValue = null;
-        try{
-            Object[] args = pjp.getArgs();//得到方法执行所需的参数
-
-            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。前置&quot;);
-
-            rtValue = pjp.proceed(args);//明确调用业务层方法（切入点方法）
-
-            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。后置&quot;);
-
-            return rtValue;
-        }catch (Throwable t){
-            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。异常&quot;);
-            throw new RuntimeException(t);
-        }finally {
-            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。最终&quot;);
-        }
-    }
-}
-</code></pre>
-<h3 id="110-springaop的基于注解配置">1.10 springAOP的基于注解配置：</h3>
-<p>使用环绕通知，会按正常顺序输出，而分别使用其他4种通知则存在顺序问题</p>
-<pre><code class="language-java">/**
- * 测试AOP的配置
- */
-public class AOPTest {
-
-    public static void main(String[] args) {
-        //1.获取容器
-        ApplicationContext ac = new ClassPathXmlApplicationContext(&quot;bean.xml&quot;);
-        //2.获取对象
-        IAccountService as = (IAccountService)ac.getBean(&quot;accountService&quot;);
-        //3.执行方法
-        as.saveAccount();
-    }
-}
-
-/**
- * 账户的业务层接口
- */
-public interface IAccountService {
-
-    /**
-     * 模拟保存账户
-     */
-   void saveAccount();
-
-    /**
-     * 模拟更新账户
-     * @param i
-     */
-   void updateAccount(int i);
-
-    /**
-     * 删除账户
-     * @return
-     */
-   int  deleteAccount();
-}
-/**
- * 账户的业务层实现类
- */
-@Service(&quot;accountService&quot;)
-public class AccountServiceImpl implements IAccountService{
-
-    @Override
-    public void saveAccount() {
-        System.out.println(&quot;执行了保存&quot;);
-        int i=1/0;
-    }
-
-    @Override
-    public void updateAccount(int i) {
-        System.out.println(&quot;执行了更新&quot;+i);
-
-    }
-
-    @Override
-    public int deleteAccount() {
-        System.out.println(&quot;执行了删除&quot;);
-        return 0;
-    }
-}
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
-import org.springframework.stereotype.Component;
-
-/**
- * 用于记录日志的工具类，它里面提供了公共的代码
- */
-@Component(&quot;logger&quot;)
-@Aspect//表示当前类是一个切面类
-public class Logger {
-
-    @Pointcut(&quot;execution(* com.itheima.service.impl.*.*(..))&quot;)
-    private void pt1(){}
-
-    /**
-     * 前置通知
-     */
-//    @Before(&quot;pt1()&quot;)
-    public  void beforePrintLog(){
-        System.out.println(&quot;前置通知Logger类中的beforePrintLog方法开始记录日志了。。。&quot;);
-    }
-
-    /**
-     * 后置通知
-     */
-//    @AfterReturning(&quot;pt1()&quot;)
-    public  void afterReturningPrintLog(){
-        System.out.println(&quot;后置通知Logger类中的afterReturningPrintLog方法开始记录日志了。。。&quot;);
-    }
-    /**
-     * 异常通知
-     */
-//    @AfterThrowing(&quot;pt1()&quot;)
-    public  void afterThrowingPrintLog(){
-        System.out.println(&quot;异常通知Logger类中的afterThrowingPrintLog方法开始记录日志了。。。&quot;);
-    }
-
-    /**
-     * 最终通知
-     */
-//    @After(&quot;pt1()&quot;)
-    public  void afterPrintLog(){
-        System.out.println(&quot;最终通知Logger类中的afterPrintLog方法开始记录日志了。。。&quot;);
-    }
-
-    /**
-     * 环绕通知
-     * 问题：
-     *      当我们配置了环绕通知之后，切入点方法没有执行，而通知方法执行了。
-     * 分析：
-     *      通过对比动态代理中的环绕通知代码，发现动态代理的环绕通知有明确的切入点方法调用，而我们的代码中没有。
-     * 解决：
-     *      Spring框架为我们提供了一个接口：ProceedingJoinPoint。该接口有一个方法proceed()，此方法就相当于明确调用切入点方法。
-     *      该接口可以作为环绕通知的方法参数，在程序执行时，spring框架会为我们提供该接口的实现类供我们使用。
-     *
-     * spring中的环绕通知：
-     *      它是spring框架为我们提供的一种可以在代码中手动控制增强方法何时执行的方式。
-     */
-    @Around(&quot;pt1()&quot;)
-    public Object aroundPringLog(ProceedingJoinPoint pjp){
-        Object rtValue = null;
-        try{
-            Object[] args = pjp.getArgs();//得到方法执行所需的参数
-
-            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。前置&quot;);
-
-            rtValue = pjp.proceed(args);//明确调用业务层方法（切入点方法）
-
-            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。后置&quot;);
-
-            return rtValue;
-        }catch (Throwable t){
-            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。异常&quot;);
-            throw new RuntimeException(t);
-        }finally {
-            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。最终&quot;);
-        }
-    }
-}
-</code></pre>
-<p>xml 配置：</p>
-<pre><code class="language-xml">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-       xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;
-       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
-       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
-    
-    
-    &lt;!-- 配置spring创建容器时要扫描的包--&gt;
-&lt;context:component-scan base-package=&quot;com.itheima&quot;&gt;&lt;/context:component-scan&gt;
-
-&lt;!-- 配置spring开启注解AOP的支持 --&gt;
-&lt;aop:aspectj-autoproxy&gt;&lt;/aop:aspectj-autoproxy&gt;
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-    &lt;/beans&gt; 
-</code></pre>
-<h3 id="111不使用xml配置方式">1.11不使用XML配置方式：</h3>
-<h2 id="jdbctemplate">JDBCTemplate</h2>
-<figure data-type="image" tabindex="3"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9vc2NpbWcub3NjaGluYS5uZXQvb3NjbmV0LzgxNmFkYmFjOWJjMjJkMjJiNjg1NmZlMmU5MGUyY2E3MzY2LmpwZw?x-oss-process=image/format,png" alt="img"></figure>
-<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9vc2NpbWcub3NjaGluYS5uZXQvb3NjbmV0LzBhMTllMjk0OTNjZjJkNDJhNDNjNWNiMzlkM2ZjMjY2NTAwLmpwZw?x-oss-process=image/format,png" alt="img"><br>
-<img src="https://img-blog.csdnimg.cn/2019102209003725.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Redis缓存]]></title>
-        <id>https://cxp-twx.github.io/post/redis-huan-cun</id>
-        <link href="https://cxp-twx.github.io/post/redis-huan-cun">
-        </link>
-        <updated>2018-09-19T07:40:09.000Z</updated>
-        <content type="html"><![CDATA[<blockquote>
-<p>不管你是从事Python、Java、Go、PHP、Ruby等等… Redis都应该是一个比较熟悉的中间件。而大部分经常写业务代码的程序员，实际工作中或许只用到了set value、get value两个操作。对Redis缺乏一个整体的认识。今天就来对Redis的常见问题做一个总结。希望能够帮助到大家</p>
-</blockquote>
-<h2 id="redis是什么"><strong>Redis是什么</strong></h2>
-<p>Redis是一个开源的底层使用C语言编写的key-value存储数据库。可用于缓存、事件发布订阅、高速队列等场景。而且支持丰富的数据类型：string(字符串)、hash(哈希)、list(列表)、set(无序集合)、zset(sorted set：有序集合)</p>
-<h2 id="redis在项目中的应用场景"><strong>Redis在项目中的应用场景</strong></h2>
-<h2 id="1-缓存数据"><strong>1、缓存数据</strong></h2>
-<p>最常用，对经常需要查询且变动不是很频繁的数据 常称作热点数据。</p>
-<h2 id="2-消息队列"><strong>2、消息队列</strong></h2>
-<p>相当于消息订阅系统，比如ActiveMQ、RocketMQ。如果对数据有较高一致性要求时，还是建议使用MQ)</p>
-<h2 id="3-计数器"><strong>3、计数器</strong></h2>
-<p>比如统计点击率、点赞率，redis具有原子性，可以避免并发问题</p>
-<h2 id="4-电商网站信息"><strong>4、电商网站信息</strong></h2>
-<p>大型电商平台初始化页面数据的缓存。比如去哪儿网购买机票的时候首页的价格和你点进去的价格会有差异。</p>
-<h2 id="5-热点数据"><strong>5、热点数据</strong></h2>
-<p>比如新闻网站实时热点、微博热搜等，需要频繁更新。总数据量比较大的时候直接从数据库查询会影响性能</p>
-<h2 id="给个爱的理由"><strong>给个爱的理由</strong></h2>
-<h2 id="在单节点服务器我们通常是这样的"><strong>在单节点服务器我们通常是这样的</strong></h2>
-<figure data-type="image" tabindex="1"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMxLnpoaW1nLmNvbS84MC92Mi04YTdkZDQ5NTdmZmNlNTUyZjA5NTAyYWQyZWI4NmQ5OF9oZC5qcGc?x-oss-process=image/format,png" alt="img"></figure>
-<p>随着企业的发展、业务的扩展。面对海量的数据，直接使用MySql会导致性能下降，数据的读写也会非常慢。于是我们就可以搭配缓存来处理海量数据。</p>
-<h2 id="于是现在我们是这样的"><strong>于是现在我们是这样的：</strong></h2>
-<figure data-type="image" tabindex="2"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWM0LnpoaW1nLmNvbS84MC92Mi0yN2U3Nzk0ODQyNmQ2M2RkZmM0NjQxY2NiMWVhOGFlYl9oZC5qcGc?x-oss-process=image/format,png" alt="img"></figure>
-<p>上图只是简述了缓存的作用，当数据继续增大我们需要利用主从复制技术来达到读写分离</p>
-<p>数据库层直接与缓存进行交互，如果缓存中有数据直接返回客户端，如果没有才会从MySql中去查询。从而减小了数据库的压力，提升了效率。</p>
-<p>平时发布了一款新手机，会有抢购活动。同一时间段，服务端会收到很多的下单请求。</p>
-<p>我们需要使用redis的原子操作来实现这个“单线程”。首先我们把库存存在一个列表中，假设有10件库存，就往列表中push10个数，这个数没有实际意义，仅仅只是代表10件库存。抢购开始后，每到来一个用户，就从列表中pop一个数，表示用户抢购成功。当列表为空时，表示已经被抢光了。因为列表的pop操作是原子的，即使有很多用户同时到达，也是依次执行的</p>
-<p>题外话：还有的抢购是直接在前端页面限制请求，这些请求直接被前端拦截，并没有到后端服务器</p>
-<h2 id="redis为什么会这么快"><strong>Redis为什么会这么快</strong></h2>
-<p>1、Redis是纯内存操作，需要的时候需要我们手动持久化到硬盘中</p>
-<p>2、Redis是单线程，从而避开了多线程中上下文频繁切换的操作。</p>
-<p>3、Redis数据结构简单、对数据的操作也比较简单</p>
-<p>4、使用底层模型不同，它们之间底层实现方式以及与客户端之间通信的应用协议不一样，Redis直接自己构建了VM 机制 ，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求</p>
-<p>5、使用多路I/O复用模型，非阻塞I/O</p>
-<blockquote>
-<p>多路I/O复用: I/O 多路复用技术是为了解决进程或线程阻塞到某个 I/O 系统调用而出现的技术，可以监视多个描述符，一旦某个描述符就绪（一般是读就绪或者写就绪，就是这个文件描述符进行读写操作之前），能够通知程序进行相应的读写操作</p>
-</blockquote>
-<h2 id="redis数据类型的应用场景"><strong>Redis数据类型的应用场景</strong></h2>
-<p>前面提到了Redis支持五种丰富的数据类型，那么在不同场景下我们该怎么选择呢？</p>
-<h2 id="string"><strong>String</strong></h2>
-<p>字符串是最常用的数据类型，他能够存储任何类型的字符串，当然也包括二进制、JSON化的对象、甚至是base64编码之后的图片。在Redis中一个字符串最大的容量为512MB，可以说是无所不能了。</p>
-<h2 id="hash"><strong>Hash</strong></h2>
-<p>常用作存储结构化数据、比如论坛系统中可以用来存储用户的Id、昵称、头像、积分等信息。如果需要修改其中的信息，只需要通过Key取出Value进行反序列化修改某一项的值，再序列化存储到Redis中，Hash结构存储，由于Hash结构会在单个Hash元素在不足一定数量时进行压缩存储，所以可以大量节约内存。这一点在String结构里是不存在的。</p>
-<h2 id="list"><strong>List</strong></h2>
-<p>List的实现为一个双向链表，即可以支持反向查找和遍历，更方便操作，不过带来了部分额外的内存开销，Redis 内部的很多实现，包括发送缓冲队列等也都是用的这个数据结构。另外，可以利用 lrange 命令，做基于 Redis 的分页功能，性能极佳，用户体验好。</p>
-<h2 id="set"><strong>Set</strong></h2>
-<p>set 对外提供的功能与 list 类似是一个列表的功能，特殊之处在于 set 是可以自动排重的，当你需要存储一个列表数据，又不希望出现重复数据时，这个时候就可以选择使用set。</p>
-<h2 id="sort-set"><strong>Sort Set</strong></h2>
-<p>可以按照某个条件的权重进行排序，比如可以通过点击数做出排行榜的数据应用。</p>
-<h2 id="redis缓存的数据一致性"><strong>Redis缓存的数据一致性</strong></h2>
-<p>真正意义上来讲数据库的数据和缓存的数据是不可能一致的，数据分为最终一直和强一致两类。如果业务中对数据的要求必须强一直那么就不能使用缓存。缓存能做的只能保证数据的最终一致性。</p>
-<p>我们能做的只能是尽可能的保证数据的一致性。不管是先删库再删缓存 还是 先删缓存再删库，都可能出现数据不一致的情况，因为读和写操作是并发的，我们没办法保证他们的先后顺序。具体应对策略还是要根据业务需求来定，这里就不赘述了。</p>
-<h2 id="redis的过期和内存淘汰"><strong>Redis的过期和内存淘汰</strong></h2>
-<p>Redis存储数据时我们可以设置他的过期时间。但是这个key是怎么删除的呢？</p>
-<p>一开始我认为是定时删除，后来发现并不是这样，因为如果定时删除，需要一个定时器来不断的负责监控这个key，虽然内存释放了，但是非常消耗cpu资源。</p>
-<p>Redis过期删除采用的是定期删除，默认是每100ms检测一次，遇到过期的key则进行删除，这里的检测并不是顺序检测，而是随机检测。那这样会不会有漏网之鱼？显然Redis也考虑到了这一点，当我们去读/写一个已经过期的key时，会触发Redis的惰性删除策略，直接回干掉过期的key</p>
-<p>内存淘汰是指用户存储的一部分key是可以被Redis自动的删除，从而会出现从缓存中查不到数据的情况。加入我们的服务器内存为2G、但是随着业务的发展缓存的数据已经超过2G了。但是这并不影响我们程序的运行，因为操作系统的可见内存并不受物理内存的限制。物理内存不够用没关系，计算机会从硬盘中划出一片空间来作为虚拟内存。这就是Redis设计两种应用场景的初衷：缓存、持久存储</p>
-<h2 id="缓存击穿"><strong>缓存击穿</strong></h2>
-<p>缓存只是为了缓解数据库压力而添加的一层保护层，当从缓存中查询不到我们需要的数据就要去数据库中查询了。如果被黑客利用，频繁去访问缓存中没有的数据，那么缓存就失去了存在的意义，瞬间所有请求的压力都落在了数据库上，这样会导致数据库连接异常。</p>
-<p>解决方案：</p>
-<p>1、后台设置定时任务，主动的去更新缓存数据。这种方案容易理解，但是当key比较分散的时候，操作起来还是比较复杂的</p>
-<p>2、分级缓存。比如设置两层缓存保护层，1级缓存失效时间短，2级缓存失效时间长。有请求过来优先从1级缓存中去查找，如果在1级缓存中没有找到相应数据，则对该线程进行加锁，这个线程再从数据库中取到数据，更新至1级和2级缓存。其他线程则直接从2级线程中获取</p>
-<p>3、提供一个拦截机制，内部维护一系列合法的key值。当请求的key不合法时，直接返回。</p>
-<h2 id="缓存雪崩"><strong>缓存雪崩</strong></h2>
-<p>缓存雪崩就是指缓存由于某些原因（比如 宕机、cache服务挂了或者不响应）整体crash掉了，导致大量请求到达后端数据库，从而导致数据库崩溃，整个系统崩溃，发生灾难，也就是上面提到的缓存击穿。<br>
-图片来源网络</p>
-<figure data-type="image" tabindex="3"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWM0LnpoaW1nLmNvbS84MC92Mi00NGMzNjczYzc4ZTFmNTZjYmY3MjYxYzk4Nzg3NjQyN19oZC5qcGc?x-oss-process=image/format,png" alt="img"></figure>
-<p>如何避免雪崩：</p>
-<p>1、给缓存加上一定区间内的随机生效时间，不同的key设置不同的失效时间，避免同一时间集体失效。</p>
-<p>2、和缓存击穿解决方案类似，做二级缓存，原始缓存失效时从拷贝缓存中读取数据。</p>
-<p>3、利用加锁或者队列方式避免过多请求同时对服务器进行读写操作。</p>
-<h2 id="写在最后"><strong>写在最后</strong></h2>
-<p>Redis的性能极高，读的速度是110000次/s,写的速度是81000次/s，支持事务，支持备份，丰富的数据类型。</p>
-<p>任何事情都是两面性，Redis也是有缺点的：</p>
-<p>1、由于是内存数据库，所以单台机器存储的数据量是有限的，需要开发者提前预估，需要及时删除不需要的数据。</p>
-<p>2、当修改Redis的数据之后需要将持久化到硬盘的数据重新加入到内容中，时间比较久，这个时候Redis是无法正常运行的。<br>
-<img src="https://img-blog.csdnimg.cn/20191022084059443.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="高深莫测"></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[JAVA常见异常状态码]]></title>
-        <id>https://cxp-twx.github.io/post/java-chang-jian-yi-chang-zhuang-tai-ma</id>
-        <link href="https://cxp-twx.github.io/post/java-chang-jian-yi-chang-zhuang-tai-ma">
-        </link>
-        <updated>2018-08-13T02:34:14.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="4xx请求错误">4xx（请求错误）</h1>
-<p><strong>这些状态代码表示请求可能出错，妨碍了服务器的处理。</strong></p>
-<p><strong>代码 说明</strong><br>
-==400 ==（错误请求） 服务器不理解请求的语法。<br>
-401 （未授权） 请求要求身份验证。 对于需要登录的网页，服务器可能返回此响应。<br>
-403 （禁止） 服务器拒绝请求。<br>
-<mark>404</mark> （未找到） 服务器找不到请求的网页。<br>
-<mark>405</mark> （方法禁用） 禁用请求中指定的方法。<br>
-406 （不接受） 无法使用请求的内容特性响应请求的网页。<br>
-407 （需要代理授权） 此状态代码与 401（未授权）类似，但指定请求者应当授权使用代理。<br>
-408 （请求超时） 服务器等候请求时发生超时。<br>
-409 （冲突） 服务器在完成请求时发生冲突。服务器必须在响应中包含有关冲突的信息。<br>
-410 （已删除） 如果请求的资源已永久删除，服务器就会返回此响应。<br>
-411 （需要有效长度） 服务器不接受不含有效内容长度标头字段的请求。<br>
-412 （未满足前提条件） 服务器未满足请求者在请求中设置的其中一个前提条件。<br>
-413 （请求实体过大） 服务器无法处理请求，因为请求实体过大，超出服务器的处理能力。<br>
-414 （请求的 URI 过长） 请求的 URI（通常为网址）过长，服务器无法处理。<br>
-415 （不支持的媒体类型） 请求的格式不受请求页面的支持。<br>
-416 （请求范围不符合要求） 如果页面无法提供请求的范围，则服务器会返回此状态代码。<br>
-417 （未满足期望值） 服务器未满足&quot;期望&quot;请求标头字段的要求。</p>
-<h1 id="5xx服务器错误">5xx（服务器错误）</h1>
-<p>这些状态代码表示服务器在尝试处理请求时发生内部错误。 这些错误可能是服务器本身的错误，而不是请求出错。</p>
-<p>代码 说明<br>
-<mark>500</mark> （服务器内部错误） 服务器遇到错误，无法完成请求。<br>
-501 （尚未实施） 服务器不具备完成请求的功能。例如，服务器无法识别请求方法时可能会返回此代码。<br>
-502 （错误网关） 服务器作为网关或代理，从上游服务器收到无效响应。<br>
-503 （服务不可用） 服务器目前无法使用（由于超载或停机维护）。通常，这只是暂时状态。<br>
-504 （网关超时） 服务器作为网关或代理，但是没有及时从上游服务器收到请求。<br>
-505 （HTTP 版本不受支持） 服务器不支持请求中所用的 HTTP 协议版本。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Mybatis框架学习笔记]]></title>
-        <id>https://cxp-twx.github.io/post/mybatis-kuang-jia-xue-xi-bi-ji</id>
-        <link href="https://cxp-twx.github.io/post/mybatis-kuang-jia-xue-xi-bi-ji">
-        </link>
-        <updated>2018-06-16T07:38:45.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="mybatis框架学习笔记">Mybatis框架学习笔记</h1>
-<h1 id="mybatis介绍">Mybatis介绍</h1>
-<blockquote>
-<p>MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射。MyBatis<br>
-避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。MyBatis<br>
-可以使用简单的 XML 或注解来配置和映射原生类型、接口和 Java 的 POJO（Plain Old<br>
-Java Objects，普通老式 Java 对象）为数据库中的记录。</p>
-</blockquote>
-<h2 id="mybatis简单使用">Mybatis简单使用</h2>
-<h3 id="1先配置一个mybatis核心配置文件">1.先配置一个Mybatis核心配置文件</h3>
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
-&lt;!DOCTYPE configuration
-        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
-        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
-&lt;configuration&gt;
-    &lt;!-- 引入外部properties文件,路径从类路径的根目录开始 --&gt;
-    &lt;properties resource=&quot;jdbc.properties&quot; /&gt;
-
-    &lt;settings&gt;
-        &lt;!-- 开启将数据库中下划线连接的字段自动映射为Java的小驼峰命名 --&gt;
-        &lt;setting name=&quot;mapUnderscoreToCamelCase&quot; value=&quot;true&quot;/&gt;
-    &lt;/settings&gt;
-
-    &lt;!-- 定义类型别名，在xxxMapper.xml文件中就可以用别名代替很长的类名 --&gt;
-    &lt;typeAliases&gt;
-        
-            &lt;!-- 单个类配置别名 --&gt;
-&lt;!--        &lt;typeAlias type=&quot;com.lanou3g.mybatis.bean.User&quot; alias=&quot;User&quot; /&gt;--&gt;
-        
-            &lt;!-- 统一配置某个包下所有类的别名, 会使用 Bean 的首字母小写的类名来作为它的别名。 --&gt;
-        &lt;package name=&quot;com.lanou3g.mybatis.bean&quot; /&gt;
-    &lt;/typeAliases&gt;
-
-
-    &lt;!-- 配置不同环境的参数 --&gt;
-    &lt;environments default=&quot;development&quot;&gt;
-        &lt;!-- 开发环境数据库、事务配置 --&gt;
-        &lt;environment id=&quot;development&quot;&gt;
-            &lt;!-- 事务管理使用JDBC的事务 --&gt;
-            &lt;transactionManager type=&quot;JDBC&quot;/&gt;
-            &lt;!-- 配置开发环境数据源 --&gt;
-            &lt;dataSource type=&quot;POOLED&quot;&gt;
-                &lt;property name=&quot;driver&quot; value=&quot;${jdbc.driver}&quot;/&gt;
-                &lt;property name=&quot;url&quot; value=&quot;${jdbc.url}&quot;/&gt;
-                &lt;property name=&quot;username&quot; value=&quot;${jdbc.user}&quot;/&gt;
-                &lt;property name=&quot;password&quot; value=&quot;${jdbc.password}&quot;/&gt;
-                &lt;!-- 将所有driver.开头的参数，附加到url属性的值后面上 --&gt;
-                &lt;property name=&quot;driver.characterEncoding&quot; value=&quot;utf8&quot;/&gt;
-            &lt;/dataSource&gt;
-        &lt;/environment&gt;
-    &lt;/environments&gt;
-
-    &lt;!-- 将mapper SQL映射文件包含进来 --&gt;
-    &lt;mappers&gt;
-        &lt;!-- 将通过XML方式配置的mapper引入进来 --&gt;
-        &lt;mapper resource=&quot;mapper/userMapper.xml&quot;/&gt;
-        &lt;!-- 将通过注解方式配置的mapper引入进来 --&gt;
-&lt;!--        &lt;mapper class=&quot;com.lanou3g.mybatis.mapper.UserMapper&quot; /&gt;--&gt;
-
-        &lt;!-- 将com.lanou3g.mybatis.mapper包下所有通过注解方式配置的mapper引入进来 --&gt;
-&lt;!--        &lt;package name=&quot;com.lanou3g.mybatis.mapper&quot;/&gt;--&gt;
-    &lt;/mappers&gt;
-&lt;/configuration&gt;
-</code></pre>
-<h3 id="然后编写mapper对象的xml配置文件">然后编写Mapper对象的xml配置文件</h3>
-<p>XML格式的Mapper配置文件类似于接口的实现类，它指定了具体要执行的SQL语句，以及结果集如何映射。</p>
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
-&lt;!DOCTYPE mapper
-        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
-        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
-&lt;mapper namespace=&quot;com.lanou3g.mybatis.mapper.UserMapper&quot;&gt;
-    &lt;select id=&quot;queryAllUser&quot; resultType=&quot;user&quot;&gt;
-        select * from user
-     &lt;/select&gt;
-
-    &lt;insert id=&quot;insertUser&quot;&gt;
-      insert into user (username,nick_name,email)
-      values (#{username},#{nickName},#{email})
-    &lt;/insert&gt;
-&lt;/mapper&gt;
-</code></pre>
-<h3 id="2初始化sqlsessionfactory对象">2.初始化SqlSessionFactory对象</h3>
-<pre><code class="language-java">// 1. 初始化mybatis配置
-String confPath = &quot;mybatis_conf.xml&quot;;
-InputStream in = Resources.getResourceAsStream(confPath);
-
-// 2. 构建SqlSessionFactory对象
-SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(in);
-</code></pre>
-<h3 id="3创建sqlsession对象">3.创建SqlSession对象</h3>
-<p>通过上一步的SqlSessionFactory对象可以获取到负责执行SQL语句的SqlSession对象</p>
-<pre><code class="language-java">// 3. 获取SqlSession对象，默认事务不自动提交
-// SqlSession sqlSession = sqlSessionFactory.openSession();
-// 获取一个自动提交事务的sqlSession
-SqlSession sqlSession = sqlSessionFactory.openSession(true);
-</code></pre>
-<h3 id="4用sqlsession对象从mybatis中获取mapper接口的实现类">4.用SqlSession对象从Mybatis中获取Mapper接口的实现类</h3>
-<pre><code class="language-java">// 4. 获取Mapper
-UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-</code></pre>
-<h2 id="深入了解mybatis">深入了解Mybatis</h2>
-<h3 id="主要组件">主要组件</h3>
-<h4 id="核心配置文件">核心配置文件</h4>
-<p>核心配置文件是Mybatis的入口，它里面可以配置mybatis的具体参数、数据源、类型别名、关联映射文件等。。</p>
-<p>具体的参数配置说明参见：</p>
-<p><a href="https://mybatis.org/mybatis-3/zh/configuration.html">Mybatis3核心配置文件官方说明</a></p>
-<h4 id="sqlsessionfactory">SqlSessionFactory</h4>
-<p>一个SqlSessionFactory只能连接一个数据库实例，如果需要连接多个数据库，需要构建多个SqlSessionFactory对象。</p>
-<p>在构建SqlSesssionFactory时可以指定environment的id，表示使用指定的数据源来构建factory对象</p>
-<pre><code class="language-java">SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(in, &quot;dev&quot;);
-</code></pre>
-<h4 id="sqlsession">SqlSession</h4>
-<p>一个SqlSession对象代表一次到数据的会话，该对象有一下功能：</p>
-<ul>
-<li>获取Mapper实现类</li>
-<li>管理事务操作</li>
-</ul>
-<blockquote>
-<p>注意： SqlSession对象是非线程安全的，在多线程环境下，建议不要作为类的实例属性来用。</p>
-</blockquote>
-<h4 id="mapper">Mapper</h4>
-<ul>
-<li>
-<p>Mapper接口类</p>
-<p>定义了增删盖查的方法。注意，必须是接口类型，而且方法只需要定义就可以了。</p>
-</li>
-<li>
-<p>Mapper配置文件</p>
-<p>Mapper配置文件中就是负责实现接口中的方法，它定义了具体要执行什么SQL语句，如何映射结果集。</p>
-<ul>
-<li>配置文件中select、delete、update、insert标签的id必须是对应接口中的方法名。</li>
-<li>mapper文件的namespace属性需要对应Mapper接口的完全类型限定名。</li>
-</ul>
-</li>
-</ul>
-<h3 id="深入mybatis核心配置文件">深入Mybatis核心配置文件</h3>
-<p>具体的参数配置说明参见：</p>
-<p><a href="https://mybatis.org/mybatis-3/zh/configuration.html">Mybatis3核心配置文件官方说明</a></p>
-<h3 id="深入mybatis映射配置文件">深入Mybatis映射配置文件</h3>
-<h4 id="crud语句定义">CRUD语句定义</h4>
-<h5 id="查询语句">查询语句</h5>
-<p>接口中</p>
-<pre><code class="language-java">List&lt;User&gt; queryAllUser();
-
-User queryUserById(Integer id);
-</code></pre>
-<p>xml配置文件中</p>
-<pre><code class="language-xml">&lt;select id=&quot;queryAllUser&quot; resultType=&quot;user&quot;&gt;
-    select * from user
-&lt;/select&gt;
-
-&lt;select id=&quot;queryUserById&quot; resultType=&quot;user&quot;&gt;
-    select * from user where id = #{id}
-&lt;/select&gt;
-</code></pre>
-<h5 id="插入语句">插入语句</h5>
-<h6 id="普通插入语句">普通插入语句</h6>
-<p>接口中</p>
-<pre><code class="language-java">int insertUser(User user);
-
-</code></pre>
-<p>xml配置文件中</p>
-<pre><code class="language-xml">&lt;insert id=&quot;insertUser&quot;&gt;
-    insert into user (username,nick_name,email)
-    values (#{username},#{nickName},#{email})
-&lt;/insert&gt;
-
-</code></pre>
-<h6 id="如何返回数据库自增的id">如何返回数据库自增的ID</h6>
-<pre><code class="language-xml">&lt;!-- 给insert语句添加useGeneratedKeys、keyProperty后，mybatis会将自增的id值直接赋值到传进来的user对象的id属性上
-        useGeneratedKeys: 指定需要获取数据库自增的id
-        keyProperty: 指定自增地段的名称
-     --&gt;
-&lt;insert id=&quot;insertUser&quot; useGeneratedKeys=&quot;true&quot; keyProperty=&quot;id&quot;&gt;
-    insert into user (username,nick_name,email)
-    values (#{username},#{nickName},#{email})
-&lt;/insert&gt;
-
-</code></pre>
-<h5 id="删除语句">删除语句</h5>
-<p>接口中</p>
-<pre><code class="language-java">void deleteUserById(Integer id);
-
-</code></pre>
-<p>XML配置中</p>
-<pre><code class="language-xml">&lt;delete id=&quot;deleteUserById&quot;&gt;
-    delete from user where id = #{id}
-&lt;/delete&gt;
-
-</code></pre>
-<h5 id="更新语句">更新语句</h5>
-<p>接口中</p>
-<pre><code class="language-java">void updateUser(User user);
-
-</code></pre>
-<p>XML配置中</p>
-<pre><code class="language-xml">&lt;update id=&quot;updateUser&quot;&gt;
-    update user set password = #{password} where id = #{id}
-&lt;/update&gt;
-
-</code></pre>
-<h4 id="接口中的参数如果传递到sql中">接口中的参数如果传递到SQL中</h4>
-<ul>
-<li>
-<p>简单类型参数</p>
-<p>接口中：</p>
-<pre><code class="language-java">void deleteUserById(Integer id);
-
-</code></pre>
-<p>xml配置文件中：</p>
-<pre><code class="language-xml">&lt;delete id=&quot;deleteUserById&quot;&gt;
-    delete from user where id = #{id}
-&lt;/delete&gt;
-
-</code></pre>
-</li>
-<li>
-<p>引用类型参数</p>
-<p>接口中：</p>
-<pre><code class="language-java">int insertUser(User user);
-
-</code></pre>
-<p>xml配置文件中：</p>
-<pre><code class="language-xml">&lt;!-- 给insert语句添加useGeneratedKeys、keyProperty后，mybatis会将自增的id值直接赋值到传进来的user对象的id属性上
-        useGeneratedKeys: 指定需要获取数据库自增的id
-        keyProperty: 指定自增地段的名称
-     --&gt;
-&lt;insert id=&quot;insertUser&quot; useGeneratedKeys=&quot;true&quot; keyProperty=&quot;id&quot;&gt;
-    insert into user (username,nick_name,email)
-    values (#{username},#{nickName},#{email})
-&lt;/insert&gt;
-
-</code></pre>
-</li>
-<li>
-<p>当接口中参数和XML配置取值时名称不一样时</p>
-<p>在接口中的参数前加注解</p>
-<pre><code class="language-java">User queryUserById(@Param(&quot;id&quot;) Integer xxxxxxxId);
-
-</code></pre>
-<p>在XML中取值时用注解指定的名称</p>
-<pre><code class="language-xml">&lt;select id=&quot;queryUserById&quot; resultType=&quot;user&quot;&gt;
-    select * from user where id = #{id}
-&lt;/select&gt;
-
-</code></pre>
-</li>
-</ul>
-<h4 id="结果集如何映射">结果集如何映射</h4>
-<h5 id="resulttype方式">ResultType方式</h5>
-<p>ResultType方式适用于数据库结果集可以直接映射成一个Java类的情况</p>
-<p>Java实体类：</p>
-<pre><code class="language-java">@Getter
-@Setter
-@ToString
-public class User {
-    private Integer id;
-    private String username;
-    private String nickName;
-    private String password;
-    private String email;
-    private Timestamp lastLoginttime;
-}
-
-</code></pre>
-<p>使用方法：</p>
-<pre><code class="language-xml">&lt;select id=&quot;queryAllUser&quot; resultType=&quot;com.lanou3g.bean.User&quot;&gt;
-    select * from user
-&lt;/select&gt;
-
-</code></pre>
-<h5 id="resultmap方式">ResultMap方式</h5>
-<p>ResultMap方式适用于复杂的结果集映射，比如数据库返回的结果集中的列名和JavaBean无法一一对应，或者对象间存在一对一、一对多关联映射时。</p>
-<h6 id="解决数据库列名与java类中属性名不一致的映射问题">解决数据库列名与Java类中属性名不一致的映射问题</h6>
-<pre><code class="language-xml">&lt;mapper&gt;
-    ...
-    &lt;resultMap id=&quot;userMap&quot; type=&quot;user&quot;&gt;
-        &lt;id property=&quot;id&quot; column=&quot;id&quot; /&gt;
-        &lt;result property=&quot;username&quot; column=&quot;username&quot; /&gt;
-        &lt;result property=&quot;lastLoginttime&quot; column=&quot;last_login_time&quot; /&gt;
-        &lt;result property=&quot;email&quot; column=&quot;email&quot; /&gt;
-        &lt;result property=&quot;nickName&quot; column=&quot;nick_name&quot; /&gt;
-    &lt;/resultMap&gt;
-    ...
-&lt;/mapper&gt;
-
-</code></pre>
-<p>在查询语句中将resultType换成resultMap</p>
-<pre><code class="language-xml">&lt;select id=&quot;queryAllUser&quot; resultMap=&quot;userMap&quot;&gt;
-    select * from user
-&lt;/select&gt;
-
-</code></pre>
-<h4 id="与的区别">#{}与${}的区别</h4>
-<blockquote>
-<p>它俩都可以获取接口调用中传递过来的参数<br>
-#{}会将参数作为占位符，使用预编译语句(PreparedStatement)执行<br>
-会直接用实际参数替换 {}会直接用实际参数替换会直接用实际参数替换{}， 参数可以作为SQL的一部分。</p>
-</blockquote>
-<h6 id="解决一对一映射查询问题">解决一对一映射查询问题</h6>
-<h6 id="解决一对多映射查询问题">解决一对多映射查询问题</h6>
-<p>配置文件：</p>
-<pre><code class="language-xml">&lt;!--一对一映射！--&gt;
-    &lt;resultMap id=&quot;teacherMap&quot; type=&quot;teacher&quot;&gt;
-        &lt;id property=&quot;id&quot; column=&quot;id&quot;/&gt;
-        &lt;result property=&quot;name&quot; column=&quot;name&quot;/&gt;
-        &lt;association property=&quot;className&quot; javaType=&quot;ClassName&quot;&gt;
-            &lt;id property=&quot;classId&quot; column=&quot;cid&quot;/&gt;
-            &lt;result property=&quot;className&quot; column=&quot;cname&quot;/&gt;
-        &lt;/association&gt;
-        &lt;!--一对多映射！--&gt;
-        &lt;collection property=&quot;students&quot; ofType=&quot;Student&quot;&gt;
-            &lt;id property=&quot;studentNumber&quot; column=&quot;student_number&quot;/&gt;
-            &lt;result property=&quot;sid&quot; column=&quot;sid&quot;/&gt;
-            &lt;result property=&quot;studentName&quot; column=&quot;student_name&quot;/&gt;
-        &lt;/collection&gt;
-
-    &lt;/resultMap&gt;
-&lt;select id=&quot;selectAllById&quot; resultMap=&quot;teacherMap&quot;&gt;
-        SELECT
-            T.id,
-            T.name,
-            C.class_id cid,
-            C.class_name cname,
-            S.student_number,
-            S.student_name,
-            S.sid
-        FROM
-            teacher T
-        LEFT JOIN class C ON T.id = C.class_id
-        LEFT JOIN student S ON T.id = S.sid
-        WHERE T.id = #{id}
-
-    &lt;/select&gt;
-
-</code></pre>
-<p>测试类：</p>
-<pre><code class="language-java">public static void main(String[] args) throws IOException {
-        // 1. 初始化mybatis配置
-        String classPath = &quot;mybatis-config.xml&quot;;
-        InputStream in = Resources.getResourceAsStream(classPath);
-        // 2. 构建SqlSessionFactory对象
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(in);
-        // 3. 获取SqlSession对象，默认事务不自动提交
-        SqlSession sqlSession = sqlSessionFactory.openSession(true);
-
-        // 4. 获取Mapper
-        TeacherDaoMapper mapper = sqlSession.getMapper(TeacherDaoMapper.class);
-
-        Teacher teacher = mapper.selectAllById(1);
-        System.out.println(teacher);
-
-    }
-
-</code></pre>
-<h4 id="动态sql">动态SQL</h4>
-<p>使用动态sql</p>
-<p>1.创建bean类</p>
-<p>2.创建mapper接口</p>
-<p>3.创建mapper.xml文件</p>
-<p>4.配置mybatis配置文件</p>
-<p>5.使用</p>
-<h5 id="条件分支sql">条件分支SQL</h5>
-<ul>
-<li>
-<p>if</p>
-<p>1.在mapper接口写入抽象方法</p>
-<p>2.在mapper.xml文件中写入:</p>
-<pre><code class="language-xml">&lt;!--id名与mapper接口中方法名一致--&gt;
-&lt;select id=&quot;queryAllUserByCondition&quot; resultType=&quot;user&quot;&gt;
-        SELECT * FROM `user` WHERE status = 1
-        &lt;if test=&quot;password != null&quot;&gt;
-            AND password like #{password}
-        &lt;/if&gt;
-        &lt;if test=&quot;createtime != null and username != null&quot;&gt;
-            AND username like #{username}
-        &lt;/if&gt;
-    &lt;/select&gt;
-
-</code></pre>
-<blockquote>
-<p>如果我们的state字段也是动态拼接的，那这里就有问题了，比如我三个条件都没有时，拼出来的sql语句就是<code>SELECT * FROM BLOG WHERE</code>显然是无法执行的，这就要用到我们的<code>where</code>标签</p>
-</blockquote>
-</li>
-<li>
-<p>choose&amp;when&amp;otherwise</p>
-<p>1.在mapper接口写入抽象方法</p>
-<p>2.在mapper.xml文件中写入:</p>
-<pre><code class="language-xml">&lt;select id=&quot;queryAllUserByCondition&quot; resultType=&quot;user&quot;&gt;
-        SELECT * from `user`
-        &lt;where&gt;
-            &lt;choose&gt;
-                &lt;when test=&quot;username != null&quot;&gt;
-                    username like #{username}
-                &lt;/when&gt;
-                &lt;when test=&quot;status != null&quot;&gt;
-                    and `status` = #{status};
-                &lt;/when&gt;
-                &lt;otherwise&gt;
-                    and 1 = 1
-                &lt;/otherwise&gt;
-            &lt;/choose&gt;
-        &lt;/where&gt;
- &lt;/select&gt;
-
-</code></pre>
-</li>
-</ul>
-<blockquote>
-<p>有时我们不想应用到所有的条件语句，而只想从中择其一项。针对这种情况，MyBatis 提供了 choose 元素，它有点像 Java 中的 switch 语句</p>
-</blockquote>
-<h5 id="循环sql">循环SQL</h5>
-<ul>
-<li>
-<p>forEach</p>
-<blockquote>
-<p>使用场景:对一个集合进行遍历</p>
-</blockquote>
-<p>1.在mapper接口写入抽象方法</p>
-<p>2.在mapper.xml文件中写入:</p>
-<pre><code class="language-xml">   &lt;select id=&quot;queryUserByIn&quot; resultType=&quot;com.su.mybatis.bean.User&quot;&gt;
-        select * from user where id
-        &lt;foreach collection=&quot;list&quot; item=&quot;val&quot; open=&quot;in (&quot; close=&quot;)&quot; separator=&quot;,&quot;&gt;
-            #{val}
-        &lt;/foreach&gt;
-    &lt;/select&gt;
-
-</code></pre>
-</li>
-</ul>
-<h5 id="其他特殊sql">其他特殊SQL</h5>
-<ul>
-<li>
-<p>where</p>
-<p>当我们拼接动态SQL时，如果一个查询条件都没有，那我们就不需要where子句，而如果有至少一个条件我们就需要where子句。这样，我们就需要做个判断，而mybatis里的标签就省去了我们自己做这个判断。 使用示例:</p>
-<pre><code class="language-xml">&lt;select id=&quot;queryAllUserByCondition&quot; resultType=&quot;user&quot;&gt;
-        SELECT * from `user`
-        &lt;where&gt;
-            &lt;if test=&quot;username != null&quot;&gt;
-                username like #{username}
-            &lt;/if&gt;
-            &lt;if test=&quot;status != null&quot;&gt;
-                and `status` = #{status};
-            &lt;/if&gt;
-        &lt;/where&gt;
-&lt;/select&gt;
-
-</code></pre>
-</li>
-<li>
-<p>set</p>
-<p>set 元素会动态前置 SET 关键字，同时也会删掉无关的逗号(如：语句最后的逗号)<br>
-使用示例：</p>
-<pre><code class="language-xml">&lt;update id=&quot;updateAuthorIfNecessary&quot;&gt;
-  update Author
-    &lt;set&gt;
-      &lt;if test=&quot;username != null&quot;&gt;username=#{username},&lt;/if&gt;
-      &lt;if test=&quot;password != null&quot;&gt;password=#{password},&lt;/if&gt;
-      &lt;if test=&quot;email != null&quot;&gt;email=#{email},&lt;/if&gt;
-      &lt;if test=&quot;bio != null&quot;&gt;bio=#{bio}&lt;/if&gt;
-    &lt;/set&gt;
-  where id=#{id}
-&lt;/update&gt;
-
-</code></pre>
-</li>
-<li>
-<p>trim</p>
-<p>trim标签可以常用属性有：</p>
-<ul>
-<li>
-<p><code>prefix</code>: 添加指定前缀</p>
-</li>
-<li>
-<p><code>prefixOverrides</code>: 删除指定前缀</p>
-</li>
-<li>
-<p><code>suffixOverrides</code>: 删除指定后缀<br>
-示例一：用标签实现标签功能</p>
-<pre><code class="language-xml">&lt;trim prefix=&quot;WHERE&quot; prefixOverrides=&quot;AND |OR &quot;&gt;
-  ...
-&lt;/trim&gt;
-
-</code></pre>
-<blockquote>
-<p>prefixOverrides的作用是移除字符串开头的内容中所有指定在 prefixOverrides 属性中的内容，并且插入 prefix 属性中指定的内容</p>
-</blockquote>
-<p>示例二:</p>
-<pre><code class="language-xml">&lt;trim prefix=&quot;SET&quot; suffixOverrides=&quot;,&quot;&gt;
-  ...
-&lt;/trim&gt;
-
-</code></pre>
-<blockquote>
-<p>注意这里我们删去的是后缀值，同时添加了前缀值。</p>
-</blockquote>
-</li>
-</ul>
-</li>
-</ul>
-<h4 id="批量插入">批量插入</h4>
-<h5 id="通过foreach动态sql方式">通过forEach动态SQL方式</h5>
-<h6 id="实现原理">实现原理</h6>
-<p>forEach批量插入的原理是直接通过forEach动态标签，根据传过来的参数数量动态生成一个很长的SQL语句。一个语句就是一次批量插入。</p>
-<p>语句形如：</p>
-<pre><code class="language-sql">insert into user (username, age) values
-('张三', 10),
-('李四', 10),
-('王五', 10),
-('赵六', 10),
-('盖聂', 9000)
-
-# 上面的语句一次会插入5条数据
-
-</code></pre>
-<p>我们需要做的就是生成此语句就可以了。</p>
-<h6 id="具体做法">具体做法</h6>
-<p>Mapper接口</p>
-<pre><code class="language-java">int batchInsertUser(List&lt;User&gt; userList);
-
-</code></pre>
-<p>Mapper映射文件</p>
-<pre><code class="language-xml">&lt;insert id=&quot;batchInsertUser&quot;&gt;
-	insert into user (username, age) values
-    &lt;forEach collection=&quot;list&quot; item=&quot;user&quot; separator=&quot;,&quot;&gt;
-    	(#{user.username}, #{user.age})
-    &lt;/forEach&gt;
-&lt;/insert&gt;
-
-</code></pre>
-<h5 id="通过executorbatch的方式">通过Executor.BATCH的方式</h5>
-<h6 id="实现原理-2">实现原理</h6>
-<p>这种批量插入在底层的Mapper接口和Mapper映射文件中，都只是一个普通插入单条数据的写法。它通过在上层获取SqlSession时，指定执行类型是批量ExcecutorType.BATCH的方式，实现每次执行完单条插入以后并没有真正写入数据库，只有当调用sqlSession.flushStatement()时，才会将这一批数据一次性写入数据库，从而实现批量操作。</p>
-<h6 id="使用步骤">使用步骤</h6>
-<ol>
-<li>
-<p>获取SqlSession时指定执行类型为批量</p>
-<pre><code class="language-java">// 获取一个批量执行的sqlSession对象
-SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
-
-</code></pre>
-</li>
-<li>
-<p>Mapper接口和Mapper映射文件中只需按照单条插入去写方法和SQL语句即可</p>
-<p>Mapper接口</p>
-<pre><code class="language-java">int insertUser(User user);
-
-</code></pre>
-<p>XML映射文件</p>
-<pre><code class="language-xml">&lt;insert id=&quot;insertUser&quot;&gt;
-    insert into user (nick_name, status, createtime)
-    values
-    (#{nickName},#{status},#{createtime})
-&lt;/insert&gt;
-
-</code></pre>
-</li>
-<li>
-<p>空置批量的大小，在够一批数据时，调用<code>sqlSession.flushStatement()</code>去整体往数据库写一次</p>
-<pre><code class="language-java">int batchSize = 100;
-int count = 0;
-List&lt;BatchResult&gt; resultList = new ArrayList&lt;&gt;();
-for(User user : userList) {
-    // ExecutorType.Batch方式这里返回的不是影响的条数，具体获取方法参见下面代码
-    mapper.insertUser(user);
-    count++;
-    if(count % batchSize == 0) {
-        resultList.addAll(sqlSession.flushStatements());
-    }
-}
-if(count % batchSize != 0) {
-    resultList.addAll(sqlSession.flushStatements());
-}
-
-</code></pre>
-</li>
-<li>
-<p>获取影响的条数</p>
-<p>这种方式获取影响条数没有那么直接，需要去API返回的BatchResult对象中读取updateCounts方法才能拿到。</p>
-<pre><code class="language-java">int rows = 0;
-for(BatchResult batchResult : resultList) {
-    int[] updateCounts = batchResult.getUpdateCounts();
-    for(int updateCount : updateCounts) {
-        rows += updateCount;
-    }
-}
-System.out.println(&quot;批量插入成功，响应的行数：&quot; + rows);
-
-</code></pre>
-</li>
-</ol>
-<h4 id="缓存">缓存</h4>
-<h5 id="一级缓存本地缓存">一级缓存（本地缓存）</h5>
-<p>Mybatis的一级缓存是指Session缓存。一级缓存的作用域默认是一个SqlSession。Mybatis默认开启一级缓存。<br>
-也就是在同一个SqlSession中，执行相同的查询SQL，第一次会去数据库进行查询，并写到缓存中；<br>
-第二次以后是直接去缓存中取。<br>
-当执行SQL查询中间发生了增删改的操作，MyBatis会把SqlSession的缓存清空。</p>
-<blockquote>
-<p>问题： 如果增删改的表和缓存的表是毫不相干的两个表，是否会清空缓存？</p>
-<p>答 :    会清空</p>
-</blockquote>
-<h6 id="测试方法">测试方法</h6>
-<ol>
-<li>我们在一个 sqlSession 中，对 User 表根据id进行两次查询，查看他们发出sql语句的情况</li>
-</ol>
-<pre><code class="language-java">@Test
-public void testSelectOrderAndUserByOrderId(){
-    //根据 sqlSessionFactory 产生 session
-    SqlSession sqlSession = sessionFactory.openSession();
-    String statement = &quot;one.to.one.mapper.OrdersMapper.selectOrderAndUserByOrderID&quot;;
-    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-    //第一次查询，发出sql语句，并将查询的结果放入缓存中
-    User u1 = userMapper.selectUserByUserId(1);
-    System.out.println(u1);
-     
-    //第二次查询，由于是同一个sqlSession,会在缓存中查找查询结果
-    //如果有，则直接从缓存中取出来，不和数据库进行交互
-    User u2 = userMapper.selectUserByUserId(1);
-    System.out.println(u2);
-     
-    sqlSession.close();
-}
-
-</code></pre>
-<ol start="2">
-<li>同样是对user表进行两次查询，只不过两次查询之间进行了一次update操作。</li>
-</ol>
-<pre><code class="language-java">@Test
-public void testSelectOrderAndUserByOrderId(){
-    //根据 sqlSessionFactory 产生 session
-    SqlSession sqlSession = sessionFactory.openSession();
-    String statement = &quot;one.to.one.mapper.OrdersMapper.selectOrderAndUserByOrderID&quot;;
-    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-    //第一次查询，发出sql语句，并将查询的结果放入缓存中
-    User u1 = userMapper.selectUserByUserId(1);
-    System.out.println(u1);
-     
-    //第二步进行了一次更新操作，sqlSession.commit()
-    u1.setSex(&quot;女&quot;);
-    userMapper.updateUserByUserId(u1);
-    sqlSession.commit();
-     
-    //第二次查询，由于是同一个sqlSession.commit(),会清空缓存信息
-    //则此次查询也会发出 sql 语句
-    User u2 = userMapper.selectUserByUserId(1);
-    System.out.println(u2);
-     
-    sqlSession.close();
-}
-
-</code></pre>
-<h5 id="如何禁用一级缓存">如何禁用一级缓存</h5>
-<ul>
-<li>在映射文件中给对应的select标签上添加<code>flushCache=&quot;true&quot;</code>属性</li>
-<li>在核心配置文件中将localCacheScope设置成STATEMENT（默认值是SESSION）</li>
-</ul>
-<h5 id="二级缓存全局缓存">二级缓存（全局缓存）</h5>
-<h6 id="什么是二级缓存">什么是二级缓存？</h6>
-<p>Mybatis中二级缓存相比一级（本地）缓存来说是一个作用域更大的缓存方案。 二级缓存的作用域可以跨多个SqlSession，只要是同一个namespace下的mapper映射文件都可以共享缓存。但是不能跨SqlSessionFactory。</p>
-<p>Mybatis二级缓存需要手动开启。</p>
-<h6 id="开启二级缓存的方法">开启二级缓存的方法</h6>
-<p>1.在 SqlMapConfig.xml 文件开启二级缓存</p>
-<pre><code class="language-xml">&lt;settings&gt; 
-    &lt;!-- 开启全局二级缓存的支持 --&gt;  
-    &lt;setting name=&quot;cacheEnabled&quot; value=&quot;true&quot;/&gt; 
-&lt;/settings&gt; 
-
-</code></pre>
-<p>2.配置相关的 Mapper 映射文件 (因为二级缓存就是针对特定的mapper namespace的)</p>
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; 
-&lt;!DOCTYPE mapper     
-PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;     
-&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt; 
-&lt;mapper namespace=&quot;com.itheima.dao.IUserDao&quot;&gt;  
-    &lt;!-- 开启二级缓存的支持 --&gt;  
-    &lt;cache /&gt;
-&lt;/mapper&gt;
-
-</code></pre>
-<blockquote>
-<p><cache>标签表示当前这个 mapper 映射将使用二级缓存，能否命中二级缓存就看多次查询是否属于同一个namespace。</p>
-</blockquote>
-<ol start="3">
-<li>设置某个特定的查询语句不用二级缓存</li>
-</ol>
-<pre><code class="language-xml">&lt;!-- 根据 id 查询 --&gt; 
-&lt;select id=&quot;findById&quot; resultType=&quot;user&quot; parameterType=&quot;int&quot; useCache=&quot;false&quot;&gt;  
-    select * from user where id = #{uid} 
-&lt;/select&gt; 
-
-</code></pre>
-<blockquote>
-<p>注意： 如果mapper文件中没有开启 <cache /> 仅在语句上添加useCache=&quot;true&quot;是无法开启二级缓存的。这个属性本意是用来关闭特定查询的二级缓存。</p>
-</blockquote>
-<h6 id="二级缓存注意事项">二级缓存注意事项</h6>
-<blockquote>
-<p>当我们在使用二级缓存时，所缓存的类一定要实现 java.io.Serializable 接口，这种就可以使用序列化 方式来保存对象。</p>
-</blockquote>
-<pre><code class="language-java">public class User implements Serializable { }
-
-</code></pre>
-<h4 id="mybatis逆向工程">Mybatis逆向工程</h4>
-<h2 id="spring与mybatis整合">Spring与Mybatis整合</h2>
-<ol>
-<li>
-<p>加入依赖</p>
-<pre><code class="language-xml">&lt;!-- mybatis-spring整合依赖，这个是最主要的一个依赖 --&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.mybatis&lt;/groupId&gt;
-    &lt;artifactId&gt;mybatis-spring&lt;/artifactId&gt;
-    &lt;version&gt;2.0.1&lt;/version&gt;
-&lt;/dependency&gt;
-
-&lt;!-- Spring和数据源相关依赖 --&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-    &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
-    &lt;version&gt;5.2.0.RELEASE&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-    &lt;artifactId&gt;spring-jdbc&lt;/artifactId&gt;
-    &lt;version&gt;5.2.0.RELEASE&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
-    &lt;artifactId&gt;druid&lt;/artifactId&gt;
-    &lt;version&gt;1.1.20&lt;/version&gt;
-&lt;/dependency&gt;
-
-</code></pre>
-</li>
-<li>
-<p>在Spring bean配置文件中配置Mybatis、Spring整合bean  SqlSessionFactoryBean</p>
-<pre><code class="language-xml">&lt;!-- 配置整合bean --&gt;
-&lt;bean id=&quot;sessionFactoryBean&quot; class=&quot;org.mybatis.spring.SqlSessionFactoryBean&quot;&gt;
-    &lt;!-- 数据源是必要参数 --&gt;
-    &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot; /&gt;
-    &lt;!-- Mybatis核心配置文件其实大多数情况下都可以省略，通过指定属性可以间接设置核心配置文件中的参数 --&gt;
-    &lt;!--&lt;property name=&quot;configLocation&quot; value=&quot;mybatis_conf.xml&quot; /&gt;--&gt;
-
-    &lt;!-- 省略mybatis核心配置文件后，可以通过类似下面这些特定属性，设置mybatis参数 --&gt;
-    &lt;property name=&quot;typeAliasesPackage&quot; value=&quot;com.lanou3g.mybatis.spring.bean&quot; /&gt;
-    &lt;property name=&quot;mapperLocations&quot; value=&quot;classpath:mapper/*.xml&quot; /&gt;
-&lt;/bean&gt;
-
-</code></pre>
-</li>
-<li>
-<p>在Spring bean配置文件中开启Mybatis Mapper扫描</p>
-<ol>
-<li>
-<p>需要使用mybatis schema</p>
-<p>配置方法，在bean配置文件的头部添加</p>
-<pre><code class="language-xml">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
-       xmlns:mybatis=&quot;http://mybatis.org/schema/mybatis-spring&quot;
-       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context.xsd
-        http://mybatis.org/schema/mybatis-spring
-        http://mybatis.org/schema/mybatis-spring.xsd&quot;&gt;
-
-</code></pre>
-</li>
-<li>
-<p>开启Mybatis Mapper扫描</p>
-<p>开启Mybatis Mapper扫描的作用是：告诉Mybatis要创建哪个包下接口的实现类，并以bean的方式加入到SpringIOC容器中</p>
-<pre><code class="language-xml">&lt;!-- 开启Mapper扫描，Mybatis会创建将此包下的接口的实现类，并以bean的方式加入到SpringIOC容器中 --&gt;
-&lt;mybatis:scan base-package=&quot;com.lanou3g.mybatis.spring.mapper&quot; /&gt;
-
-</code></pre>
-</li>
-</ol>
-</li>
-<li>
-<p>创建实体类、mapper映射文件、Mapper接口（可以通过Mybatis逆向工程直接生成）</p>
-<p>Mapper接口</p>
-<pre><code class="language-java">@Repository	//此注解不是必须的，因为MessageMapper类的实现类是由Mybatis创建并放到ioc容器中的，不是由Spring来创建的。
-public interface MessageMapper {
-    int insert(Message record);
-    List&lt;Message&gt; selectAll();
-}
-
-</code></pre>
-<p>实体类、映射文件 略</p>
-</li>
-<li>
-<p>将Mapper接口用Spring自动注入的方式注入到需要的地方使用</p>
-<p>MessageService.java</p>
-<pre><code class="language-java">@Service
-public class MessageService {
-    @Autowired
-    MessageMapper messageMapper;
-    public List&lt;Message&gt; queryAllMessage() {
-        return messageMapper.selectAll();
-    }
-}
-
-</code></pre>
-</li>
-</ol>
-<figure data-type="image" tabindex="1"><img src="https://img-blog.csdnimg.cn/20191021211801244.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Spring_MVC出错点]]></title>
-        <id>https://cxp-twx.github.io/post/spring_mvc-chu-cuo-dian</id>
-        <link href="https://cxp-twx.github.io/post/spring_mvc-chu-cuo-dian">
-        </link>
-        <updated>2018-05-13T06:37:56.000Z</updated>
-        <content type="html"><![CDATA[<figure data-type="image" tabindex="1"><img src="https://img-blog.csdnimg.cn/20191019172811862.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></figure>
-<h2 id="springmvc">Spring——MVC</h2>
-<pre><code class="language-xml">&lt;!-- Servlet级别的上下文中可以使用root上下文配置的bean，而root上下文中不能使用Servlet界别的上下文中配置的bean --&gt;
-
-
-&lt;!--更改欢迎页要注意的地方！--&gt;
- /* @RequestMapping(&quot;/index.jsp&quot;)
-    public String index(){
-        return &quot;index2&quot;;
-    }*/
-
-/* &lt;!--&lt;mvc:annotation-driven/&gt;
-    &lt;mvc:view-controller path=&quot;/&quot; view-name=&quot;index2&quot;/&gt;--&gt;*/
-
-
-
-&lt;!--Spring-MVC 查询数据库里的列表。。。，要在web.xml加的代码--&gt;
-    &lt;!--父上下文的配置--&gt;
-    &lt;context-param&gt;
-        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
-        &lt;param-value&gt;classpath*:applicationContext.xml&lt;/param-value&gt;
-    &lt;/context-param&gt;
-
-    &lt;!-- 监听器配置 --&gt;
-    &lt;listener&gt;
-        &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
-    &lt;/listener&gt;
-
-    &lt;!--牛批  联系数据库要初始化父上下文！！看上！--&gt;
-
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[数据库小结]]></title>
-        <id>https://cxp-twx.github.io/post/shu-ju-ku-xiao-jie</id>
-        <link href="https://cxp-twx.github.io/post/shu-ju-ku-xiao-jie">
-        </link>
-        <updated>2018-04-18T06:36:05.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="数据库小结">数据库小结：</h1>
-<blockquote>
-<ul>
-<li>expire interval  密码存活时间</li>
-<li>expire never  密码永远存活</li>
-<li>创建用户：create user  &quot;mike&quot;@&quot;%&quot; identified by '000000' password expire interval 2 day;</li>
-<li>修改用户密码存活时间：alter user mike password expire interval 30day;</li>
-<li>查看用户权限：	select * from mysql.user where user=&quot;mike&quot; \G;</li>
-</ul>
-</blockquote>
-<h2 id="授权">授权：</h2>
-<blockquote>
-<p>mysql &gt; grant all privileges on <em>.</em> to 'alex'@'%' identified by '123456' with grant option;<br>
-all privileges：表示将所有权限授予给用户。也可指定具体的权限，如：SELECT、CREATE、DROP等。<br>
-on：表示这些权限对哪些数据库和表生效，格式：数据库名.表名，这里写“*”表示所有数据库，所有表。<br>
-如果我要指定将权限应用到test库的user表中，可以这么写：test.user<br>
-to：将权限授予哪个用户。格式：”用户名”@”登录IP或域名”。%表示没有限制，在任何主机都可以登录。<br>
-比如：”alex”@”192.168.0.%”，表示alex这个用户只能在192.168.0IP段登录<br>
-identified by：指定用户的登录密码<br>
-with grant option：表示允许用户将自己的权限授权给其它用户</p>
-</blockquote>
-<h3 id="刷新权限-flush-privileges">刷新权限： flush privileges;</h3>
-<blockquote>
-<p>撤权：revoke all privileges on <em>.</em> from &quot;mike&quot;@&quot;localhost&quot;;<br>
-改密码：set password for &quot;mike&quot;@&quot;localhost&quot; = password(&quot;123456&quot;);<br>
-更改用户名：rename user &quot;mike&quot;@&quot;localhost&quot; to &quot;ake&quot;@&quot;localhost&quot;;<br>
-查看权限：show grants;<br>
-show grants for &quot;mike&quot;@&quot;localhost&quot;;<br>
-select * from mysql.user where user=&quot;mike&quot;;<br>
-用户加解锁：alter user &quot;mike&quot;@&quot;localhost&quot; account lock;<br>
-alter user &quot;mike&quot;@&quot;localhost&quot; account unlock;</p>
-</blockquote>
-<p>variables  查看配置  show variables like &quot;%like%&quot;;<br>
-engines   查看引擎  show engines;</p>
-<h2 id="事务的隔离级别">事务的隔离级别：</h2>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>脏读</th>
-<th>不可重复读</th>
-<th>幻读</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>read uncommiteed</td>
-<td>√</td>
-<td>√</td>
-<td>√</td>
-<td></td>
-</tr>
-<tr>
-<td>read committed</td>
-<td>×</td>
-<td>√</td>
-<td>√</td>
-<td>oracle（默认）</td>
-</tr>
-<tr>
-<td>repeatable read</td>
-<td>×</td>
-<td>×</td>
-<td>√</td>
-<td>mysql（默认）</td>
-</tr>
-<tr>
-<td>serializable</td>
-<td>×</td>
-<td>×</td>
-<td>×</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>查看隔离级别	select @@tx_isolation;</li>
-<li>设置隔离级别	set session|global transaction isolation level 隔离级别；</li>
-</ul>
-<h2 id="变量">变量：</h2>
-<p>​  查看变量：  show global|session variables(like &quot;%char%&quot;);<br>
-​    变量赋值：  set global|session 系统变量名= 值；<br>
-用户变量：set @a:=10;<br>
-局部变量：declare c=10；</p>
-<p>delimiter ￥</p>
-<h2 id="存储过程">存储过程：</h2>
-<h2 id="create-procedure-存储过程名参数列表">create procedure 存储过程名（参数列表）</h2>
-<p>​	begin<br>
-​		存储过程体（一组合法的sql语句）<br>
-​		每句sql语句必须；结尾<br>
-​	end ￥<br>
-​	<br>
-参数列表： 参数模式   参数名   参数类型<br>
-​	in  输入          stuname   varchar(20)<br>
-​	out 输出（into）<br>
-​	inout输入输出<br>
-调用方法 ： call 存储过程名（实参）￥<br>
-查看：show create function|proceduer 名字；<br>
-删除：drop  function|proceduer  名字；<br>
-创建函数： create function 函数名（参数列表）returns 返回类型<br>
-​	begin<br>
-​		函数体<br>
-​		return 值；<br>
-​	end ￥<br>
-参数列表 ： 参数名  参数类型<br>
-调用语法： select 函数名（参数列表）￥</p>
-<h2 id="字符函数">字符函数：</h2>
-<p>​    length   长度    select length(&quot;我爱你&quot;);     根据服务器编码类型而定<br>
-​    concat  拼接字符  select concat(&quot;a&quot;,&quot;_&quot;,&quot;b&quot;);<br>
-​    upper   大写     select upper(&quot;asdd&quot;);<br>
-​    lower   小写     select lower(&quot;ASSS&quot;);<br>
-​    substr   截取字符  select substr(&quot;我爱你你你你你你你&quot;,5);    截取坐标5后面所有字符<br>
-​                               select substr(&quot;woaininininininini&quot;,2,5);   截取坐标2后面5个字符<br>
-​    instr     匹配第一次出现字符的坐标    select instr(&quot;我爱你你知道不&quot;,&quot;我爱你&quot;)；<br>
-​    trim    去除字符左右指定字符(默认空格)    select length(trim(&quot;    我爱你    &quot;))；<br>
-​				select trim(&quot;a&quot;,&quot;aaaaa我爱你aaa&quot;)；<br>
-​     lpad,rpad  左右填充特定字符    select lpad(&quot;我爱你&quot;,10,&quot;ab&quot;);   ab为填充的字符<br>
-​    replace    替换字符     select replace(&quot;张无忌爱上周芷若&quot;,&quot;周芷若&quot;,&quot;赵敏&quot;)；  张无忌爱上赵敏</p>
-<h2 id="数学函数">数学函数：</h2>
-<p>​    round   四舍五入    select round(1.45);<br>
-​	小数点保留位数  select round(1.456,2);<br>
-​    ceil      向上取整     select  ceil(1.23);<br>
-​    floor    向下取整    select floor(12.2);<br>
-​    truncate  截断       select truncate(1.23,1);<br>
-​    mod     取余          select mod(10,3);      mod(-10,3)    a-a/b<em>b  -10-(-10)/3</em>3</p>
-<h2 id="日期函数">日期函数：</h2>
-<p>​    now     当前日期时间     select now();<br>
-​    curdate  当前日期         select curdate();<br>
-​    curtime  当日时间         select curtime();<br>
-​    datediff  两时间差值     select datediff(&quot;2018-02-1&quot;,&quot;2019-02-1&quot;);<br>
-​    year,month,monthname,day....<br>
-​    str_to_date   时间格式    select str_to_date('1998-3-2','%Y-%c-%d');<br>
-​    date_format   格式化时间  select date_format(now(),&quot;%Y年%m月%d日&quot;)；</p>
-<h2 id="流程控制函数">流程控制函数：</h2>
-<p>​    select if(10&lt;5,'da','xiao');  xiao<br>
-​    case     case 条件 when 值 then 值 else  end(case)；<br>
-​    case     case  when 条件 tnen 值  else  end(case)；<br>
-​    if结构：if  条件1 then 语句1；<br>
-​	elseif 条件2 then  语句2；<br>
-​	......<br>
-​	else 语句n；<br>
-​	end if；（只能用在begin end中）</p>
-<h2 id="循环结构">循环结构：</h2>
-<p>while，loop，repeat<br>
-while：	（标签：）while 循环条件 do<br>
-循环体；<br>
-end while（标签）；<br>
-loop：	（标签：）loop<br>
-循环体；<br>
-end loop（标签）；<br>
-repeat：	（标签：）repeat<br>
-循环体；<br>
-until 结束循环的条件<br>
-end repeat（标签）；</p>
-<h2 id="循环控制">循环控制：</h2>
-<p>iterate  like continue<br>
-leave    like  break</p>
-<p>if not exists 判断是否存在<br>
-distinct       查重             select  distinct * from day02;<br>
-between     两者之间      select * from day02 where id between 2 and 6;<br>
-like              模糊查询     select * from day02 where name like '%js_';<br>
-% 表示多个字值，<br>
-_ 下划线表示一个字符；<br>
-M% : 为能配符，正则表达式，表示的意思为模糊查询信息为 M 开头的。<br>
-%M% : 表示查询包含M的所有内容。<br>
-%M_ : 表示查询以M在倒数第二位的所有内容。<br>
-order by     排序            select * from day02 where id &gt;2 order by name;<br>
-update      更新数据      update day02 set cal='121' where id=3;<br>
-limit          显示条数      select * from day02 limit 2;<br>
-select * from day02 where id&gt;6 limit 2;<br>
-regexp      正则查询            select * from  day02 where name regexp '<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>';<br>
-as             别名             select  d.name,d.cal from day02 as d;<br>
-inner join   内连接        select day02.id,student.age from day02 inner join student on day02.id=student.id;<br>
-创建拷贝数据表结构及数据   create table day02_1 as select * from day02;<br>
-拷贝数据表数据             insert into day02_1 select * from day02;<br>
-约束： NOT NULL - 指示某列不能存储 NULL 值。<br>
-UNIQUE - 保证某列的每行必须有唯一的值。<br>
-PRIMARY KEY - NOT NULL 和 UNIQUE 的结合。确保某列（或两个列多个列的结合）有唯一标识，有助于更容易更快速地找到表中的一个特定的记录。<br>
-FOREIGN KEY - 保证一个表中的数据匹配另一个表中的值的参照完整性。<br>
-CHECK - 保证列中的值符合指定的条件。<br>
-DEFAULT - 规定没有给列赋值时的默认值。</p>
-<h2 id="table创建完成后想修改">table创建完成后想修改:</h2>
-<blockquote>
-<p>not null  修改非空    alter table day02_1 modify name varchar(3) null;<br>
-alter table day02_1 modify name varchar(3) not null;<br>
-unique    唯一识别    alter table day02 add unique(id);<br>
-alter table day02 drop index id;<br>
-primary key  主键      alter table day02_2  add primary key(id);<br>
-alter table day02_2 drop primary key;<br>
-foreign key   外键	alter table stus add foreign key(sid) references stu(id);<br>
-alter table stus drop foreign key stus_ibfk_1;<br>
-cascade       级联      create table 表明(.....,on delete set null,on update cascade);<br>
-constraint    约束	create table 表明(.....,constraint 约束名 on delete set null,on update cascade);<br>
-check           检查</p>
-<p>default       默认值     alter table day02_2 alter set defalut 'jss';<br>
-alter table day02_2 alter  nam drop default;<br>
-truncate     删除数据   truncate table day02_1;<br>
-auto_increment 自增  alter table day02_1 modify id int(10) auto_increment;(必须是主键)<br>
-alter table day02_1 modify id int(10);<br>
-创建索引		create  index xiao on day02(name);<br>
-创建索引		alter table day02 add index xiao(names);<br>
-删除索引		alter table day02 drop index xiao;<br>
-drop index xiao on day02;<br>
-查看索引		show index from day02;<br>
-创建唯一索引	create unique index xiao on day02(names)<br>
-alter table day02 add index xiao(naems);<br>
-删除索引		drop index xiao on day02;<br>
-alter table day02 drop index xiao;<br>
-创建视图   		 create view xiao as select id,name from day02 where id&lt;3;<br>
-创建或更新视图	create or replace view xiao select id,name from day02 where id&gt;3;<br>
-drop view xiao;</p>
-<p>group by      分组       select  name,count(*) from day02 group by name;<br>
-select * from day02 where id&gt;2 group by id;<br>
-select * from day02 group by id having id&gt;2;<br>
-begin | strat transaction   开启事务； 各种操作<br>
-rollback                            事物回退；<br>
-summit                            事务提交；<br>
-first           插入第一列位置    alter table day02  add  pid varchar(3) first;<br>
-after          在特定列后插入    alter table day02 add pid  varchar(3) after name;<br>
-modify      修改                     alter table ady02  modify name varchar(4);<br>
-change     修改                       alter table day02  change name names varchar(4);<br>
-rename to  修改表名           alter table day02_1  rename to day02_4;<br>
-temporary  创建临时表      create temporary table ceshi(id int,name varchar(2));<br>
-insert ignore into   忽视已存在的数据   insert ignore into day02 value(1,'ws','123');<br>
-insert  into	添加已存在的数据报错   insert  into day02 value(1,'ws','123');</p>
-</blockquote>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>j <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Socket编程]]></title>
-        <id>https://cxp-twx.github.io/post/socket-bian-cheng</id>
-        <link href="https://cxp-twx.github.io/post/socket-bian-cheng">
-        </link>
-        <updated>2018-03-21T06:35:03.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="socket">Socket</h1>
-<h2 id="socket编程也叫套接字编程也叫网络编程">Socket编程也叫套接字编程，也叫网络编程。</h2>
-<h2 id="服务端">服务端</h2>
-<pre><code>1.创建一个服务端socket（ServerSocket）,指定监听的端口号
-2.监听并接收客户端的连接。   Socket c = ss.accept();
-3.读取数据。  InputStream  is = c.getInputStream();  读取数据
-4.使用数据   例如：存储，打印
-5.关闭socket（c）
-</code></pre>
-<h2 id="客户端">客户端</h2>
-<pre><code>1.创建一个客户端socket（Socket），指定连接的服务器的ip地址和端口号
-2.获取输出流   OutputStream os = s.getOutputStream();
-3.写数据 os.write(xxx);
-4.关闭socket
-</code></pre>
-<ul>
-<li>
-<p>TCP协议 Transmission Control Protocol传输控制协议</p>
-</li>
-<li>
-<p>TCP协议---面向连接的全双工安全可靠的传输协议。</p>
-</li>
-<li>
-<p>TCP协议的连接	3次握手！！！查阅资料</p>
-</li>
-<li>
-<p>TCP协议的断开连接  4次挥手！！！查阅资料</p>
-</li>
-<li>
-<p>UDP协议  User Datagram Protocol用户数据报协议</p>
-</li>
-<li>
-<p>UDP协议---面向无连接不可靠的半双工传输协议。</p>
-</li>
-</ul>
 ]]></content>
     </entry>
 </feed>

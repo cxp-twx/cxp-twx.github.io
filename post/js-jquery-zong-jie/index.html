@@ -1,0 +1,1049 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Js-JQuery总结 | CheckChen</title>
+<meta name="description" content="吾日三省吾身" />
+<link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576204578007">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cxp-twx.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://cxp-twx.github.io">
+  <img class="avatar" src="https://cxp-twx.github.io/images/avatar.png?v=1576204578007" alt="">
+  </a>
+  <h1 class="site-title">
+    CheckChen
+  </h1>
+  <p class="site-description">
+    吾日三省吾身
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Js-JQuery总结
+            </h2>
+            <div class="post-info">
+              <span>
+                2016-12-20
+              </span>
+              <span>
+                18 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="javascript总结">JavaScript总结</h1>
+<h2 id="一javascript简介">一：JavaScript简介</h2>
+<h6 id="什么是javascript">什么是JavaScript？</h6>
+<blockquote>
+<p>JavaScript用于网页和用户之间的交互，比如提交的时候，进行用户名是否为空的判断。</p>
+<p>完整的javascript由<a href="http://how2j.cn/k/javascript/javascript-type/428.html">语言基础</a>，<a href="http://how2j.cn/k/javascript/javascript-bom-window/449.html">BOM</a>和<a href="http://how2j.cn/k/dom/dom-node/457.html">DOM</a>组成。另外，<strong>document</strong>是javascript的内置对象，代表浏览器的文档部分、<strong>document.write(&quot;Hello Javascript&quot;);</strong> 向文档写入字符串。</p>
+</blockquote>
+<pre><code class="language-javascript">document.write(&quot;hello JS&quot;)
+//弹框页面
+/*alert(&quot;hello&quot;)*/
+/*$(document).ready(
+	function() {
+		alert(&quot;Heijj ds&quot;);
+	}
+);*/
+</code></pre>
+<h2 id="二javascript基础">二：JavaScript基础</h2>
+<h4 id="1基础语法-和注释">1：基础语法 和注释</h4>
+<blockquote>
+<p>；结尾、大括号包裹语句块  （基本与Java语法类似）、</p>
+<p>注释和eclipse相同。（//——单行注释、/**/——多行注释）、</p>
+<p>区分大小写。</p>
+</blockquote>
+<h4 id="2在html网页中加入javascript的方式">2：在HTML网页中加入JavaScript的方式</h4>
+<h5 id="外部引入写在head-中">外部引入:(写在head 中)</h5>
+<pre><code class="language-javascript">&lt;title&gt;javaScript基础&lt;/title&gt;
+		&lt;!--1:外部引入--&gt;
+		&lt;!--&lt;script type=&quot;text/javascript&quot; src=&quot;js/demo.js&quot;&gt;&lt;/script&gt;--&gt;
+		&lt;script type=&quot;text/javascript&quot; src=&quot;js/json.js&quot;&gt;&lt;/script&gt;
+		&lt;!--1:外部链接引入--&gt;
+		&lt;!--&lt;script src=&quot;https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js&quot;&gt;&lt;/script&gt;--&gt;
+		&lt;script type=&quot;text/javascript&quot;&gt;
+		&lt;/script&gt;
+
+</code></pre>
+<h5 id="内联写在body中">内联:(写在body中)</h5>
+<pre><code class="language-javascript">&lt;body&gt;
+		&lt;script type=&quot;text/javascript&quot;&gt;
+			function (){
+            
+        }
+		&lt;/script&gt;
+	&lt;/body&gt;
+</code></pre>
+<h2 id="三javascript数据类型">三:JavaScript数据类型</h2>
+<h4 id="1javascript的数据类型">1：JavaScript的数据类型：</h4>
+<blockquote>
+<p>JavaScript是一种弱类型或者说动态类型的语言。这意味着你不用提前声明变量的类型，在程序运行过程中，类型会被自动确定。这也意味着你可以使用同一个变量保存不同类型的数据。</p>
+<p>主要有：Number（BigInt）、String字符串、Boolean布尔值、Undefined、Null、</p>
+<p>Object（Array、Function、RegExp、Date 、JSON）</p>
+</blockquote>
+<p>代码如下：</p>
+<pre><code class="language-javascript">//变量var不需要其他的定义
+var sname = &quot;张三&quot;;
+var age = 21;
+sname = false;
+console.log(&quot;sname &quot; + sname);
+console.log(&quot;sname的类型:&quot; + (typeof sname));
+//One:BigInt储存很大的整型 [Number]
+var num = 19385899859389893893589; //后缀n
+num++;
+console.log(&quot;num的类型   &quot; + (typeof num) + num)
+//num = 19385899859389893893589n;
+num = BigInt(19385899859389893893589);
+num++;
+console.log(&quot;num的类型   &quot; + (typeof num) + num)
+
+//Two:定义:Array
+var nums = [34, 43, 54, 43, &quot;dnc&quot;];
+for(var idx in nums) {
+	console.log(nums[idx])
+}
+
+var num1 = 0;
+//如果(!num1) 判空. 数字0,空字符串,null,undefined,都会返回false
+var inputVal = {name: &quot;djfs&quot;};//都是false
+//	{}
+//空对象
+console.log(&quot;类型: &quot; + (typeof inputVal))
+if(num1) {
+	console.log(&quot;ture&quot;)
+} else {
+	console.log(&quot;false&quot;)
+}
+
+
+
+//下午:String中无字符和字符串区别'  &quot; \&quot;转义套\&quot;  &quot;  '(嵌套)+ 正则表达式
+var ss = &quot;&lt;div id = 'container'&gt;&lt;/div&gt;&quot;
+document.write(ss);
+//JSON字符串转JS对象
+var obj = JSON.parse(jsonData);
+console.log(obj.name);
+console.log(typeof obj);
+//修改对象的属性值
+obj.name = &quot;李四&quot;;
+
+//JS对象转JSON字符串
+var str =JSON.stringify(obj)
+</code></pre>
+<h2 id="四javascript的程序控制语句">四：JavaScript的程序控制语句</h2>
+<blockquote>
+<p>控制语句和JAVA一致：包括顺序结构、分支结构、和循环结构。</p>
+<p>在循环结构中常规for循环与JAVA相同、在Java的for each中，JavaScript用for in来表示。</p>
+</blockquote>
+<pre><code class="language-javascript">for(var i = 0; i &lt; 10; i++) {
+  // 循环10次
+}
+for(var idx in arr) {
+  // console.log(arr[idx]);
+}
+</code></pre>
+<h2 id="五javascript的对象">五：JavaScript的对象</h2>
+<h4 id="1自定义对象">1：自定义对象：</h4>
+<blockquote>
+<p>定义fuction，使用new关键字创建对象、</p>
+<p>{}的方式。</p>
+</blockquote>
+<h4 id="代码如下">代码如下：</h4>
+<pre><code class="language-javascript">//局部变量和全局变量
+function Student(sname,age){
+	//私有的属性
+	var gender = &quot;保密&quot;;
+	
+	this.sname = sname;
+	this.age = age;
+	this.getGender = function(){
+		return gender;
+	}
+	this.setGender = function(_gender){
+		gender =  _gender;
+	}
+	this.sayName = function(){
+		console.log(this.sname)
+	}
+	function sayGender(){
+		console.log(gender);
+	}
+}
+
+
+//创建对象:(扩展:prototype类似于继承的属性)
+//第一种:
+var stu = new Student();
+
+//第二种{}:
+var man = {sname: &quot;张三&quot;,age: 45};
+man.id = &quot;No.1&quot;;
+man.learn = function(){
+	 console.log(&quot;技能&quot;);
+}
+console.log(&quot;man的类型: &quot; + (typeof man));
+console.log(man);
+</code></pre>
+<h4 id="2内置对象">2：内置对象：</h4>
+<blockquote>
+<p><code>window</code>对象（注意，<code>w</code>为小写）指当前的浏览器窗口。window对象是BOM的核心，window对象指当前的浏览器窗口所有JavaScript全局对象、函数以及变量均自动成为window对象的成员。<br>
+1.全局变量是window对象的属性 2.全局函数是window对象的方法、<br>
+甚至HTML DOM的document也是window对象的属性之一。</p>
+<p>window.screen对象包含用户屏幕信息</p>
+<p>window.location 对象用于获得当前页面的地址URL,并把浏览器重定向到新的页面。</p>
+<p>window.history 对象包含浏览器历史URL集合</p>
+</blockquote>
+<p>[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-qBUNGkvV-1571302549289)(C:\Users\lanou\Desktop\360截图18180713398881.png)]</p>
+<h5 id="window对象的一些方法">window对象的一些方法:</h5>
+<p>代码如下:</p>
+<pre><code class="language-javascript">console.log(window);
+window.onload = function(){
+	alert(&quot;页面已经加载完成！&quot;)
+}
+//使用
+//打开新的窗口
+window.open();
+//跳转某个页面
+window.href = &quot;&quot;;
+
+window.Location();
+//前进后退
+window.forward();
+window.back();
+</code></pre>
+<h5 id="windowdocument的部分用法">window.document的部分用法：</h5>
+<pre><code class="language-javascript">//创建表格:
+var table = document.createElement(&quot;table&quot;);
+//设置元素样式
+table.style.border = &quot;1px solid black&quot;
+//添加元素appendChild();将..添加到网页中:
+document.body.appendChild();
+
+//生成表单
+//表单验证
+var form = document.getElementsByTagName(&quot;form&quot;);
+//提交事件
+form[0].onsubmit = function(){
+	var usernameInput = document.querySelector(&quot;#username&quot;)
+	var passwordInput = document.querySelector(&quot;#password&quot;)
+	
+	var username = usernameInput.value;
+	var password = passwordInput.value;
+	
+}
+
+
+ var usernameInput = document.querySelector(&quot;#username&quot;)
+ //触发事件
+ usernameInput.onblur = function(){
+ 	
+ 	
+ }
+</code></pre>
+<h5 id="windowlocation的部分用法">window.location的部分用法：</h5>
+<pre><code class="language-javascript">//改变当前网页地址（加载新的网页）
+//location.hostname 返回web主机的域名
+//location.port 放回web主机的端口
+location.href = 'http://www.baidu.com';
+
+
+</code></pre>
+<h2 id="五javascript的函数">五：JavaScript的函数</h2>
+<h6 id="简介">简介:</h6>
+<blockquote>
+<p>JavaScript 函数是被设计为执行特定任务的代码块,通过 function 关键词进行定义，其后是<em>函数名</em>和括号 ()。</p>
+<p><strong>JavaScript 函数会在某代码调用它时被执行。</strong></p>
+</blockquote>
+<h4 id="1获取函数参数">1:获取函数参数:</h4>
+<blockquote>
+<p><em>函数参数</em>是在函数定义中所列的名称,   是当调用函数时由函数接收的真实的值</p>
+<p>在函数中，参数是局部变量。</p>
+<p>常规方式:</p>
+<p>通过内置arguments对象获取</p>
+<ul>
+<li>
+<ul>
+<li>JSON字符串转对象：JSON.parse(jsonStr);</li>
+<li>对象转JSON字符串：JSON.stringify(obj);</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<pre><code class="language-javascript">function myCustomFn(arg1, arg2,arg3) {
+  
+}
+
+console.log(getArgs(myCustomFn));
+
+
+function testFn(arg0,arg1,arg2){
+
+var arr = arguments;//参数数组
+
+</code></pre>
+<h4 id="2自调用函数">2:自调用函数:</h4>
+<pre><code class="language-javascript">//自调用函数(局部变量)可以提升作用域(Window)
+(function sayHello(name){
+	alert(&quot;你好,&quot; + name)
+})(&quot;张三&quot;);
+
+
+</code></pre>
+<h2 id="六javascript的应用场景">六:JavaScript的应用场景</h2>
+<h4 id="1添加交互事件">1:添加交互事件:</h4>
+<pre><code class="language-javascript">//交互,如:按钮点击后的反应连接这个过程生成
+&lt;button onclick=&quot;start()&quot;&gt;开始&lt;/button&gt;
+&lt;button onclick=&quot;stop()&quot;&gt;结束&lt;/button&gt;
+
+</code></pre>
+<h4 id="2操作dom元素">2:操作DOM元素:</h4>
+<pre><code class="language-javascript">//创建表格:
+var table = document.createElement(&quot;table&quot;);
+//设置元素样式
+table.style.border = &quot;1px solid black&quot;
+//添加元素appendChild();将..添加到网页中:
+document.body.appendChild();
+
+</code></pre>
+<h4 id="3操作样式">3:操作样式:</h4>
+<pre><code class="language-javascript">&lt;!--样式操作相关--&gt;
+		&lt;div id=&quot;style_div&quot;&gt;测试修改样式&lt;/div&gt;
+		
+		
+		&lt;button onclick=&quot;modify_style()&quot;&gt;modify_style&lt;/button&gt;
+		&lt;button onclick=&quot;toggle_class()&quot;&gt;toggle_class&lt;/button&gt;
+		&lt;button onclick=&quot;add_class('#style_div','red')&quot;&gt;add_class&lt;/button&gt;
+		
+
+</code></pre>
+<h4 id="4验证表单">4:验证表单:</h4>
+<pre><code class="language-javascript">//表单验证
+var form = document.getElementsByTagName(&quot;form&quot;);
+
+</code></pre>
+<h4 id="5异步请求ajax">5:异步请求Ajax</h4>
+<h4 id="6reg正则匹配">6:reg正则匹配</h4>
+<pre><code class="language-javascript">//正则表达式
+var phone = &quot;17337358129&quot;;
+//返回的是下标(类似与indexOf):search()查找
+console.log(&quot;包含173的下标:&quot; + phone.search(&quot;173&quot;));
+//^123:已123开头**i\对大小写不敏感\g,m等*
+console.log(&quot;正则查找字符出现的下标:  &quot;  + phone.search(/129/i))
+//String中的replace,替换指定字符串
+console.log(phone.replace(&quot;3&quot;,&quot;6&quot;));
+//还有好多表达:\d,查阅资料
+console.log(phone.replace(/3/i,&quot;8&quot;));
+
+
+</code></pre>
+<h4 id="七定时器">七:定时器</h4>
+<blockquote>
+<p>setInterval</p>
+<p>setTimeout</p>
+</blockquote>
+<pre><code class="language-javascript">&lt;body&gt;
+		&lt;h1&gt;00:00:00&lt;/h1&gt;
+		&lt;br /&gt;&lt;br /&gt;
+		
+		&lt;button onclick=&quot;start()&quot;&gt;开始&lt;/button&gt;
+		&lt;button onclick=&quot;stop()&quot;&gt;结束&lt;/button&gt;
+	&lt;/body&gt;
+	&lt;script type=&quot;text/javascript&quot;&gt;
+		var h1 =document.querySelector(&quot;h1&quot;);
+		function getNow(){
+			var date = new Date();
+			var hour = date.getHours();
+			var minutes = date.getMinutes();
+			var second = date.getSeconds();
+			if (second&lt;10) {
+				second = &quot;0&quot; + hour;
+			}
+			
+			var time = hour + &quot;:&quot; + minutes + &quot;:&quot; + second;
+			h1.innerHTML = time;
+			//解决setTimeout只动一次
+			/*timeId2 = setTimeout(getNow,1000);*/
+		}
+		getNow();
+		
+		//setInterval方法
+		/* var timeId = setInterval(getNow,1000);*/
+		 
+		 //setTimeout方式:只动一次
+		/* var timeId2 = setTimeout(getNow,1000);*/
+		var timeId;//作用域
+		function start(){
+			timeId = setInterval(getNow,1000);
+		    //var timeId2 = setTimeout(getNow,1000);
+		}
+		function stop(){
+			
+			clearInterval(timeId);
+			
+			//clearTimeout(timeId2);
+		}
+		
+		
+	&lt;/script&gt;
+
+</code></pre>
+<h3 id="八事件">八:事件</h3>
+<blockquote>
+<h4 id="onchange值发生变化的事件">onchange:值发生变化的事件</h4>
+<h4 id="onclick点击事件"><strong>onclick:点击事件</strong></h4>
+<h4 id="onblur失去焦点事件">onblur:失去焦点事件</h4>
+<h4 id="onmouseover鼠标悬浮事件">onmouseover:鼠标悬浮事件</h4>
+<h4 id="onmouseout鼠标移出事件">onmouseout:鼠标移出事件</h4>
+<h4 id="onload完成加载事件">onload:完成加载事件</h4>
+<h4 id="onkeydown键盘按下事件">onkeydown:键盘按下事件</h4>
+</blockquote>
+<pre><code class="language-javascript">//提交事件
+form[0].onsubmit = function(){
+	var usernameInput = document.querySelector(&quot;#username&quot;)
+	var passwordInput = document.querySelector(&quot;#password&quot;)
+	
+	var username = usernameInput.value;
+	var password = passwordInput.value;
+	
+}
+
+
+ var usernameInput = document.querySelector(&quot;#username&quot;)
+ //触发事件
+ usernameInput.onblur = function(){
+ 	
+ 	
+ }
+
+</code></pre>
+<h1 id="jquery应用总结">jQuery应用总结</h1>
+<h2 id="一jquery基础">一:jQuery基础</h2>
+<h3 id="1-jquery是什么">1:   jQuery是什么？</h3>
+<blockquote>
+<ul>
+<li>jQuery是一个JavaScript类库，对原生的JS进行了全方面的封装。</li>
+<li>jQuery是一个轻量级的&quot;写的少，做的多&quot;的JavaScript库。</li>
+<li><strong>本质上就是别人写好一段通用的JS代码。</strong></li>
+</ul>
+</blockquote>
+<h3 id="2-jquery有哪些功能">2:  jQuery有哪些功能？</h3>
+<blockquote>
+<ul>
+<li>HTML 元素选取</li>
+<li>HTML 元素操作</li>
+<li>CSS 操作</li>
+<li>HTML 事件函数</li>
+<li>JavaScript 特效和动画</li>
+<li>HTML DOM 遍历和修改</li>
+<li>AJAX</li>
+<li>Utilities</li>
+</ul>
+</blockquote>
+<h3 id="3-为什么要使用jquery">3:   为什么要使用jQuery？</h3>
+<p>jQuery对原生JS API进行了封装， 使用起来非常方便。 可以极大的提高我们的开发效率。</p>
+<h3 id="4-如何引入jquery">4:  如何引入jQuery?</h3>
+<p>jQuery本质上就是一段普通的JavaScript代码， 通常使用引入外部JS的方式来使用jQuery</p>
+<pre><code class="language-javascript">&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.js&quot;&gt;&lt;/script&gt;
+
+</code></pre>
+<h3 id="5基础语法">5:基础语法</h3>
+<blockquote>
+<p>基础语法： <strong>$(selector).action()</strong></p>
+<ul>
+<li>美元符号定义 jQuery</li>
+<li>选择符（selector）&quot;查询&quot;和&quot;查找&quot; HTML 元素</li>
+<li>jQuery 的 action() 执行对元素的操作</li>
+</ul>
+<p>实例:</p>
+<ul>
+<li>$(this).hide() - 隐藏当前元素</li>
+<li>$(&quot;p&quot;).hide() - 隐藏所有</li>
+</ul>
+<p>元素</p>
+<ul>
+<li>$(&quot;p.test&quot;).hide() - 隐藏所有 class=&quot;test&quot; 的</li>
+</ul>
+<p>元素</p>
+<ul>
+<li>$(&quot;#test&quot;).hide() - 隐藏所有 id=&quot;test&quot; 的元素</li>
+<li>
+<ul>
+<li>获取文本内容：调用jQuery对象的text()方法</li>
+<li>获取属性值：调用jQuery对象的attr()方法</li>
+<li>​	添加样式类：调用jQuery对象的addClass()方法</li>
+<li>获取表单元素的值：调用jQuery对象的val()方法</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h2 id="二选择器">二:选择器</h2>
+<p>语法：</p>
+<pre><code class="language-javascript">- $(slector)
+- $(&quot;#container&quot;)
+- $(&quot;.container&quot;)
+- $(&quot;img&quot;)
+- $(&quot;input[type='password']&quot;)
+- $(&quot;#container image&quot;)
+//加载完网页之后
+			$(document).ready(function() {
+				$(&quot;#container&gt;p&quot;).text(&quot;Hello,老唐!&quot;);
+				//包裹
+				$(&quot;p&quot;).wrap(&quot;&lt;span&gt;环绕&lt;/span&gt;&quot;)
+				//内部插入指定内容::jQuery中的选择器不支持子代选择器即(&gt;p)
+				$(&quot;#container p&quot;).first().append(&quot;&lt;img src='https://www.baidu.com/img/bd_logo1.png?where=super'/&gt;&quot;)
+				//$(&quot;#container&gt;p&quot;).html(&quot;&lt;span&gt;老唐&lt;/span&gt;&quot;);
+				//外部插入
+				$(&quot;p&quot;).before(&quot;&quot;)
+				$(&quot;p&quot;).after(&quot;&quot;)
+
+</code></pre>
+<p>selector就是选择器表达式，语法基本和CSS选择器一致。</p>
+<h2 id="三html操作">三:HTML操作</h2>
+<h4 id="1dom操作">1:DOM操作:</h4>
+<pre><code class="language-javascript">&lt;!--DOM操作相关--&gt;
+		&lt;div id=&quot;container&quot;&gt;
+			&lt;p&gt;Hello,jQuery&lt;/p&gt;
+
+			&lt;div id=&quot;replace_container&quot;&gt;
+				&lt;span&gt;这是一个要替换的美女照片&lt;/span&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;button idx=&quot;1&quot;&gt;删除p标签(remove)&lt;/button&gt;
+		&lt;button idx=&quot;2&quot;&gt;清空p标签内容(empty)&lt;/button&gt;
+		&lt;button idx=&quot;3&quot;&gt;替换标签&lt;/button&gt;
+		&lt;button idx=&quot;4&quot;&gt;换个图片&lt;/button&gt;
+
+</code></pre>
+<h4 id="2属性操作">2:属性操作:</h4>
+<pre><code class="language-javascript">&lt;script type=&quot;text/javascript&quot;&gt;
+			function modify_href(){
+				//获取属性
+				var href = $(&quot;#attr_a&quot;).attr(&quot;href&quot;);
+				//修改属性值
+				$(&quot;#attr_a&quot;).attr(&quot;href&quot;,&quot;http://www.lanou3g.com&quot;);
+				//添加自定义属性
+				$(&quot;#attr_a&quot;).attr(&quot;idx&quot;,666);
+				//获取自定义的属性值
+				var idx = $(&quot;#attr_a&quot;).attr(&quot;idx&quot;);
+				console.log(idx);
+				
+			}
+			
+			function modify_text(){
+				//修改超链接文字+添加一个按钮
+				//获取属性
+				var href = $(&quot;#attr_a&quot;).text();
+				//修改属性
+				$(&quot;#attr_a&quot;).text(&quot;fuck&quot;);
+			}
+			function modify_style(){
+				//$(&quot;#style_div&quot;).css(&quot;font-size&quot;,&quot;100px&quot;);
+				//一次修改多个
+				$(&quot;#style_div&quot;).css({&quot;font-size&quot;:&quot;100px&quot;,&quot;font-family&quot;:&quot;楷体&quot;})
+			}
+			
+			function toggle_class(){
+				$(&quot;#style_div&quot;).toggleClass(&quot;hide&quot;);
+			}
+			function add_class(selector,className){
+				$(selector).addClass(className);
+			}
+		&lt;/script&gt;
+	&lt;!--属性操作相关--&gt;&lt;!--//在新的标签页打开(_blank)--&gt;
+		&lt;a id=&quot;attr_a&quot; href=&quot;http://www.baidu.com&quot; target=&quot;_blank&quot;&gt;跳转&lt;/a&gt;
+
+</code></pre>
+<h4 id="3内容操作">3:内容操作:</h4>
+<pre><code class="language-javascript">&lt;!--内容操作相关--&gt;
+		&lt;button onclick=&quot;modify_text&quot;&gt;修改超链接文字&lt;/button&gt;
+
+</code></pre>
+<h4 id="4样式操作">4:样式操作:</h4>
+<pre><code class="language-javascript">&lt;!--样式操作相关--&gt;
+		&lt;div id=&quot;style_div&quot;&gt;测试修改样式&lt;/div&gt;
+		
+		
+		&lt;button onclick=&quot;modify_style()&quot;&gt;modify_style&lt;/button&gt;
+		&lt;button onclick=&quot;toggle_class()&quot;&gt;toggle_class&lt;/button&gt;
+		&lt;button onclick=&quot;add_class('#style_div','red')&quot;&gt;add_class&lt;/button&gt;
+		
+
+</code></pre>
+<h2 id="四使用jquery添加事件">四:使用jQuery添加事件</h2>
+<pre><code class="language-javascript">	&lt;!--使用jQuery添加事件--&gt;
+	&lt;!--click\blur\change\--&gt;
+	
+
+</code></pre>
+<h2 id="五jquery的一些效果">五:jQuery的一些效果</h2>
+<p>1:显示/隐藏</p>
+<pre><code class="language-javascript">$(&quot;#hide&quot;).click(function(){
+  $(&quot;p&quot;).hide();
+});
+
+$(&quot;#show&quot;).click(function(){
+  $(&quot;p&quot;).show();
+});
+
+</code></pre>
+<p>2:淡入淡出</p>
+<pre><code class="language-javascript">//语法：
+//$(selector).fadeToggle(speed,callback);
+$(&quot;button&quot;).click(function(){
+  $(&quot;#div1&quot;).fadeToggle();
+  $(&quot;#div2&quot;).fadeToggle(&quot;slow&quot;);
+  $(&quot;#div3&quot;).fadeToggle(3000);
+});
+
+</code></pre>
+<p>3:滑动</p>
+<pre><code class="language-javascript">//语法：
+//$(selector).slideToggle(speed,callback);
+$(&quot;#flip&quot;).click(function(){
+  $(&quot;#panel&quot;).slideToggle();
+});
+
+</code></pre>
+<p>4:动画</p>
+<pre><code class="language-javascript">//语法
+//$(selector).animate({params},speed,callback);
+$(&quot;button&quot;).click(function(){
+  $(&quot;div&quot;).animate({
+    left:'250px',
+    opacity:'0.5',
+    height:'150px',
+    width:'150px'
+  });
+});
+//也可以定义相对值（该值相对于元素的当前值）。需要在值的前面加上 += 或 =（width:'+=150px'）
+//甚至可以把属性的动画值设置为（预定义的值） &quot;show&quot;、&quot;hide&quot; 或 &quot;toggle&quot;：
+
+</code></pre>
+<h2 id="六遍历">六:遍历</h2>
+<p>1:遍历jQuery对象</p>
+<blockquote>
+<ul>
+<li>遍历数组直接使用jQuery的静态方法 $.each(arr, function{})</li>
+<li>遍历多个DOM元素是用jQuery对象方法$(selector).each(function(){})</li>
+</ul>
+</blockquote>
+<p>2:遍历数组</p>
+<h2 id="七ajax">七:Ajax</h2>
+<blockquote>
+<p><strong>Ajax 是与服务器交换数据的艺术，它在不重载全部页面的情况下，实现了对部分网页的更新。</strong></p>
+<p>通过 jQuery Ajax 方法，您能够使用 HTTP Get 和 HTTP Post 从远程服务器上请求文本、HTML、XML 或 JSON - 同时您能够把这些外部数据直接载入网页的被选元素中。</p>
+</blockquote>
+<h4 id="重点get和post区别">重点：get()和post()区别？</h4>
+<ol>
+<li>
+<p>get()是form的method默认值，把提交的内容拼接到了action值的后面。</p>
+<p>格式：action的值 ？name = value&amp;name =value......</p>
+</li>
+<li>
+<p>post()请求传递的内容是放在请求体里发送的。</p>
+</li>
+<li>
+<p>get请求方式安全性较低</p>
+</li>
+<li>
+<p>post请求方式安全性较高</p>
+</li>
+<li>
+<p>get请求传递的内容长度有限</p>
+</li>
+<li>
+<p>post请求传递的内容没有长度限制</p>
+</li>
+</ol>
+<h1 id="easyui总结">EasyUI总结</h1>
+<h2 id="一简介">一:简介</h2>
+<h3 id="1easyui是什么">1:EasyUI是什么?</h3>
+<blockquote>
+<p>EasyUI是一套前端框架。 它封装jQuery、Vue等前端JS框架，另外它还提供了一套完善的UI组件，比如窗体、表单、表格、树、进度条、手风琴菜单...</p>
+</blockquote>
+<h3 id="2easyui的应用场景">2:EasyUI的应用场景?</h3>
+<blockquote>
+<p>EasyUI是一套前端框架。 它封装jQuery、Vue等前端JS框架，另外它还提供了一套完善的UI组件，比如窗体、表单、表格、树、进度条、手风琴菜单...</p>
+</blockquote>
+<h2 id="二使用步骤">二:使用步骤</h2>
+<p>1:下载<a href="">EasyUI</a></p>
+<p>2:引入EasyUI相关的JS 、 CSS</p>
+<p>3:需要有一个HTML标签</p>
+<p>4:给标签添加相应的easy UI样式</p>
+<p>5:调用EasyIUI相关JS方法来初始化 、设置组件参数</p>
+<h2 id="三主要组件">三:主要组件</h2>
+<h4 id="参见">参见：</h4>
+<p><a href="http://www.jeasyui.net/demo/420.html">Easy UI官网中文版</a></p>
+<p><a href="https://www.jeasyui.com/demo/main/index.php">Easy UI官网英文版</a></p>
+<p>1:窗口相关</p>
+<p>2:表格相关</p>
+<p>3:树形组件</p>
+<p>4:表单相关</p>
+<blockquote>
+<p>表单验证</p>
+<p>表单数据回显</p>
+<p>表单常用组件(文本框、日期框、密码框)</p>
+</blockquote>
+<h1 id="layui总结">LayUI总结</h1>
+<h2 id="一简介-2">一：简介</h2>
+<h4 id="1layui是什么">1:LayUI是什么?</h4>
+<blockquote>
+<p>LayUI与EasyUI类似，都封装了jQuery和一套完整的组件样式。它是国产的一个前端框架，使用起来门槛更低，上手较快。</p>
+</blockquote>
+<h4 id="2布局">2：布局</h4>
+<blockquote>
+<p>类似Bootstrap的栅格布局，支持响应式。</p>
+</blockquote>
+<h2 id="二使用步骤-2">二：使用步骤</h2>
+<h5 id="第一步-引入layui相关的js-css">第一步. 引入LayUI相关的JS、CSS</h5>
+<pre><code class="language-javascript">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;layui/css/layui.css&quot;/&gt;
+        &lt;script src=&quot;layui/layui.js&quot; type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+
+</code></pre>
+<p>一共两个文件</p>
+<h5 id="第二步-添加样式-或者引入js模块">第二步. 添加样式、或者引入JS模块</h5>
+<p>LayUI中的组件分为两种：</p>
+<ul>
+<li>一种不要引入单独的模块，直接给原生的DOM元素添加class样式即可，比如按钮、小图标（印章）</li>
+<li>另一种需要引入LayUI相关的模块，比如弹出层layer</li>
+</ul>
+<h2 id="三组件分类">三：组件分类</h2>
+<blockquote>
+<p>需要引入Lay UI相关模块才能使用的</p>
+<p>织田家class样式就可以使用的</p>
+</blockquote>
+<h2 id="四后台开发常用组件">四：后台开发常用组件</h2>
+<h3 id="参见-2">参见：</h3>
+<p><a href="https://www.layui.com/doc/">LayUI国产前段框架</a></p>
+<ul>
+<li>
+<p>表格组件</p>
+</li>
+<li>
+<p>tab标签页</p>
+</li>
+<li>
+<p>面板</p>
+</li>
+<li>
+<p>弹出层</p>
+</li>
+<li>
+<p>树状组件</p>
+</li>
+<li>
+<p>轮播图</p>
+</li>
+<li>
+<p><a href="">导航菜单</a></p>
+</li>
+<li>
+<p>表单相关组件</p>
+</li>
+<li>
+<p>面包屑导航条</p>
+</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#javascript%E6%80%BB%E7%BB%93">JavaScript总结</a>
+<ul>
+<li><a href="#%E4%B8%80javascript%E7%AE%80%E4%BB%8B">一：JavaScript简介</a><br>
+*<br>
+*<br>
+*<br>
+* <a href="#%E4%BB%80%E4%B9%88%E6%98%AFjavascript">什么是JavaScript？</a></li>
+<li><a href="#%E4%BA%8Cjavascript%E5%9F%BA%E7%A1%80">二：JavaScript基础</a><br>
+*
+<ul>
+<li><a href="#1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95-%E5%92%8C%E6%B3%A8%E9%87%8A">1：基础语法 和注释</a></li>
+<li><a href="#2%E5%9C%A8html%E7%BD%91%E9%A1%B5%E4%B8%AD%E5%8A%A0%E5%85%A5javascript%E7%9A%84%E6%96%B9%E5%BC%8F">2：在HTML网页中加入JavaScript的方式</a>
+<ul>
+<li><a href="#%E5%A4%96%E9%83%A8%E5%BC%95%E5%85%A5%E5%86%99%E5%9C%A8head-%E4%B8%AD">外部引入:(写在head 中)</a></li>
+<li><a href="#%E5%86%85%E8%81%94%E5%86%99%E5%9C%A8body%E4%B8%AD">内联:(写在body中)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E4%B8%89javascript%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">三:JavaScript数据类型</a><br>
+*
+<ul>
+<li><a href="#1javascript%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">1：JavaScript的数据类型：</a></li>
+</ul>
+</li>
+<li><a href="#%E5%9B%9Bjavascript%E7%9A%84%E7%A8%8B%E5%BA%8F%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5">四：JavaScript的程序控制语句</a></li>
+<li><a href="#%E4%BA%94javascript%E7%9A%84%E5%AF%B9%E8%B1%A1">五：JavaScript的对象</a><br>
+*
+<ul>
+<li><a href="#1%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AF%B9%E8%B1%A1">1：自定义对象：</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B">代码如下：</a></li>
+<li><a href="#2%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1">2：内置对象：</a>
+<ul>
+<li><a href="#window%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%B8%80%E4%BA%9B%E6%96%B9%E6%B3%95">window对象的一些方法:</a></li>
+<li><a href="#windowdocument%E7%9A%84%E9%83%A8%E5%88%86%E7%94%A8%E6%B3%95">window.document的部分用法：</a></li>
+<li><a href="#windowlocation%E7%9A%84%E9%83%A8%E5%88%86%E7%94%A8%E6%B3%95">window.location的部分用法：</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E4%BA%94javascript%E7%9A%84%E5%87%BD%E6%95%B0">五：JavaScript的函数</a><br>
+*<br>
+*<br>
+*<br>
+* <a href="#%E7%AE%80%E4%BB%8B">简介:</a>
+<ul>
+<li><a href="#1%E8%8E%B7%E5%8F%96%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0">1:获取函数参数:</a></li>
+<li><a href="#2%E8%87%AA%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0">2:自调用函数:</a></li>
+</ul>
+</li>
+<li><a href="#%E5%85%ADjavascript%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF">六:JavaScript的应用场景</a><br>
+*
+<ul>
+<li><a href="#1%E6%B7%BB%E5%8A%A0%E4%BA%A4%E4%BA%92%E4%BA%8B%E4%BB%B6">1:添加交互事件:</a></li>
+<li><a href="#2%E6%93%8D%E4%BD%9Cdom%E5%85%83%E7%B4%A0">2:操作DOM元素:</a></li>
+<li><a href="#3%E6%93%8D%E4%BD%9C%E6%A0%B7%E5%BC%8F">3:操作样式:</a></li>
+<li><a href="#4%E9%AA%8C%E8%AF%81%E8%A1%A8%E5%8D%95">4:验证表单:</a></li>
+<li><a href="#5%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82ajax">5:异步请求Ajax</a></li>
+<li><a href="#6reg%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D">6:reg正则匹配</a></li>
+<li><a href="#%E4%B8%83%E5%AE%9A%E6%97%B6%E5%99%A8">七:定时器</a></li>
+<li><a href="#%E5%85%AB%E4%BA%8B%E4%BB%B6">八:事件</a>
+<ul>
+<li><a href="#onchange%E5%80%BC%E5%8F%91%E7%94%9F%E5%8F%98%E5%8C%96%E7%9A%84%E4%BA%8B%E4%BB%B6">onchange:值发生变化的事件</a></li>
+<li><a href="#onclick%E7%82%B9%E5%87%BB%E4%BA%8B%E4%BB%B6"><strong>onclick:点击事件</strong></a></li>
+<li><a href="#onblur%E5%A4%B1%E5%8E%BB%E7%84%A6%E7%82%B9%E4%BA%8B%E4%BB%B6">onblur:失去焦点事件</a></li>
+<li><a href="#onmouseover%E9%BC%A0%E6%A0%87%E6%82%AC%E6%B5%AE%E4%BA%8B%E4%BB%B6">onmouseover:鼠标悬浮事件</a></li>
+<li><a href="#onmouseout%E9%BC%A0%E6%A0%87%E7%A7%BB%E5%87%BA%E4%BA%8B%E4%BB%B6">onmouseout:鼠标移出事件</a></li>
+<li><a href="#onload%E5%AE%8C%E6%88%90%E5%8A%A0%E8%BD%BD%E4%BA%8B%E4%BB%B6">onload:完成加载事件</a></li>
+<li><a href="#onkeydown%E9%94%AE%E7%9B%98%E6%8C%89%E4%B8%8B%E4%BA%8B%E4%BB%B6">onkeydown:键盘按下事件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#jquery%E5%BA%94%E7%94%A8%E6%80%BB%E7%BB%93">jQuery应用总结</a>
+<ul>
+<li><a href="#%E4%B8%80jquery%E5%9F%BA%E7%A1%80">一:jQuery基础</a>
+<ul>
+<li><a href="#1-jquery%E6%98%AF%E4%BB%80%E4%B9%88">1:   jQuery是什么？</a></li>
+<li><a href="#2-jquery%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8A%9F%E8%83%BD">2:  jQuery有哪些功能？</a></li>
+<li><a href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8jquery">3:   为什么要使用jQuery？</a></li>
+<li><a href="#4-%E5%A6%82%E4%BD%95%E5%BC%95%E5%85%A5jquery">4:  如何引入jQuery?</a></li>
+<li><a href="#5%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95">5:基础语法</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BA%8C%E9%80%89%E6%8B%A9%E5%99%A8">二:选择器</a></li>
+<li><a href="#%E4%B8%89html%E6%93%8D%E4%BD%9C">三:HTML操作</a><br>
+*
+<ul>
+<li><a href="#1dom%E6%93%8D%E4%BD%9C">1:DOM操作:</a></li>
+<li><a href="#2%E5%B1%9E%E6%80%A7%E6%93%8D%E4%BD%9C">2:属性操作:</a></li>
+<li><a href="#3%E5%86%85%E5%AE%B9%E6%93%8D%E4%BD%9C">3:内容操作:</a></li>
+<li><a href="#4%E6%A0%B7%E5%BC%8F%E6%93%8D%E4%BD%9C">4:样式操作:</a></li>
+</ul>
+</li>
+<li><a href="#%E5%9B%9B%E4%BD%BF%E7%94%A8jquery%E6%B7%BB%E5%8A%A0%E4%BA%8B%E4%BB%B6">四:使用jQuery添加事件</a></li>
+<li><a href="#%E4%BA%94jquery%E7%9A%84%E4%B8%80%E4%BA%9B%E6%95%88%E6%9E%9C">五:jQuery的一些效果</a></li>
+<li><a href="#%E5%85%AD%E9%81%8D%E5%8E%86">六:遍历</a></li>
+<li><a href="#%E4%B8%83ajax">七:Ajax</a><br>
+*
+<ul>
+<li><a href="#%E9%87%8D%E7%82%B9get%E5%92%8Cpost%E5%8C%BA%E5%88%AB">重点：get()和post()区别？</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#easyui%E6%80%BB%E7%BB%93">EasyUI总结</a>
+<ul>
+<li><a href="#%E4%B8%80%E7%AE%80%E4%BB%8B">一:简介</a>
+<ul>
+<li><a href="#1easyui%E6%98%AF%E4%BB%80%E4%B9%88">1:EasyUI是什么?</a></li>
+<li><a href="#2easyui%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF">2:EasyUI的应用场景?</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BA%8C%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4">二:使用步骤</a></li>
+<li><a href="#%E4%B8%89%E4%B8%BB%E8%A6%81%E7%BB%84%E4%BB%B6">三:主要组件</a><br>
+*
+<ul>
+<li><a href="#%E5%8F%82%E8%A7%81">参见：</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#layui%E6%80%BB%E7%BB%93">LayUI总结</a>
+<ul>
+<li><a href="#%E4%B8%80%E7%AE%80%E4%BB%8B-2">一：简介</a><br>
+*
+<ul>
+<li><a href="#1layui%E6%98%AF%E4%BB%80%E4%B9%88">1:LayUI是什么?</a></li>
+<li><a href="#2%E5%B8%83%E5%B1%80">2：布局</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BA%8C%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4-2">二：使用步骤</a><br>
+*<br>
+*<br>
+* <a href="#%E7%AC%AC%E4%B8%80%E6%AD%A5-%E5%BC%95%E5%85%A5layui%E7%9B%B8%E5%85%B3%E7%9A%84js-css">第一步. 引入LayUI相关的JS、CSS</a><br>
+* <a href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5-%E6%B7%BB%E5%8A%A0%E6%A0%B7%E5%BC%8F-%E6%88%96%E8%80%85%E5%BC%95%E5%85%A5js%E6%A8%A1%E5%9D%97">第二步. 添加样式、或者引入JS模块</a></li>
+<li><a href="#%E4%B8%89%E7%BB%84%E4%BB%B6%E5%88%86%E7%B1%BB">三：组件分类</a></li>
+<li><a href="#%E5%9B%9B%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6">四：后台开发常用组件</a>
+<ul>
+<li><a href="#%E5%8F%82%E8%A7%81-2">参见：</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://cxp-twx.github.io/post/ajax-xue-xi">
+              <h3 class="post-title">
+                Ajax学习
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '3818ab196008bdc444d2',
+    clientSecret: '25a6a1be783a52e1a00f165dd3c08fa28fba507a',
+    repo: 'cxp-twx.github.io',
+    owner: 'cxp-twx',
+    admin: ['cxp-twx'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://cxp-twx.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,674 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>web回顾 | CheckChen</title>
+<meta name="description" content="吾日三省吾身" />
+<link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576204578007">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cxp-twx.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://cxp-twx.github.io">
+  <img class="avatar" src="https://cxp-twx.github.io/images/avatar.png?v=1576204578007" alt="">
+  </a>
+  <h1 class="site-title">
+    CheckChen
+  </h1>
+  <p class="site-description">
+    吾日三省吾身
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              web回顾
+            </h2>
+            <div class="post-info">
+              <span>
+                2017-06-13
+              </span>
+              <span>
+                8 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="javaweb回顾">JavaWeb回顾</h1>
+<h2 id="tomcat">Tomcat</h2>
+<ul>
+<li>命令</li>
+<li>配置</li>
+<li>部署</li>
+</ul>
+<h2 id="jsp">JSP</h2>
+<h3 id="语法">语法</h3>
+<p>JSP页面由以下几部分组成</p>
+<ol>
+<li>页面指令</li>
+<li>HTML代码</li>
+<li>Java代码片段</li>
+<li>JavaScript代码</li>
+<li>EL表达式</li>
+<li>JSTL标签</li>
+</ol>
+<h3 id="页面指令">页面指令</h3>
+<ul>
+<li>page : 用来设置页面相关的属性、编码
+<ul>
+<li>language</li>
+<li>contentType</li>
+<li>import</li>
+<li>pageEncoding</li>
+<li>isErrorPage</li>
+<li>errorPage</li>
+</ul>
+</li>
+<li>include： 静态（编译期包含）包含其他页面到当前的JSP中
+<ul>
+<li>file</li>
+</ul>
+</li>
+<li>taglib: 引入标签库
+<ul>
+<li>prefix</li>
+<li>uri</li>
+</ul>
+</li>
+</ul>
+<h3 id="java代码片段">Java代码片段</h3>
+<ul>
+<li>
+<p>普通Java代码片段</p>
+<pre><code class="language-jsp">&lt;%
+  out.println(&quot;Hello World!&quot;);
+%&gt;
+</code></pre>
+</li>
+<li>
+<p>变量输出</p>
+<pre><code class="language-jsp">&lt;% String message = &quot;Hello JSP&quot;; %&gt;
+
+&lt;%=message %&gt;
+</code></pre>
+</li>
+<li>
+<p>变量声明、方法定义代码片段</p>
+<pre><code class="language-jsp">&lt;%! 
+	private int age = 70;
+	
+	public int getAge() {
+        return age;
+    }
+%&gt;
+</code></pre>
+</li>
+<li>
+<p>Java代码中嵌套HTML</p>
+<ul>
+<li>
+<p>纯Java代码拼接字符串</p>
+<pre><code class="language-jsp">&lt;%
+out.println(&quot;&lt;table&gt;&quot;);
+for(int i = 0; i &lt; 3; i++) {
+    out.println(&quot;&lt;tr&gt;&quot;);
+    for(int j = 0; j &lt; 3; j++) {
+		out.println(&quot;&lt;td&gt;i: &quot;+i+&quot;, j: &quot;+j+&quot;&lt;/td&gt;&quot;);
+    }
+    out.println(&quot;&lt;/tr&gt;&quot;);
+}
+out.println(&quot;&lt;/table&gt;&quot;);
+%&gt;
+</code></pre>
+</li>
+<li>
+<p>嵌套HTML标签</p>
+<pre><code class="language-jsp">&lt;table&gt;
+    &lt;%
+        for(int i = 0; i &lt; 3; i++) {
+    %&gt;
+    &lt;tr&gt;
+    	&lt;%
+        for(int j = 0; j &lt; 3; j++) {
+        %&gt;
+        &lt;td&gt;i: &lt;%=i %&gt;, j: &lt;%=j %&gt;&lt;/td&gt;
+        &lt;%
+        }
+        %&gt;
+    &lt;/tr&gt;
+     &lt;%
+        }
+     %&gt;
+&lt;/table&gt;
+
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="jstlel">JSTL&amp;EL</h3>
+<p>JSTL是JSP的标准标签库，作用就是减少JSP中的JAVA代码片段，提高JSP页面代码的可读性。</p>
+<p>EL表达式是一门表达式语言，通常用来配合JSTL实现变量取值，具体来说可以读取作用域中、请求头中、Cookie中、请求参数中的变量值。</p>
+<h4 id="jstl标签库分类">JSTL标签库分类</h4>
+<ul>
+<li>核心标签库(core)
+<ul>
+<li>out</li>
+<li>set</li>
+<li>catch</li>
+<li>forEach</li>
+<li>forTokens</li>
+<li>if</li>
+<li>choose、when、otherwise</li>
+<li>url、param</li>
+</ul>
+</li>
+<li>格式化标签库(fmt)
+<ul>
+<li>formatDate</li>
+<li>formatNumber</li>
+</ul>
+</li>
+</ul>
+<h4 id="el内置对象">EL内置对象</h4>
+<ul>
+<li>
+<p>取Cookie中的值： cookie</p>
+<pre><code class="language-jsp">${cookie.message} // 取Cookie中key为message的属性值
+</code></pre>
+</li>
+<li>
+<p>取请求头中的值： header</p>
+<pre><code class="language-jsp">${header.username}  //取请求头中key为username的属性值
+</code></pre>
+</li>
+<li>
+<p>取请求参数中的值： param</p>
+<pre><code class="language-jsp">${param.username}  //取请求参数中key为username的属性值
+</code></pre>
+</li>
+<li>
+<p>取作用域中的值</p>
+<blockquote>
+<p>EL表达式取作用域中的值，可以不显式使用内置对象，el会自动从最小的作用域pageScope中取，如果没找到指定参数，再去requestScope中找，再是sessionScope，最后是applicationScope。</p>
+</blockquote>
+<p>显式取特定作用域中的属性值</p>
+<ul>
+<li>pageScope</li>
+<li>requestScope</li>
+<li>sessionScope</li>
+<li>applicationScope</li>
+</ul>
+<pre><code class="language-jsp">${sessionScope.user}  // EL会直接去session作用中取值，即使没有取到值也不会去其他作用域中尝试取值
+
+</code></pre>
+</li>
+</ul>
+<h4 id="jsp中的动作标签">JSP中的动作标签</h4>
+<ul>
+<li>useBean: 实例化一个Java类
+<ul>
+<li>class: 指定类的全名</li>
+<li>id： 对象引用的变量名</li>
+</ul>
+</li>
+<li>setProperty: 设置属性值
+<ul>
+<li>name： 指向useBean实例化的对象名称</li>
+<li>property:  对象的属性名</li>
+<li>value： 要设置的值</li>
+</ul>
+</li>
+<li>getProperty： 获取属性值
+<ul>
+<li>name</li>
+<li>property</li>
+</ul>
+</li>
+<li>forward： 请求转发(地址栏不变)</li>
+<li>param： 一般作为其他的标签的子元素，用于传参</li>
+<li>include： 动态（在运行时才包含进来）包含其他JSP页面</li>
+</ul>
+<h4 id="四大作用域">四大作用域</h4>
+<ul>
+<li>
+<p>pageContext: PageContext</p>
+<p>范围：当前页面</p>
+</li>
+<li>
+<p>request: HttpServletRequest</p>
+<p>范围：一次请求</p>
+</li>
+<li>
+<p>session: HttpSession</p>
+<p>范围：一次会话</p>
+</li>
+<li>
+<p>application: ServletContext</p>
+<p>范围：整个应用声明周期</p>
+</li>
+</ul>
+<h4 id="九大内置对象">九大内置对象</h4>
+<ul>
+<li>out</li>
+<li>pageContext</li>
+<li>request</li>
+<li>session</li>
+<li>application</li>
+<li>response</li>
+<li>page</li>
+<li>config</li>
+<li>exception</li>
+</ul>
+<h3 id="servlet">Servlet</h3>
+<h4 id="servlet基础">Servlet基础</h4>
+<ul>
+<li>
+<p>如何创建一个Servlet类？</p>
+<ol>
+<li>创建一个普通Java类</li>
+<li>继承HttpServlet</li>
+<li>重写doGet、doPost方法</li>
+</ol>
+</li>
+<li>
+<p>注册Servlet</p>
+<ul>
+<li>
+<p>注解的方式： @WebServlet</p>
+</li>
+<li>
+<p>xml的方式： 在web.xml中添加</p>
+<pre><code class="language-xml">&lt;servlet&gt;
+	&lt;servlet-name&gt;&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+	&lt;servlet-name&gt;&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
+
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="servlet生命周期">Servlet生命周期</h4>
+<ul>
+<li>void init(ServletConfig config);   --初始化Servlet时调用（默认首次请求）</li>
+<li>void service(HttpServletRequest req, HttpServletResponse resp);	 -- 每次请求此Servlet时调用</li>
+<li>void destroy();   --销毁 （应用停止时调用）</li>
+</ul>
+<h4 id="文件上传">文件上传</h4>
+<ul>
+<li>通常文件上传： apache的 commons-fileupload、commons-io包。
+<ul>
+<li>FileItem</li>
+<li>DiskFileItemFactory</li>
+<li>ServletFileupload</li>
+</ul>
+</li>
+<li>Servlet3.0： @MultipartConfig
+<ul>
+<li>Part</li>
+</ul>
+</li>
+</ul>
+<h4 id="查询分页">查询分页</h4>
+<ul>
+<li>
+<p>物理分页</p>
+<p>物理分页是在查询数据库时真正的进行了分页处理，每次只取一页的数据。</p>
+</li>
+<li>
+<p>逻辑分页</p>
+<p>逻辑分页在查询数据库时并没有做分页逻辑，而是把所有数据一次性加载到内存，在用户需要查看数据时，在内存中拿到当前页需要展示的数据，返回给页面展示。</p>
+</li>
+<li>
+<p>通用分页参数</p>
+<ul>
+<li>currentPage： 当前页</li>
+<li>pageSize: 每页展示条数</li>
+<li>totalCount: 总条数</li>
+<li>data: 当前页数据</li>
+<li>totalPage: 总页数</li>
+</ul>
+</li>
+</ul>
+<h3 id="cookiesession">Cookie&amp;Session</h3>
+<h4 id="cookie的特点">Cookie的特点</h4>
+<ul>
+<li>存储的数据大小很有限</li>
+<li>Cookie是存储在客户端的</li>
+<li>Cookie不能存储中文</li>
+<li>安全性较低，不适合存储敏感数据</li>
+</ul>
+<h4 id="session的特点">Session的特点</h4>
+<ul>
+<li>Session存储的数据大小没有上限</li>
+<li>Session是存储在服务端</li>
+<li>Session中可以存储Java中所有类型的数据</li>
+<li>安全性较高</li>
+<li>Session是由Cookie演变而来的一种技术，本身也需要依赖Cookie（JSESSIONID）</li>
+</ul>
+<blockquote>
+<p>Cookie和Session都属于会话跟踪技术，解决了HTTP协议无状态的问题。</p>
+</blockquote>
+<h4 id="cookie的使用">Cookie的使用</h4>
+<ul>
+<li>
+<p>创建Cookie</p>
+<p>Cookie cookie = new Cookie(&quot;key&quot;, &quot;value&quot;);</p>
+</li>
+<li>
+<p>设置Cookie属性</p>
+<p>cookie.setMaxAge(60);  //单位是秒， 设置为0代表立马删除</p>
+<p>cookie.setPath();</p>
+<p>cookie.setDomain();</p>
+</li>
+<li>
+<p>写Cookie</p>
+<p>response.addCookie(cookie);</p>
+</li>
+<li>
+<p>获取Cookie中的数据</p>
+<p>Cookie[] cookies = reuqest.getCookies();</p>
+<p>// 遍历查找需要获取的数据</p>
+</li>
+</ul>
+<h3 id="filter">Filter</h3>
+<p>Filter的原理是能够在Servlet之前去接触到请求，进而完成一些例如： 设置请求参数、修改请求数据、重定向操作。</p>
+<p>Filter是一个链式结构，应用中支持同时存在多个过滤器，他们通过chain.doFilter(req, resp)方法连起来，如果在某个filter中没有调用此方法，那么请求将无法正常往下进行。</p>
+<h4 id="filter的使用">Filter的使用</h4>
+<ol>
+<li>创建Filter
+<ol>
+<li>新建一个普通Java类实现Filter接口</li>
+<li>重写doFilter方法。 （看情况重写声明周期方法init、destroy）</li>
+</ol>
+</li>
+<li>注册Filter
+<ul>
+<li>xml的方式  在web.xml中配置，和servlet类似</li>
+<li>注解的方式  @WebFilter</li>
+</ul>
+</li>
+</ol>
+<h3 id="listener">Listener</h3>
+<p>Listener用于监听特定的操作，当感兴趣的操作触发时，会自动回调Listener中的方法。</p>
+<p>从作用上来说主要分以下几类：</p>
+<ul>
+<li>监听三大作用域创建、销毁
+<ul>
+<li>ServletRequestListener</li>
+<li>HttpSessionListener</li>
+<li>ServletContextListener</li>
+</ul>
+</li>
+<li>监听三大作用域属性添加、移除、替换
+<ul>
+<li>ServletRequestAttributeListener</li>
+<li>HttpSessionAttributeListener</li>
+<li>ServletContextAttrbuteListener</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>上面这六种监听器在使用时都需要通过注解@WebListener、或者在web.xml中注册</p>
+</blockquote>
+<h4 id="使用方法">使用方法</h4>
+<ol>
+<li>创建一个普通类，实现对应的Listener接口，并实现其中的方法</li>
+<li>注册Listener。 注解、web.xml</li>
+</ol>
+<ul>
+<li>不需要注册的监听器
+<ul>
+<li>监听特定对象从Session作用域中添加、移除的： HttpSessionBindingListener</li>
+<li>监听Session钝化、活化： HttpSessionActivationListener</li>
+</ul>
+</li>
+</ul>
+<h4 id="使用方法-2">使用方法</h4>
+<pre><code>1. 让特定对象实现对应的Listener接口
+
+</code></pre>
+<ol start="2">
+<li>重写监听方法，完成业务操作</li>
+</ol>
+<h3 id="ajaxjquery-ajax">Ajax&amp;jQuery Ajax</h3>
+<h4 id="原生ajax">原生Ajax</h4>
+<ul>
+<li>对象： XMLHttpRequest  (xhr)</li>
+<li>get操作
+<ol>
+<li>创建请求对象</li>
+<li>设置请求参数</li>
+<li>设置回调函数</li>
+<li>发起请求</li>
+</ol>
+</li>
+<li>post操作
+<ol>
+<li>创建请求对象</li>
+<li>设置请求参数</li>
+<li>设置回调函数</li>
+<li>设置请求头（编码格式）</li>
+<li>发起请求</li>
+</ol>
+</li>
+</ul>
+<h4 id="jquery中的ajax">jQuery中的Ajax</h4>
+<ul>
+<li>ajax(url, {options});</li>
+<li>get(url, data, fn, 'json');</li>
+<li>post(url, data, fn, 'json');</li>
+<li>getJSON(url, data, fn);</li>
+</ul>
+<!-- more -->
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#javaweb%E5%9B%9E%E9%A1%BE">JavaWeb回顾</a>
+<ul>
+<li><a href="#tomcat">Tomcat</a></li>
+<li><a href="#jsp">JSP</a>
+<ul>
+<li><a href="#%E8%AF%AD%E6%B3%95">语法</a></li>
+<li><a href="#%E9%A1%B5%E9%9D%A2%E6%8C%87%E4%BB%A4">页面指令</a></li>
+<li><a href="#java%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5">Java代码片段</a></li>
+<li><a href="#jstlel">JSTL&amp;EL</a>
+<ul>
+<li><a href="#jstl%E6%A0%87%E7%AD%BE%E5%BA%93%E5%88%86%E7%B1%BB">JSTL标签库分类</a></li>
+<li><a href="#el%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1">EL内置对象</a></li>
+<li><a href="#jsp%E4%B8%AD%E7%9A%84%E5%8A%A8%E4%BD%9C%E6%A0%87%E7%AD%BE">JSP中的动作标签</a></li>
+<li><a href="#%E5%9B%9B%E5%A4%A7%E4%BD%9C%E7%94%A8%E5%9F%9F">四大作用域</a></li>
+<li><a href="#%E4%B9%9D%E5%A4%A7%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1">九大内置对象</a></li>
+</ul>
+</li>
+<li><a href="#servlet">Servlet</a>
+<ul>
+<li><a href="#servlet%E5%9F%BA%E7%A1%80">Servlet基础</a></li>
+<li><a href="#servlet%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">Servlet生命周期</a></li>
+<li><a href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0">文件上传</a></li>
+<li><a href="#%E6%9F%A5%E8%AF%A2%E5%88%86%E9%A1%B5">查询分页</a></li>
+</ul>
+</li>
+<li><a href="#cookiesession">Cookie&amp;Session</a>
+<ul>
+<li><a href="#cookie%E7%9A%84%E7%89%B9%E7%82%B9">Cookie的特点</a></li>
+<li><a href="#session%E7%9A%84%E7%89%B9%E7%82%B9">Session的特点</a></li>
+<li><a href="#cookie%E7%9A%84%E4%BD%BF%E7%94%A8">Cookie的使用</a></li>
+</ul>
+</li>
+<li><a href="#filter">Filter</a>
+<ul>
+<li><a href="#filter%E7%9A%84%E4%BD%BF%E7%94%A8">Filter的使用</a></li>
+</ul>
+</li>
+<li><a href="#listener">Listener</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">使用方法</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95-2">使用方法</a></li>
+</ul>
+</li>
+<li><a href="#ajaxjquery-ajax">Ajax&amp;jQuery Ajax</a>
+<ul>
+<li><a href="#%E5%8E%9F%E7%94%9Fajax">原生Ajax</a></li>
+<li><a href="#jquery%E4%B8%AD%E7%9A%84ajax">jQuery中的Ajax</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://cxp-twx.github.io/post/java-jin-fa-guo-cheng-wen-ti-zong-jie">
+              <h3 class="post-title">
+                Java进发过程——问题总结
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '3818ab196008bdc444d2',
+    clientSecret: '25a6a1be783a52e1a00f165dd3c08fa28fba507a',
+    repo: 'cxp-twx.github.io',
+    owner: 'cxp-twx',
+    admin: ['cxp-twx'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://cxp-twx.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

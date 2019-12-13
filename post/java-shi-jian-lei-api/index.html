@@ -1,10 +1,10 @@
 <html>
   <head>
-  <meta charset="utf-8" />
+    <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Gridea | CheckChen</title>
+<title>Java时间类API | CheckChen</title>
 <meta name="description" content="吾日三省吾身" />
-<link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576203137748">
+<link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576204578007">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://cxp-twx.github.io/styles/main.css">
@@ -20,7 +20,7 @@
       <div class="main-content">
         <div class="site-header">
   <a href="https://cxp-twx.github.io">
-  <img class="avatar" src="https://cxp-twx.github.io/images/avatar.png?v=1576203137748" alt="">
+  <img class="avatar" src="https://cxp-twx.github.io/images/avatar.png?v=1576204578007" alt="">
   </a>
   <h1 class="site-title">
     CheckChen
@@ -70,47 +70,88 @@
   </div>
 </div>
 
-        <div class="current-tag-container">
-            <h2 class="title">
-                标签：# Gridea
-            </h2> 
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Java时间类API
+            </h2>
+            <div class="post-info">
+              <span>
+                2017-02-15
+              </span>
+              <span>
+                1 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>//日期---文本<br>
+Date date = new Date();<br>
+SimpleDateFormat sdf = new SimpleDateFormat();<br>
+String format = sdf.format(date);<br>
+System.out.println(format);<br>
+//默认</p>
+<p>//改变默认<br>
+sdf = new SimpleDateFormat(&quot;y-M-d&quot;);<br>
+String format2 = sdf.format(date);<br>
+System.out.println(format);</p>
+<p>//文本---日期<br>
+sdf = new SimpleDateFormat(&quot;y年m月d日&quot;);<br>
+String strdate =&quot;2019年9月9日&quot;;<br>
+Date parse = sdf.parse(strdate);<br>
+System.out.println(parse);<br>
+//文本到日期:格式要匹配,不能有空格<br>
+//格式长度,大于字符串长度,没法解析<br>
+//(sdf)小于字符串长度,可以解析</p>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
         </div>
-        <div class="post-container">
-  
-    <article class="post">
-      <a href="https://cxp-twx.github.io/post/hello-gridea">
-        <h2 class="post-title">Hello Gridea</h2>
-      </a>
-      <div class="post-info">
-        <span>
-          2018-12-12
-        </span>
-        <span>
-          2 min read
-        </span>
-        
-          <a href="https://cxp-twx.github.io/tag/UwModpvhD" class="post-tag">
-            # Gridea
-          </a>
-        
-      </div>
-      
-        <a href="https://cxp-twx.github.io/post/hello-gridea" class="post-feature-image" style="background-image: url('https://cxp-twx.github.io/post-images/hello-gridea.png')">
-        </a>
-      
-      <div class="post-abstract">
-        <p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
 
-      </div>
-    </article>
-  
-</div>
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://cxp-twx.github.io/post/23-chong-she-ji-mo-shi-gai-nian">
+              <h3 class="post-title">
+                23种设计模式概念
+              </h3>
+            </a>
+          </div>
+        
 
-        <div class="pagination-container">
-  
-  
-</div>
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '3818ab196008bdc444d2',
+    clientSecret: '25a6a1be783a52e1a00f165dd3c08fa28fba507a',
+    repo: 'cxp-twx.github.io',
+    owner: 'cxp-twx',
+    admin: ['cxp-twx'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
 
         <div class="site-footer">
   Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 

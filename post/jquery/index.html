@@ -1,0 +1,621 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JQuery | CheckChen</title>
+<meta name="description" content="吾日三省吾身" />
+<link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576204578007">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cxp-twx.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://cxp-twx.github.io">
+  <img class="avatar" src="https://cxp-twx.github.io/images/avatar.png?v=1576204578007" alt="">
+  </a>
+  <h1 class="site-title">
+    CheckChen
+  </h1>
+  <p class="site-description">
+    吾日三省吾身
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              JQuery
+            </h2>
+            <div class="post-info">
+              <span>
+                2017-03-21
+              </span>
+              <span>
+                14 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h3 id="浮动">浮动</h3>
+<pre><code class="language-html">&lt;head&gt;
+		&lt;meta charset=&quot;UTF-8&quot;&gt;
+		&lt;title&gt;&lt;/title&gt;
+		&lt;style type=&quot;text/css&quot;&gt;
+			.div1 {
+				width: 180px;
+				height: 100px;
+				background-color: red;
+				float: left;
+			
+			}
+			
+			.div2 {
+				width: 100px;
+				height: 120px;
+				background-color: blue;
+				float: left;
+				/*clear: left;*/
+			}
+			
+			.div3 {
+				width: 200px;
+				height: 90px;
+				background-color: cyan;
+				float: left;
+			}
+			
+			.div4 {
+				width: 150px;
+				height: 100px;
+				background-color: yellowgreen;
+				/*clear: both;*/
+			}
+		&lt;/style&gt;
+	&lt;/head&gt;
+
+	&lt;body&gt;
+		&lt;div class=&quot;div1&quot;&gt;&lt;/div&gt;
+		&lt;div class=&quot;div2&quot;&gt;&lt;/div&gt;
+		&lt;div class=&quot;div3&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;div4&quot;&gt;&lt;/div&gt;
+	&lt;/body&gt;
+
+</code></pre>
+<p>div是块级元素，一个div在页面中独占一行，多个div自上而下排列，也就是传说中的标准流中的div。</p>
+<p>那么如何做到在一行显示多个div元素呢? 浮动来处理。其核心功能是解决水平布局问题。</p>
+<p>浮动可以理解为<em>让某个div元素脱离标准流， <strong>漂浮在标准流之上</strong>，下一个元素顶替位置</em>，和标准流不是一个层次。</p>
+<p>(1) div2浮动，脱离标准流，div1、div3、div4仍然在标准流当中，div3会自动向上移动，占据div2的位置，重新组成一个流。</p>
+<p>(2) div2, div3都浮动。</p>
+<p><strong>重点</strong>    当同时对div2、div3设置浮动之后，div3会跟随在div2之后。div2在每个例子中都是浮动的，但并没有跟随到div1之后？</p>
+<p><strong>结论</strong>    若某个div元素A是浮动的，如果它上面元素也是浮动的，那么A会跟在上一个元素的后面，如果一行放不下这两个元素，那么A元素会被挤到下一行；如果它的上个元素在标准流中，那么A元素的相对垂直位置不会改变，即A的顶部会和上个元素的底部对齐。</p>
+<p>所以， div2, div3都浮动，不再属于标准流，div4会自动上移，与div1组成一个“新”标准流，因设置宽高可能会被遮挡。</p>
+<p>clear:left 是消除浮动产生的影响。如此例中，div2中使用了，它仍然是在div1的垂直位置下方，这方面相当于没用浮动似的，但其实是漂浮在标准流上的，其他元素可以顶替其位置。div3,div4仍是标准流中的元素，依旧会向上顶替float元素的位置。</p>
+<p>HTML  DOM事件</p>
+<p>焦点事件  获取焦点  onfocus    失去焦点   onblur</p>
+<p>鼠标事件 鼠标按下  onmousedown， 鼠标弹起  onmouseup，鼠标移动onmousemove , 鼠标移到某元素上onmouseover     鼠标从某元素移开   onmouseout</p>
+<p>键盘事件  键盘按下，onkeydown,  onkeypress    键盘弹起  onkeyup</p>
+<p>点击事件  单击  onclick   双击 ondblclick</p>
+<p>值发生变化事件  onchange</p>
+<p>提交事件  onsubmit</p>
+<p>加载事件  onload</p>
+<p>重置按钮被点击   onreset</p>
+<p>onunload</p>
+<p>HTML DOM 元素节点    添加和删除，替换节点（HTML 元素）    https://zixuephp.net/manual-javascript-720.html</p>
+<p>javascript 嵌入到html网页方式：</p>
+<p>(1)外部定义js文件,不要写 script标签(可以远程，可以本地)，通过script标签引入</p>
+<p>(2)网页中直接通过script标签定义代码块        javascript代码放在script标签中.script标签可以放在html的任何地方，一般建议放在head标签里.</p>
+<pre><code class="language-javascript"> &lt;script type=&quot;text/javascript&quot; src=&quot;jquery/jquery3.4.1.min.js&quot;&gt;&lt;/script&gt;	
+ &lt;script type=&quot;text/javascript&quot;&gt;          
+ //在这里面写你的js代码      
+ &lt;/script&gt;
+</code></pre>
+<p>数据类型</p>
+<p>Number   数字  BigInt(存储很大的数值)  数值后加n,或BigInt(数值);</p>
+<p>String 字符串</p>
+<p>Boolean 布尔值</p>
+<p>Object  对象  Array 数组    Function    RegExp   Date   Json</p>
+<p>Undefined</p>
+<p>Null</p>
+<p>java中类型  + 变量名，js 中通过关键字var  + 变量名 ，变量声明时不需要说明类型，并且可以随时赋值改变数据类型。var可以省略</p>
+<p>console.log();      console.log(&quot;sname 的类型：&quot; + (typeof sname))   alert(&quot;&quot;);</p>
+<pre><code class="language-javascript">//定义Array
+var nums = [34,true,&quot;hello&quot;];
+//遍历数组
+for(var idx in nums){
+	//console.log(idx);//输出的是下标
+	console.log(nums[idx]);//输出的是值
+}
+
+for(var i = 0; i &lt; 10; i++) {
+  // 循环10次
+}
+
+var stu = '';  0
+	if(stu){
+		console.log(true);
+	}else{
+		console.log(false);
+	}  //false
+
+
+</code></pre>
+<pre><code class="language-js">//定义一个简单的function，模拟java中的方法
+&lt;script type=&quot;text/javascript&quot; &gt;
+	function simple(){
+			alert(&quot;普通方法&quot;);
+	}
+			
+	simple();
+	console.log((typeof simple)); //function
+
+var simple2 = function(){
+    
+}
+---------------------------------------------------
+&lt;/script&gt;
+//自调用函数
+(function sayHello(sname){
+    alert(&quot;你好&quot; + sname);
+})(&quot;zhangsan&quot;);//函数内定义变量只在function内作用
+(function sayHello(sname,win){
+	 alert(&quot;你好&quot; + sname);
+	 console.log(sname);
+		 win.sname = sname;
+	})(&quot;zhangsan&quot;,window);//提升了sname的作用域
+	sname=&quot;lisi&quot;;
+	console.log(sname);
+----------------------------------------------------
+模拟java中的类，以及创建对象
+&lt;script&gt;
+		function Student(sname,age){
+			this.sname = sname;
+			this.age = age;  //属性public,把属性绑定到对象上
+			var gender = &quot;保密&quot;; //属性是private
+			this.sayName = function(){
+				console.log(this.sname);
+			}
+				
+			this.getGender = function(){
+				return gender;
+			}
+				
+			this.setGender = function(gender1){
+				gender = gender1;
+					
+				}
+			}
+			
+			var stu = new Student(&quot;zhangsan&quot;,19);
+			console.log(stu.age);
+			console.log(stu.sname);
+			console.log(stu.gender); //undefined
+			console.log(stu.getGender());
+			stu.setGender(&quot;女&quot;);
+			console.log(stu.getGender());
+		&lt;/script&gt;
+定义对象2  var stu = {name:&quot;zhangsan&quot; , sex:&quot;男&quot; , age:22, score:98.5};
+			console.log(stu.name);
+</code></pre>
+<h3 id="jquery">JQuery</h3>
+<p><em><strong>1.Jquery与js的关联：</strong></em></p>
+<p>1.js是网页脚本语言，类似java是一种开发常用语言；</p>
+<p>2.jQuery是基于js语言封装出来的一个前端框架；</p>
+<p>所以最本质的区别是js是一种语言，而jQuery是基于该语言的一种框架。</p>
+<p>**<em>Jquery是js类库，是对原生js的封装</em>。**要使用Jquery需要导入一个第三方的javascript库，</p>
+<p>jQuery本质上就是一段普通的JavaScript代码， 通常使用引入外部JS的方式来使用jQuery</p>
+<pre><code class="language-js">&lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p><em><strong>基础语法：</strong></em> <strong>$(selector).action()</strong></p>
+<ul>
+<li>美元符号$定义 jQuery</li>
+<li>选择符（selector）&quot;查询&quot;和&quot;查找&quot; HTML 元素</li>
+<li>jQuery 的 action() 执行对元素的操作</li>
+</ul>
+<p>实例:</p>
+<ul>
+<li>$(this).hide() - 隐藏当前元素</li>
+<li>$(&quot;p&quot;).hide() - 隐藏所有p元素</li>
+<li>$(&quot;p.test&quot;).hide() - 隐藏所有 class=&quot;test&quot; 的p元素</li>
+<li>$(&quot;#test&quot;).hide() - 隐藏所有 id=&quot;test&quot; 的元素</li>
+</ul>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><mi>f</mi><mi>u</mi><mi>n</mi><mi>c</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi><mo>(</mo><mo>)</mo><mrow></mrow><mi mathvariant="normal">实</mi><mi mathvariant="normal">际</mi><mi mathvariant="normal">上</mi><mi mathvariant="normal">是</mi><mi mathvariant="normal">匿</mi><mi mathvariant="normal">名</mi><mi mathvariant="normal">函</mi><mi mathvariant="normal">数</mi><mi mathvariant="normal">。</mi><mi mathvariant="normal">这</mi><mi mathvariant="normal">是</mi><mi>J</mi><mi>Q</mi><mi>u</mi><mi>e</mi><mi>r</mi><mi>y</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">语</mi><mi mathvariant="normal">法</mi><mi mathvariant="normal">，</mi></mrow><annotation encoding="application/x-tex">(function(){ }实际上是匿名函数。这是JQuery的语法，</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">u</span><span class="mord mathdefault">n</span><span class="mord mathdefault">c</span><span class="mord mathdefault">t</span><span class="mord mathdefault">i</span><span class="mord mathdefault">o</span><span class="mord mathdefault">n</span><span class="mopen">(</span><span class="mclose">)</span><span class="mord"></span><span class="mord cjk_fallback">实</span><span class="mord cjk_fallback">际</span><span class="mord cjk_fallback">上</span><span class="mord cjk_fallback">是</span><span class="mord cjk_fallback">匿</span><span class="mord cjk_fallback">名</span><span class="mord cjk_fallback">函</span><span class="mord cjk_fallback">数</span><span class="mord cjk_fallback">。</span><span class="mord cjk_fallback">这</span><span class="mord cjk_fallback">是</span><span class="mord mathdefault" style="margin-right:0.09618em;">J</span><span class="mord mathdefault">Q</span><span class="mord mathdefault">u</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">语</span><span class="mord cjk_fallback">法</span><span class="mord cjk_fallback">，</span></span></span></span>表示JQuery对象，可以有好几种用法。比如传递选择器字符串、页面对象等，如果直接传函数体进去，表示当页面加载完毕时执行这个函数。</p>
+<pre><code class="language-js">&lt;script&gt;
+$(function(){
+   $(&quot;#b1&quot;).click(function(){
+      $(&quot;#d&quot;).hide();
+   });
+   $(&quot;#b2&quot;).click(function(){
+      $(&quot;#d&quot;).show();
+   });
+});
+&lt;button id=&quot;b1&quot;&gt;隐藏div&lt;/button&gt;
+&lt;button id=&quot;b2&quot;&gt;显示div&lt;/button&gt;
+&lt;br&gt;
+&lt;div id=&quot;d&quot;&gt;这是一个div&lt;/div&gt;
+</code></pre>
+<p><em><strong>jquery选择器   $(selector)</strong></em></p>
+<p>selector是选择器表达式，语法基本和CSS选择器一致。</p>
+<p>$(&quot;tagName&quot;) 根据 标签名 选择所有该标签的元素，如 $(&quot;div&quot;)</p>
+<p>$(&quot;#id&quot;)根据 id 选择元素    $(&quot;#d1&quot;)</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><mi mathvariant="normal">&quot;</mi><mi mathvariant="normal">.</mi><mi>c</mi><mi>l</mi><mi>a</mi><mi>s</mi><mi>s</mi><mi>N</mi><mi>a</mi><mi>m</mi><mi>e</mi><mi mathvariant="normal">&quot;</mi><mo>)</mo><mi mathvariant="normal">根</mi><mi mathvariant="normal">据</mi><mi>c</mi><mi>l</mi><mi>a</mi><mi>s</mi><mi>s</mi><mi mathvariant="normal">选</mi><mi mathvariant="normal">择</mi><mi mathvariant="normal">元</mi><mi mathvariant="normal">素</mi><mi mathvariant="normal">如</mi></mrow><annotation encoding="application/x-tex">(&quot;.className&quot;) 根据 class 选择元素 如</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">&quot;</span><span class="mord">.</span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span class="mord mathdefault">s</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mord mathdefault">a</span><span class="mord mathdefault">m</span><span class="mord mathdefault">e</span><span class="mord">&quot;</span><span class="mclose">)</span><span class="mord cjk_fallback">根</span><span class="mord cjk_fallback">据</span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span class="mord mathdefault">s</span><span class="mord cjk_fallback">选</span><span class="mord cjk_fallback">择</span><span class="mord cjk_fallback">元</span><span class="mord cjk_fallback">素</span><span class="mord cjk_fallback">如</span></span></span></span>(&quot;.test&quot;)</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><mi mathvariant="normal">&quot;</mi><mi>s</mi><mi>e</mi><mi>l</mi><mi>e</mi><mi>c</mi><mi>t</mi><mi>o</mi><mi>r</mi><mn>1</mn><mi>s</mi><mi>e</mi><mi>l</mi><mi>e</mi><mi>c</mi><mi>t</mi><mi>o</mi><mi>r</mi><mn>2</mn><mi mathvariant="normal">&quot;</mi><mo>)</mo><mi mathvariant="normal">选</mi><mi mathvariant="normal">择</mi><mi>s</mi><mi>e</mi><mi>l</mi><mi>e</mi><mi>c</mi><mi>t</mi><mi>o</mi><mi>r</mi><mn>1</mn><mi mathvariant="normal">下</mi><mi mathvariant="normal">的</mi><mi>s</mi><mi>e</mi><mi>l</mi><mi>e</mi><mi>c</mi><mi>t</mi><mi>o</mi><mi>r</mi><mn>2</mn><mi mathvariant="normal">元</mi><mi mathvariant="normal">素</mi><mi mathvariant="normal">。</mi><mi mathvariant="normal">如</mi></mrow><annotation encoding="application/x-tex">(&quot;selector1 selector2&quot;) 选择 selector1下的selector2元素 。如</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">&quot;</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault">t</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord">1</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault">t</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord">2</span><span class="mord">&quot;</span><span class="mclose">)</span><span class="mord cjk_fallback">选</span><span class="mord cjk_fallback">择</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault">t</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord">1</span><span class="mord cjk_fallback">下</span><span class="mord cjk_fallback">的</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault">t</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord">2</span><span class="mord cjk_fallback">元</span><span class="mord cjk_fallback">素</span><span class="mord cjk_fallback">。</span><span class="mord cjk_fallback">如</span></span></span></span>(&quot;div#d3 span&quot;) ， 选择id=d3的div下的span元素</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><mi>s</mi><mi>e</mi><mi>l</mi><mi>e</mi><mi>c</mi><mi>t</mi><mi>o</mi><mi>r</mi><mo>:</mo><mi>f</mi><mi>i</mi><mi>r</mi><mi>s</mi><mi>t</mi><mo>)</mo><mi mathvariant="normal">满</mi><mi mathvariant="normal">足</mi><mi mathvariant="normal">选</mi><mi mathvariant="normal">择</mi><mi mathvariant="normal">器</mi><mi mathvariant="normal">条</mi><mi mathvariant="normal">件</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">第</mi><mi mathvariant="normal">一</mi><mi mathvariant="normal">个</mi><mi mathvariant="normal">元</mi><mi mathvariant="normal">素</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">如</mi></mrow><annotation encoding="application/x-tex">(selector:first) 满足选择器条件的第一个元素，如</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault">t</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mclose">)</span><span class="mord cjk_fallback">满</span><span class="mord cjk_fallback">足</span><span class="mord cjk_fallback">选</span><span class="mord cjk_fallback">择</span><span class="mord cjk_fallback">器</span><span class="mord cjk_fallback">条</span><span class="mord cjk_fallback">件</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">第</span><span class="mord cjk_fallback">一</span><span class="mord cjk_fallback">个</span><span class="mord cjk_fallback">元</span><span class="mord cjk_fallback">素</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">如</span></span></span></span>(&quot;div:first&quot;)</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><mi>s</mi><mi>e</mi><mi>l</mi><mi>e</mi><mi>c</mi><mi>t</mi><mi>o</mi><mi>r</mi><mo>:</mo><mi>l</mi><mi>a</mi><mi>s</mi><mi>t</mi><mo>)</mo><mi mathvariant="normal">满</mi><mi mathvariant="normal">足</mi><mi mathvariant="normal">选</mi><mi mathvariant="normal">择</mi><mi mathvariant="normal">器</mi><mi mathvariant="normal">条</mi><mi mathvariant="normal">件</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">最</mi><mi mathvariant="normal">后</mi><mi mathvariant="normal">一</mi><mi mathvariant="normal">个</mi><mi mathvariant="normal">元</mi><mi mathvariant="normal">素</mi><mi mathvariant="normal">，</mi></mrow><annotation encoding="application/x-tex">(selector:last) 满足选择器条件的最后一个元素，</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault">t</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mclose">)</span><span class="mord cjk_fallback">满</span><span class="mord cjk_fallback">足</span><span class="mord cjk_fallback">选</span><span class="mord cjk_fallback">择</span><span class="mord cjk_fallback">器</span><span class="mord cjk_fallback">条</span><span class="mord cjk_fallback">件</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">最</span><span class="mord cjk_fallback">后</span><span class="mord cjk_fallback">一</span><span class="mord cjk_fallback">个</span><span class="mord cjk_fallback">元</span><span class="mord cjk_fallback">素</span><span class="mord cjk_fallback">，</span></span></span></span>(&quot;div:last&quot;)</p>
+<p><em><strong>jquery属性</strong></em></p>
+<p>(1)通过attr()获取一个元素的属性（支持自定义属性)</p>
+<p>(2)通过attr(attr,value)修改属性</p>
+<p>(3)通过removeAttr(attr)删除属性</p>
+<pre><code class="language-js">&lt;script src=&quot;jquery/jquery.min.js&quot;&gt;&lt;/script&gt;
+  
+&lt;script&gt;
+$(function(){
+   $(&quot;#b1&quot;).click(function(){
+      alert(&quot;align属性是:&quot; + $(&quot;#h&quot;).attr(&quot;align&quot;) );
+       $(&quot;#h&quot;).attr(&quot;align&quot;,&quot;right&quot;) ;
+       $(&quot;#h&quot;).removeAttr(&quot;align&quot;);
+   });
+   $(&quot;#b2&quot;).click(function(){
+      alert(&quot;game属性是:&quot; + $(&quot;#h&quot;).attr(&quot;game&quot;) );
+      
+   });
+});
+  
+&lt;/script&gt;
+  
+&lt;button id=&quot;b1&quot;&gt;获取align属性&lt;/button&gt;
+  
+&lt;button id=&quot;b2&quot;&gt;获取自定义属性 game&lt;/button&gt;
+  
+&lt;br&gt;
+&lt;br&gt;
+  
+&lt;h1 id=&quot;h&quot; align=&quot;center&quot; game=&quot;LOL&quot;&gt;居中标题&lt;/h1&gt;
+</code></pre>
+<p><em><strong>jquery事件</strong></em></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">鼠标事件</th>
+<th style="text-align:left">键盘事件</th>
+<th style="text-align:left">表单事件</th>
+<th style="text-align:left">文档/窗口事件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">click</td>
+<td style="text-align:left">keypress</td>
+<td style="text-align:left">submit</td>
+<td style="text-align:left">load 图片加载</td>
+</tr>
+<tr>
+<td style="text-align:left">dblclick</td>
+<td style="text-align:left">keydown</td>
+<td style="text-align:left">change</td>
+<td style="text-align:left"><a href="https://www.runoob.com/jquery/event-resize.html">resize</a></td>
+</tr>
+<tr>
+<td style="text-align:left">mouseenter鼠标进入</td>
+<td style="text-align:left">keyup</td>
+<td style="text-align:left">focus</td>
+<td style="text-align:left"><a href="https://www.runoob.com/jquery/event-scroll.html">scroll</a></td>
+</tr>
+<tr>
+<td style="text-align:left">mousemove</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">blur</td>
+<td style="text-align:left"><a href="https://www.runoob.com/jquery/event-unload.html">unload</a></td>
+</tr>
+<tr>
+<td style="text-align:left">mouseout</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">*</td>
+</tr>
+</tbody>
+</table>
+<h5 id="jquery效果">jquery效果</h5>
+<p>显示 隐藏 切换 分别通过show(), hide(),toggle()实现</p>
+<p>向上滑动 向下滑动 滑动切换 分别通过slideUp(), slideDown(),slideToggle()实现</p>
+<p>淡入    淡出    切换 指定淡入程度 分别通过fadeIn(), fadeOut(), fadeToggle() fadeTo()实现</p>
+<p>通过animate 可以实现更为丰富的动画效果<br>
+animate()第一个参数为css样式<br>
+animate()第二个参数为延时毫秒，div.animate({left:'100px'},2000);</p>
+<p>easyui 前端框架。 封装了jQuery、Vue等前端JS框架，还提供了一套完善的UI组件，比如窗体、表单、表格、树、进度条、手风琴菜单</p>
+<p>使用步骤:</p>
+<p>1.下载easyui;</p>
+<p>2.引入easyui相关的js,css;</p>
+<pre><code class="language-html">&lt;head&gt;
+
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/themes/default/easyui.css&quot;&gt;
+        &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/themes/icon.css&quot;&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.min.js&quot;&gt;&lt;/script&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.easyui.min.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;js/locale/easyui-lang-zh_CN.js&quot; type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+
+&lt;/head&gt;
+</code></pre>
+<p>3.需要有一个html标签</p>
+<p>比如说：</p>
+<p>使用datagrid组件需要添加：</p>
+<pre><code class="language-html">&lt;table id=&quot;xxx&quot;&gt;&lt;/table&gt;
+</code></pre>
+<p>或者创建标签时一并指定样式：</p>
+<pre><code class="language-html">&lt;table id=&quot;xxx&quot; class=&quot;easyui-datagrid&quot;&gt;&lt;/table&gt;
+</code></pre>
+<p>4.给标签添加相应的easyui样式(可选)</p>
+<p>比如：</p>
+<p>按钮</p>
+<pre><code class="language-js">&lt;a class=&quot;easyui-linkbutton&quot;&gt;EasyUI按钮&lt;/a&gt;
+</code></pre>
+<p>窗口</p>
+<pre><code class="language-html">&lt;div class=&quot;easyui-window&quot; title=&quot;EasyUI窗口&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p>5.调用easyui相关js方法来初始化。设置组件参数(可选)</p>
+<pre><code class="language-js">// 无参数初始化一个组件
+$(selector).组件();
+//比如初始化一个日期选择控件
+&lt;div id=&quot;calendar&quot;&gt;&lt;/div&gt;
+$(&quot;#calendar&quot;).calendar();
+
+
+// 有参数初始化一个组件
+$(selector).组件({参数key/value形式});
+// 示例参见下面的数据表格使用方法
+
+
+
+// 调用组件的某个方法
+$(selector).组件('组件的方法名');
+// 例如：调用窗口的打开方法
+$(&quot;#win&quot;).window('open');
+</code></pre>
+<p>layui前端框架，封装jquery和一套完整的组件样式。</p>
+<p>使用步骤：</p>
+<p>1.引入layui相关的js,css</p>
+<pre><code class="language-html">&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;layui/css/layui.css&quot;/&gt;
+        &lt;script src=&quot;layui/layui.js&quot; type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>2.添加样式，或引入js模块</p>
+<p>LayUI中的组件分为两种：</p>
+<p>一种不要引入单独的模块，直接给原生的DOM元素添加class样式即可，比如按钮、小图标（印章）</p>
+<p>另一种需要引入LayUI相关的模块，比如弹出层layer。</p>
+<p>练习：轮播图</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+	&lt;head&gt;
+		&lt;meta charset=&quot;utf-8&quot; /&gt;
+		&lt;title&gt;轮播图  淡入淡出效果&lt;/title&gt;
+		&lt;style type=&quot;text/css&quot;&gt;
+			#img_container{
+				margin: 0 auto;
+				margin-top: 100px;
+				width:745px;
+				height:410px;
+				border: 1px solid silver;
+				position: relative;
+			}
+			
+			#img_container img{
+				position: absolute;
+				/*z-index: 1;*/
+				transition: all 1s; 
+			}
+			
+			.show{
+				opacity: 1;
+			}
+			
+			.hide{
+				opacity: 0;
+			}
+		&lt;/style&gt;
+	&lt;/head&gt;
+
+	&lt;body&gt;
+
+		&lt;div id=&quot;img_container&quot;&gt;
+			&lt;img class=&quot;hide&quot; src=&quot;img/t23.jpg&quot; /&gt;
+			&lt;img class=&quot;show&quot; src=&quot;img/t54.jpg&quot; /&gt;
+			&lt;img class=&quot;hide&quot; src=&quot;img/t68.jpg&quot; /&gt;
+			&lt;img class=&quot;hide&quot; src=&quot;img/t74.jpg&quot; /&gt;
+			
+		
+
+		&lt;/div&gt;
+		&lt;script type=&quot;text/javascript&quot;&gt;
+			var imgs = document.querySelectorAll(&quot;#img_container  img&quot;);
+			var size = imgs.length;
+			var idx = 1;
+			function show(n){
+				for(var i = 0; i &lt; size; i++){
+					imgs[i].className=&quot;hide&quot;;
+				}
+				imgs[n].className=&quot;show&quot;;
+				
+			}
+			
+			function begin(){
+				if(idx &gt; size){
+					idx = 1;
+				}
+				if(idx &lt; 1){
+					idx = size;
+				}
+				show(idx - 1);
+				console.log(&quot;当前显示的是第&quot; + idx + &quot;个&quot;);
+				idx++;
+			}
+			var timerId = setInterval(begin,2000);
+		&lt;/script&gt;
+	&lt;/body&gt;
+	
+&lt;/html&gt;
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E6%B5%AE%E5%8A%A8">浮动</a></li>
+<li><a href="#jquery">JQuery</a><br>
+*
+<ul>
+<li><a href="#jquery%E6%95%88%E6%9E%9C">jquery效果</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://cxp-twx.github.io/post/cong-windows-guo-du-dao-mac-bi-bei-kuai-jie-jian-dui-zhao-biao">
+              <h3 class="post-title">
+                从 Windows 过度到 Mac 必备快捷键对照表
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '3818ab196008bdc444d2',
+    clientSecret: '25a6a1be783a52e1a00f165dd3c08fa28fba507a',
+    repo: 'cxp-twx.github.io',
+    owner: 'cxp-twx',
+    admin: ['cxp-twx'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://cxp-twx.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

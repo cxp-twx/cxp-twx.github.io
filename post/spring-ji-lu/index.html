@@ -1,0 +1,1510 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spring 记录 | CheckChen</title>
+<meta name="description" content="吾日三省吾身" />
+<link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576204578007">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cxp-twx.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://cxp-twx.github.io">
+  <img class="avatar" src="https://cxp-twx.github.io/images/avatar.png?v=1576204578007" alt="">
+  </a>
+  <h1 class="site-title">
+    CheckChen
+  </h1>
+  <p class="site-description">
+    吾日三省吾身
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Spring 记录
+            </h2>
+            <div class="post-info">
+              <span>
+                2018-12-13
+              </span>
+              <span>
+                32 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="spring小记">spring小记</h1>
+<ul>
+<li>
+<h3 id="各个注解-整合junit-事务-动态代理-aop-jdbctemplate">（各个注解、整合junit、事务）、动态代理、AOP、jdbcTemplate)</h3>
+</li>
+</ul>
+<h2 id="注解分类">注解分类：</h2>
+<p>​    1.用于创建对象</p>
+<p>​    2.用于注入数据</p>
+<p>​    3.改变作用范围</p>
+<p>​    4.生命周期</p>
+<h3 id="11-注解详解">1.1 注解详解：</h3>
+<pre><code class="language-java">/**
+ * 账户的业务层实现类
+ *
+ * 曾经XML的配置：
+ *  &lt;bean id=&quot;accountService&quot; class=&quot;com.itheima.service.impl.AccountServiceImpl&quot;
+ *        scope=&quot;&quot;  init-method=&quot;&quot; destroy-method=&quot;&quot;&gt;
+ *      &lt;property name=&quot;&quot;  value=&quot;&quot; | ref=&quot;&quot;&gt;&lt;/property&gt;
+ *  &lt;/bean&gt;
+ *
+ * 用于创建对象的
+ *      他们的作用就和在XML配置文件中编写一个&lt;bean&gt;标签实现的功能是一样的
+ *      @Component:
+ *          作用：用于把当前类对象存入spring容器中
+ *          属性：
+ *              value：用于指定bean的id。当我们不写时，它的默认值是当前类名，且首字母改小写。
+ *      @Controller：一般用在表现层
+ *      @Service：一般用在业务层
+ *      @Repository：一般用在持久层
+ *      以上三个注解他们的作用和属性与Component是一模一样。
+ *      他们三个是spring框架为我们提供明确的三层使用的注解，使我们的三层对象更加清晰
+ *
+ *
+ * 用于注入数据的
+ *      他们的作用就和在xml配置文件中的bean标签中写一个&lt;property&gt;标签的作用是一样的
+ *      @Autowired:
+ *          作用：自动按照类型注入。只要容器中有唯一的一个bean对象类型和要注入的变量类型匹配，就可以注入成功
+ *                如果ioc容器中没有任何bean的类型和要注入的变量类型匹配，则报错。
+ *                如果Ioc容器中有多个类型匹配时：
+ *          出现位置：
+ *              可以是变量上，也可以是方法上
+ *          细节：
+ *              在使用注解注入时，set方法就不是必须的了。
+ *      @Qualifier:
+ *          作用：在按照类中注入的基础之上再按照名称注入。它在给类成员注入时不能单独使用，需要配合Autowired一起。但是在给方法参数注入时可以（见1.3）
+ *          属性：
+ *              value：用于指定注入bean的id。
+ *      @Resource
+ *          作用：直接按照bean的id注入。它可以独立使用
+ *          属性：
+ *              name：用于指定bean的id。
+ *      以上三个注入都只能注入其他bean类型的数据，而基本类型和String类型无法使用上述注解实现。
+ *      另外，集合类型的注入只能通过XML来实现。
+ *
+ *      @Value
+ *          作用：用于注入基本类型和String类型的数据
+ *          属性：
+ *              value：用于指定数据的值。它可以使用spring中SpEL(也就是spring的el表达式）
+ *                      SpEL的写法：${表达式}
+ *          问题：jsp、mybatis、spring中都有el表达式，如何区分el表达式是谁的？看写在哪，卸载jsp中就去jsp四大域 
+ *               中取值
+ *
+ * 用于改变作用范围的
+ *      他们的作用就和在bean标签中使用scope属性实现的功能是一样的
+ *      @Scope
+ *          作用：用于指定bean的作用范围
+ *          属性：
+ *              value：指定范围的取值。常用取值：singleton prototype
+ *
+ * 和生命周期相关 （了解）
+ *      他们的作用就和在bean标签中使用init-method和destroy-methode的作用是一样的
+ *      @PreDestroy
+ *          作用：用于指定销毁方法
+ *      @PostConstruct
+ *          作用：用于指定初始化方法
+ */
+@Service(&quot;accountService&quot;)
+//@Scope(&quot;prototype&quot;)
+public class AccountServiceImpl implements IAccountService {
+
+//    @Autowired
+//    @Qualifier(&quot;accountDao1&quot;)
+    @Resource(name = &quot;accountDao2&quot;)
+    private IAccountDao accountDao = null;
+
+    @PostConstruct
+    public void  init(){
+        System.out.println(&quot;初始化方法执行了&quot;);
+    }
+
+    @PreDestroy
+    public void  destroy(){
+        System.out.println(&quot;销毁方法执行了&quot;);
+    }
+
+    public void  saveAccount(){
+        accountDao.saveAccount();
+    }
+}
+</code></pre>
+<h3 id="12-配置注解">1.2 配置注解</h3>
+<pre><code>/**
+ * 该类是一个配置类，它的作用和bean.xml是一样的
+ * spring中的新注解
+ * Configuration
+ *     作用：指定当前类是一个配置类
+ *     细节：当配置类作为AnnotationConfigApplicationContext对象创建的参数时，该注解可以不写。
+ * ComponentScan
+ *      作用：用于通过注解指定spring在创建容器时要扫描的包
+ *      属性：
+ *          value：它和basePackages的作用是一样的，都是用于指定创建容器时要扫描的包。
+ *                 我们使用此注解就等同于在xml中配置了:
+ *                      &lt;context:component-scan base-package=&quot;com.itheima&quot;&gt;&lt;/context:component-scan&gt;
+ *  Bean
+ *      作用：用于把当前方法的返回值作为bean对象存入spring的ioc容器中
+ *      属性:
+ *          name:用于指定bean的id。当不写时，默认值是当前方法的名称
+ *      细节：
+ *          当我们使用注解配置方法时，如果方法有参数，spring框架会去容器中查找有没有可用的bean对象。
+ *          查找的方式和Autowired注解的作用是一样的
+ *  Import
+ *      作用：用于导入其他的配置类
+ *      属性：
+ *          value：用于指定其他配置类的字节码。
+ *                  当我们使用Import的注解之后，有Import注解的类就父配置类，而导入的都是子配置类
+ *  PropertySource
+ *      作用：用于指定properties文件的位置
+ *      属性：
+ *          value：指定文件的名称和路径。
+ *                  关键字：classpath，表示类路径下
+ */
+//@Configuration
+@ComponentScan(&quot;com.itheima&quot;)
+@Import(JdbcConfig.class)
+@PropertySource(&quot;classpath:jdbcConfig.properties&quot;)
+public class SpringConfiguration {
+
+
+}
+</code></pre>
+<p><strong>什么时候选择注解、什么时候选择xml配置呢？</strong></p>
+<p><mark>存在于jar包中的，选择xml配置</mark></p>
+<p><mark>自己写的就用注解配置</mark></p>
+<h3 id="13-配置数据源形式的注解">1.3 配置数据源形式的注解</h3>
+<pre><code class="language-java">/**
+ * 和spring连接数据库相关的配置类
+ */
+public class JdbcConfig {
+
+    @Value(&quot;${jdbc.driver}&quot;)
+    private String driver;
+
+    @Value(&quot;${jdbc.url}&quot;)
+    private String url;
+
+    @Value(&quot;${jdbc.username}&quot;)
+    private String username;
+
+    @Value(&quot;${jdbc.password}&quot;)
+    private String password;
+
+    /**
+     * 用于创建一个QueryRunner对象
+     * @param dataSource
+     * @return
+     */
+    @Bean(name=&quot;runner&quot;)
+    @Scope(&quot;prototype&quot;)
+    public QueryRunner createQueryRunner(@Qualifier(&quot;ds2&quot;) DataSource dataSource){
+        return new QueryRunner(dataSource);
+    }
+
+    /**
+     * 创建数据源对象
+     * @return
+     */
+    @Bean(name=&quot;ds2&quot;)
+    public DataSource createDataSource(){
+        try {
+            ComboPooledDataSource ds = new ComboPooledDataSource();
+            ds.setDriverClass(driver);
+            ds.setJdbcUrl(url);
+            ds.setUser(username);
+            ds.setPassword(password);
+            return ds;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Bean(name=&quot;ds1&quot;)
+    public DataSource createDataSource1(){
+        try {
+            ComboPooledDataSource ds = new ComboPooledDataSource();
+            ds.setDriverClass(driver);
+            ds.setJdbcUrl(&quot;jdbc:mysql://localhost:3306/eesy02&quot;);
+            ds.setUser(username);
+            ds.setPassword(password);
+            return ds;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+}
+</code></pre>
+<h3 id="14-spring整合junit测试的配置">1.4 spring整合junit测试的配置</h3>
+<pre><code class="language-java">1、应用程序的入口
+	main方法
+2、junit单元测试中，没有main方法也能执行
+	junit集成了一个main方法
+	该方法就会判断当前测试类中哪些方法有 @Test注解
+	junit就让有Test注解的方法执行
+3、junit不会管我们是否采用spring框架
+	在执行测试方法时，junit根本不知道我们是不是使用了spring框架
+	所以也就不会为我们读取配置文件/配置类创建spring核心容器
+4、由以上三点可知
+	当测试方法执行时，没有Ioc容器，就算写了Autowired注解，也无法实现注入
+/**
+ * 使用Junit单元测试：测试我们的配置
+ * Spring整合junit的配置
+ *      1、导入spring整合junit的jar(坐标)
+ *      2、使用Junit提供的一个注解把原有的main方法替换了，替换成spring提供的
+ *             @Runwith
+ *      3、告知spring的运行器，spring和ioc创建是基于xml还是注解的，并且说明位置
+ *          @ContextConfiguration
+ *                  locations：指定xml文件的位置，加上classpath关键字，表示在类路径下
+ *                  classes：指定注解类所在地位置
+ *
+ *   当我们使用spring 5.x版本的时候，要求junit的jar必须是4.12及以上
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = SpringConfiguration.class)
+public class AccountServiceTest {
+
+    @Autowired
+    private IAccountService as = null;
+
+
+    @Test
+    public void testFindAll() {
+        //3.执行方法
+        List&lt;Account&gt; accounts = as.findAllAccount();
+        for(Account account : accounts){
+            System.out.println(account);
+        }
+    }
+
+    @Test
+    public void testFindOne() {
+        //3.执行方法
+        Account account = as.findAccountById(1);
+        System.out.println(account);
+    }
+
+    @Test
+    public void testSave() {
+        Account account = new Account();
+        account.setName(&quot;test anno&quot;);
+        account.setMoney(12345f);
+        //3.执行方法
+        as.saveAccount(account);
+
+    }
+
+    @Test
+    public void testUpdate() {
+        //3.执行方法
+        Account account = as.findAccountById(4);
+        account.setMoney(23456f);
+        as.updateAccount(account);
+    }
+
+    @Test
+    public void testDelete() {
+        //3.执行方法
+        as.deleteAccount(4);
+    }
+}
+</code></pre>
+<h2 id="spring声明式事务">Spring声明式事务</h2>
+<pre><code class="language-java">/**
+ * 和事务管理相关的工具类，它包含了，开启事务，提交事务，回滚事务和释放连接
+ */
+public class TransactionManager {
+
+    private ConnectionUtils connectionUtils;
+
+    public void setConnectionUtils(ConnectionUtils connectionUtils) {
+        this.connectionUtils = connectionUtils;
+    }
+
+    /**
+     * 开启事务
+     */
+    public  void beginTransaction(){
+        try {
+            connectionUtils.getThreadConnection().setAutoCommit(false);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 提交事务
+     */
+    public  void commit(){
+        try {
+            connectionUtils.getThreadConnection().commit();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 回滚事务
+     */
+    public  void rollback(){
+        try {
+            connectionUtils.getThreadConnection().rollback();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 释放连接
+     */
+    public  void release(){
+        try {
+            connectionUtils.getThreadConnection().close();//还回连接池中
+            connectionUtils.removeConnection();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+}
+/**
+ * 账户的业务层实现类
+ *
+ * 事务控制应该都是在业务层
+ */
+public class AccountServiceImpl_OLD implements IAccountService{
+
+    private IAccountDao accountDao;
+    private TransactionManager txManager;
+
+    public void setTxManager(TransactionManager txManager) {
+        this.txManager = txManager;
+    }
+
+    public void setAccountDao(IAccountDao accountDao) {
+        this.accountDao = accountDao;
+    }
+
+    @Override
+    public List&lt;Account&gt; findAllAccount() {
+        try {
+            //1.开启事务
+            txManager.beginTransaction();
+            //2.执行操作
+            List&lt;Account&gt; accounts = accountDao.findAllAccount();
+            //3.提交事务
+            txManager.commit();
+            //4.返回结果
+            return accounts;
+        }catch (Exception e){
+            //5.回滚操作
+            txManager.rollback();
+            throw new RuntimeException(e);
+        }finally {
+            //6.释放连接
+            txManager.release();
+        }
+
+    }
+
+    @Override
+    public Account findAccountById(Integer accountId) {
+        try {
+            //1.开启事务
+            txManager.beginTransaction();
+            //2.执行操作
+            Account account = accountDao.findAccountById(accountId);
+            //3.提交事务
+            txManager.commit();
+            //4.返回结果
+            return account;
+        }catch (Exception e){
+            //5.回滚操作
+            txManager.rollback();
+            throw new RuntimeException(e);
+        }finally {
+            //6.释放连接
+            txManager.release();
+        }
+    }
+
+    @Override
+    public void saveAccount(Account account) {
+        try {
+            //1.开启事务
+            txManager.beginTransaction();
+            //2.执行操作
+            accountDao.saveAccount(account);
+            //3.提交事务
+            txManager.commit();
+        }catch (Exception e){
+            //4.回滚操作
+            txManager.rollback();
+        }finally {
+            //5.释放连接
+            txManager.release();
+        }
+
+    }
+
+    @Override
+    public void updateAccount(Account account) {
+        try {
+            //1.开启事务
+            txManager.beginTransaction();
+            //2.执行操作
+            accountDao.updateAccount(account);
+            //3.提交事务
+            txManager.commit();
+        }catch (Exception e){
+            //4.回滚操作
+            txManager.rollback();
+        }finally {
+            //5.释放连接
+            txManager.release();
+        }
+
+    }
+
+    @Override
+    public void deleteAccount(Integer acccountId) {
+        try {
+            //1.开启事务
+            txManager.beginTransaction();
+            //2.执行操作
+            accountDao.deleteAccount(acccountId);
+            //3.提交事务
+            txManager.commit();
+        }catch (Exception e){
+            //4.回滚操作
+            txManager.rollback();
+        }finally {
+            //5.释放连接
+            txManager.release();
+        }
+
+    }
+
+    @Override
+    public void transfer(String sourceName, String targetName, Float money) {
+        try {
+            //1.开启事务
+            txManager.beginTransaction();
+            //2.执行操作
+
+            //2.1根据名称查询转出账户
+            Account source = accountDao.findAccountByName(sourceName);
+            //2.2根据名称查询转入账户
+            Account target = accountDao.findAccountByName(targetName);
+            //2.3转出账户减钱
+            source.setMoney(source.getMoney()-money);
+            //2.4转入账户加钱
+            target.setMoney(target.getMoney()+money);
+            //2.5更新转出账户
+            accountDao.updateAccount(source);
+
+            int i=1/0;
+
+            //2.6更新转入账户
+            accountDao.updateAccount(target);
+            //3.提交事务
+            txManager.commit();
+
+        }catch (Exception e){
+            //4.回滚操作
+            txManager.rollback();
+            e.printStackTrace();
+        }finally {
+            //5.释放连接
+            txManager.release();
+        }
+
+
+    }
+}
+</code></pre>
+<h2 id="动态代理">动态代理</h2>
+<h3 id="15基于接口的动态代理">1.5基于接口的动态代理</h3>
+<pre><code class="language-java">/**
+ * 一个生产者
+ */
+public class Producer implements IProducer{
+
+    /**
+     * 销售
+     * @param money
+     */
+    public void saleProduct(float money){
+        System.out.println(&quot;销售产品，并拿到钱：&quot;+money);
+    }
+
+    /**
+     * 售后
+     * @param money
+     */
+    public void afterService(float money){
+        System.out.println(&quot;提供售后服务，并拿到钱：&quot;+money);
+    }
+}
+</code></pre>
+<pre><code class="language-Java">/**
+ * 对生产厂家要求的接口
+ */
+public interface IProducer {
+
+    /**
+     * 销售
+     * @param money
+     */
+    public void saleProduct(float money);
+
+    /**
+     * 售后
+     * @param money
+     */
+    public void afterService(float money);
+}
+/**
+ * 模拟一个消费者
+ */
+public class Client {
+
+    public static void main(String[] args) {
+        final Producer producer = new Producer();
+
+        /**
+         * 动态代理：
+         *  特点：字节码随用随创建，随用随加载
+         *  作用：不修改源码的基础上对方法增强
+         *  分类：
+         *      基于接口的动态代理
+         *      基于子类的动态代理
+         *  基于接口的动态代理：
+         *      涉及的类：Proxy
+         *      提供者：JDK官方
+         *  如何创建代理对象：
+         *      使用Proxy类中的newProxyInstance方法
+         *  创建代理对象的要求：
+         *      被代理类最少实现一个接口，如果没有则不能使用
+         *  newProxyInstance方法的参数：
+         *      ClassLoader：类加载器
+         *          它是用于加载代理对象字节码的。和被代理对象使用相同的类加载器。固定写法。
+         *      Class[]：字节码数组
+         *          它是用于让代理对象和被代理对象有相同方法。固定写法。
+         *      InvocationHandler：用于提供增强的代码
+         *          它是让我们写如何代理。我们一般都是些一个该接口的实现类，通常情况下都是匿名内部类，但不是必须的。
+         *          此接口的实现类都是谁用谁写。
+         */
+       IProducer proxyProducer = (IProducer) Proxy.newProxyInstance(producer.getClass().getClassLoader(),
+                producer.getClass().getInterfaces(),
+                new InvocationHandler() {
+                    /**
+                     * 作用：执行被代理对象的任何接口方法都会经过该方法
+                     * 方法参数的含义
+                     * @param proxy   代理对象的引用
+                     * @param method  当前执行的方法
+                     * @param args    当前执行方法所需的参数
+                     * @return        和被代理对象方法有相同的返回值
+                     * @throws Throwable
+                     */
+                    @Override
+                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                        //提供增强的代码
+                        Object returnValue = null;
+
+                        //1.获取方法执行的参数
+                        Float money = (Float)args[0];
+                        //2.判断当前方法是不是销售
+                        if(&quot;saleProduct&quot;.equals(method.getName())) {
+                            returnValue = method.invoke(producer, money*0.8f);
+                        }
+                        return returnValue;
+                    }
+                });
+        proxyProducer.saleProduct(10000f);
+    }
+}
+</code></pre>
+<h3 id="16基于子类的动态代理">1.6基于子类的动态代理</h3>
+<pre><code class="language-java">/**
+ * 一个生产者
+ */
+public class Producer {
+
+    /**
+     * 销售
+     * @param money
+     */
+    public void saleProduct(float money){
+        System.out.println(&quot;销售产品，并拿到钱：&quot;+money);
+    }
+
+    /**
+     * 售后
+     * @param money
+     */
+    public void afterService(float money){
+        System.out.println(&quot;提供售后服务，并拿到钱：&quot;+money);
+    }
+}
+/**
+ * 模拟一个消费者
+ */
+public class Client {
+
+    public static void main(String[] args) {
+        final Producer producer = new Producer();
+
+        /**
+         * 动态代理：
+         *  特点：字节码随用随创建，随用随加载
+         *  作用：不修改源码的基础上对方法增强
+         *  分类：
+         *      基于接口的动态代理
+         *      基于子类的动态代理
+         *  基于子类的动态代理：
+         *      涉及的类：Enhancer
+         *      提供者：第三方cglib库
+         *  如何创建代理对象：
+         *      使用Enhancer类中的create方法
+         *  创建代理对象的要求：
+         *      被代理类不能是最终类
+         *  create方法的参数：
+         *      Class：字节码
+         *          它是用于指定被代理对象的字节码。
+         *
+         *      Callback：用于提供增强的代码
+         *          它是让我们写如何代理。我们一般都是些一个该接口的实现类，通常情况下都是匿名内部类，但不是必须的。
+         *          此接口的实现类都是谁用谁写。
+         *          我们一般写的都是该接口的子接口实现类：MethodInterceptor
+         */
+        Producer cglibProducer = (Producer)Enhancer.create(producer.getClass(), new MethodInterceptor() {
+            /**
+             * 执行北地阿里对象的任何方法都会经过该方法
+             * @param proxy
+             * @param method
+             * @param args
+             *    以上三个参数和基于接口的动态代理中invoke方法的参数是一样的
+             * @param methodProxy ：当前执行方法的代理对象
+             * @return
+             * @throws Throwable
+             */
+            @Override
+            public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+                //提供增强的代码
+                Object returnValue = null;
+
+                //1.获取方法执行的参数
+                Float money = (Float)args[0];
+                //2.判断当前方法是不是销售
+                if(&quot;saleProduct&quot;.equals(method.getName())) {
+                    returnValue = method.invoke(producer, money*0.8f);
+                }
+                return returnValue;
+            }
+        });
+        cglibProducer.saleProduct(12000f);
+    }
+}
+</code></pre>
+<h2 id="用动态代理实现事务控制">用动态代理实现事务控制</h2>
+<p>Java代码：</p>
+<pre><code class="language-java">/**
+ * 账户的业务层实现类
+ *
+ * 事务控制应该都是在业务层
+ */
+public class AccountServiceImpl implements IAccountService{
+
+    private IAccountDao accountDao;
+
+    public void setAccountDao(IAccountDao accountDao) {
+        this.accountDao = accountDao;
+    }
+
+    @Override
+    public List&lt;Account&gt; findAllAccount() {
+       return accountDao.findAllAccount();
+    }
+
+    @Override
+    public Account findAccountById(Integer accountId) {
+        return accountDao.findAccountById(accountId);
+
+    }
+
+    @Override
+    public void saveAccount(Account account) {
+        accountDao.saveAccount(account);
+    }
+
+    @Override
+    public void updateAccount(Account account) {
+        accountDao.updateAccount(account);
+    }
+
+    @Override
+    public void deleteAccount(Integer acccountId) {
+        accountDao.deleteAccount(acccountId);
+    }
+
+    @Override
+    public void transfer(String sourceName, String targetName, Float money) {
+        System.out.println(&quot;transfer....&quot;);
+            //2.1根据名称查询转出账户
+            Account source = accountDao.findAccountByName(sourceName);
+            //2.2根据名称查询转入账户
+            Account target = accountDao.findAccountByName(targetName);
+            //2.3转出账户减钱
+            source.setMoney(source.getMoney()-money);
+            //2.4转入账户加钱
+            target.setMoney(target.getMoney()+money);
+            //2.5更新转出账户
+            accountDao.updateAccount(source);
+
+//            int i=1/0;
+
+            //2.6更新转入账户
+            accountDao.updateAccount(target);
+    }
+}
+/**
+ * 用于创建Service的代理对象的工厂
+ */
+public class BeanFactory {
+
+    private IAccountService accountService;
+
+    private TransactionManager txManager;
+
+    public void setTxManager(TransactionManager txManager) {
+        this.txManager = txManager;
+    }
+
+
+    public final void setAccountService(IAccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    /**
+     * 获取Service代理对象
+     * @return
+     */
+    public IAccountService getAccountService() {
+        return (IAccountService)Proxy.newProxyInstance(accountService.getClass().getClassLoader(),
+                accountService.getClass().getInterfaces(),
+                new InvocationHandler() {
+                    /**
+                     * 添加事务的支持
+                     *
+                     * @param proxy
+                     * @param method
+                     * @param args
+                     * @return
+                     * @throws Throwable
+                     */
+                    @Override
+                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+                        if(&quot;test&quot;.equals(method.getName())){
+                            return method.invoke(accountService,args);
+                        }
+
+                        Object rtValue = null;
+                        try {
+                            //1.开启事务
+                            txManager.beginTransaction();
+                            //2.执行操作
+                            rtValue = method.invoke(accountService, args);
+                            //3.提交事务
+                            txManager.commit();
+                            //4.返回结果
+                            return rtValue;
+                        } catch (Exception e) {
+                            //5.回滚操作
+                            txManager.rollback();
+                            throw new RuntimeException(e);
+                        } finally {
+                            //6.释放连接
+                            txManager.release();
+                        }
+                    }
+                });
+
+    }
+}
+
+</code></pre>
+<p>xml配置：</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;!--配置代理的service--&gt;
+    &lt;bean id=&quot;proxyAccountService&quot; factory-bean=&quot;beanFactory&quot; factory-method=&quot;getAccountService&quot;&gt;&lt;/bean&gt;
+
+    &lt;!--配置beanfactory--&gt;
+    &lt;bean id=&quot;beanFactory&quot; class=&quot;com.itheima.factory.BeanFactory&quot;&gt;
+        &lt;!-- 注入service --&gt;
+        &lt;property name=&quot;accountService&quot; ref=&quot;accountService&quot;&gt;&lt;/property&gt;
+        &lt;!-- 注入事务管理器 --&gt;
+        &lt;property name=&quot;txManager&quot; ref=&quot;txManager&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+     &lt;!-- 配置Service --&gt;
+    &lt;bean id=&quot;accountService&quot; class=&quot;com.itheima.service.impl.AccountServiceImpl&quot;&gt;
+        &lt;!-- 注入dao --&gt;
+        &lt;property name=&quot;accountDao&quot; ref=&quot;accountDao&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!--配置Dao对象--&gt;
+    &lt;bean id=&quot;accountDao&quot; class=&quot;com.itheima.dao.impl.AccountDaoImpl&quot;&gt;
+        &lt;!-- 注入QueryRunner --&gt;
+        &lt;property name=&quot;runner&quot; ref=&quot;runner&quot;&gt;&lt;/property&gt;
+        &lt;!-- 注入ConnectionUtils --&gt;
+        &lt;property name=&quot;connectionUtils&quot; ref=&quot;connectionUtils&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!--配置QueryRunner--&gt;
+    &lt;bean id=&quot;runner&quot; class=&quot;org.apache.commons.dbutils.QueryRunner&quot; scope=&quot;prototype&quot;&gt;&lt;/bean&gt;
+
+    &lt;!-- 配置数据源 --&gt;
+    &lt;bean id=&quot;dataSource&quot; class=&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;&gt;
+        &lt;!--连接数据库的必备信息--&gt;
+        &lt;property name=&quot;driverClass&quot; value=&quot;com.mysql.jdbc.Driver&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;jdbcUrl&quot; value=&quot;jdbc:mysql://localhost:3306/eesy&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;user&quot; value=&quot;root&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;password&quot; value=&quot;1234&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- 配置Connection的工具类 ConnectionUtils --&gt;
+    &lt;bean id=&quot;connectionUtils&quot; class=&quot;com.itheima.utils.ConnectionUtils&quot;&gt;
+        &lt;!-- 注入数据源--&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- 配置事务管理器--&gt;
+    &lt;bean id=&quot;txManager&quot; class=&quot;com.itheima.utils.TransactionManager&quot;&gt;
+        &lt;!-- 注入ConnectionUtils --&gt;
+        &lt;property name=&quot;connectionUtils&quot; ref=&quot;connectionUtils&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<h2 id="spring-aop">Spring-AOP</h2>
+<p>​    连接点：所有被动态代理的业务层的方法</p>
+<p>​    切入点：被增强的方法</p>
+<p>​    所以：所有的切入点都是连接点，反之则不一定</p>
+<figure data-type="image" tabindex="1"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9vc2NpbWcub3NjaGluYS5uZXQvb3NjbmV0L2NiNzJmZGFiY2I3MGJjMTE4YzAxMjkwOTUyNTlhMTY3YzNkLmpwZw?x-oss-process=image/format,png" alt="img"></figure>
+<h3 id="17-aop-相关术语">1.7 AOP 相关术语：</h3>
+<figure data-type="image" tabindex="2"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9vc2NpbWcub3NjaGluYS5uZXQvb3NjbmV0L2VkN2M0MzNlNjQzNGIyYzA4YTNmMjVlZmQzOWI3NjZmNzZhLmpwZw?x-oss-process=image/format,png" alt="img"></figure>
+<h3 id="18-spring-aop配置">1.8 spring-AOP配置</h3>
+<p>Java代码：</p>
+<pre><code class="language-java">/**
+ * 通知类：用于记录日志的工具类，它里面提供了公共的代码
+ */
+public class Logger {
+
+    /**
+     * 用于打印日志：计划让其在切入点方法执行之前执行（切入点方法就是业务层方法）
+     */
+    public  void printLog(){
+        System.out.println(&quot;Logger类中的pringLog方法开始记录日志了。。。&quot;);
+    }
+}
+/**
+ * 账户的业务层接口
+ */
+public interface IAccountService {
+
+    /**
+     * 模拟保存账户
+     */
+   void saveAccount();
+
+    /**
+     * 模拟更新账户
+     * @param i
+     */
+   void updateAccount(int i);
+
+    /**
+     * 删除账户
+     * @return
+     */
+   int  deleteAccount();
+}
+/**
+ * 账户的业务层实现类
+ */
+public class AccountServiceImpl implements IAccountService{
+
+    @Override
+    public void saveAccount() {
+        System.out.println(&quot;执行了保存&quot;);
+    }
+
+    @Override
+    public void updateAccount(int i) {
+        System.out.println(&quot;执行了更新&quot;+i);
+
+    }
+
+    @Override
+    public int deleteAccount() {
+        System.out.println(&quot;执行了删除&quot;);
+        return 0;
+    }
+}
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd&quot;&gt;
+
+    
+</code></pre>
+<p>xml配置：</p>
+<pre><code class="language-xml">&lt;!-- 配置srping的Ioc,把service对象配置进来--&gt;
+    &lt;bean id=&quot;accountService&quot; class=&quot;com.itheima.service.impl.AccountServiceImpl&quot;&gt;&lt;/bean&gt;
+
+    &lt;!--spring中基于XML的AOP配置步骤
+        1、把通知Bean也交给spring来管理
+        2、使用aop:config标签表明开始AOP的配置
+        3、使用aop:aspect标签表明配置切面
+                id属性：是给切面提供一个唯一标识
+                ref属性：是指定通知类bean的Id。
+        4、在aop:aspect标签的内部使用对应标签来配置通知的类型
+               我们现在示例是让printLog方法在切入点方法执行之前之前：所以是前置通知
+               aop:before：表示配置前置通知
+                    method属性：用于指定Logger类中哪个方法是前置通知
+                    pointcut属性：用于指定切入点表达式，该表达式的含义指的是对业务层中哪些方法增强
+
+            切入点表达式的写法：
+                关键字：execution(表达式)
+                表达式：
+                    访问修饰符  返回值  包名.包名.包名...类名.方法名(参数列表)
+                标准的表达式写法：
+                    public void com.itheima.service.impl.AccountServiceImpl.saveAccount()
+                访问修饰符可以省略
+                    void com.itheima.service.impl.AccountServiceImpl.saveAccount()
+                返回值可以使用通配符，表示任意返回值
+                    * com.itheima.service.impl.AccountServiceImpl.saveAccount()
+                包名可以使用通配符，表示任意包。但是有几级包，就需要写几个*.
+                    * *.*.*.*.AccountServiceImpl.saveAccount())
+                包名可以使用..表示当前包及其子包
+                    * *..AccountServiceImpl.saveAccount()
+                类名和方法名都可以使用*来实现通配
+                    * *..*.*()
+                参数列表：
+                    可以直接写数据类型：
+                        基本类型直接写名称           int
+                        引用类型写包名.类名的方式   java.lang.String
+                    可以使用通配符表示任意类型，但是必须有参数
+                    可以使用..表示有无参数均可，有参数可以是任意类型
+                全通配写法：
+                    * *..*.*(..)
+
+                实际开发中切入点表达式的通常写法：
+                    切到业务层实现类下的所有方法
+                        * com.itheima.service.impl.*.*(..)
+    --&gt;
+
+    &lt;!-- 配置Logger类 --&gt;
+    &lt;bean id=&quot;logger&quot; class=&quot;com.itheima.utils.Logger&quot;&gt;&lt;/bean&gt;
+
+    &lt;!--配置AOP--&gt;
+    &lt;aop:config&gt;
+        &lt;!--配置切面 --&gt;
+        &lt;aop:aspect id=&quot;logAdvice&quot; ref=&quot;logger&quot;&gt;
+            &lt;!-- 配置通知的类型，并且建立通知方法和切入点方法的关联--&gt;
+            &lt;aop:before method=&quot;printLog&quot; pointcut=&quot;execution(* com.itheima.service.impl.*.*(..))&quot;&gt;&lt;/aop:before&gt;
+        &lt;/aop:aspect&gt;
+    &lt;/aop:config&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<h3 id="19-通用切入点表达式">1.9 通用切入点表达式</h3>
+<p>xml 配置：</p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+-&lt;beans xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd&quot; xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns=&quot;http://www.springframework.org/schema/beans&quot;&gt;
+
+&lt;!-- 配置srping的Ioc,把service对象配置进来--&gt;
+
+
+&lt;bean class=&quot;com.itheima.service.impl.AccountServiceImpl&quot; id=&quot;accountService&quot;/&gt;
+
+&lt;!-- 配置Logger类 --&gt;
+
+
+&lt;bean class=&quot;com.itheima.utils.Logger&quot; id=&quot;logger&quot;/&gt;
+
+&lt;!--配置AOP--&gt;
+
+
+
+-&lt;aop:config&gt;
+
+&lt;!-- 配置切入点表达式 id属性用于指定表达式的唯一标识。expression属性用于指定表达式内容 此标签写在aop:aspect标签内部只能当前切面使用。 它还可以写在aop:aspect外面，此时就变成了所有切面可用 --&gt;
+
+
+&lt;aop:pointcut id=&quot;pt1&quot; expression=&quot;execution(* com.itheima.service.impl.*.*(..))&quot;/&gt;
+
+&lt;!--配置切面 --&gt;
+
+
+
+-&lt;aop:aspect id=&quot;logAdvice&quot; ref=&quot;logger&quot;&gt;
+
+&lt;!-- 配置前置通知：在切入点方法执行之前执行 &lt;aop:before method=&quot;beforePrintLog&quot; pointcut-ref=&quot;pt1&quot; &gt;&lt;/aop:before&gt;--&gt;
+
+
+&lt;!-- 配置后置通知：在切入点方法正常执行之后值。它和异常通知永远只能执行一个 &lt;aop:after-returning method=&quot;afterReturningPrintLog&quot; pointcut-ref=&quot;pt1&quot;&gt;&lt;/aop:after-returning&gt;--&gt;
+
+
+&lt;!-- 配置异常通知：在切入点方法执行产生异常之后执行。它和后置通知永远只能执行一个 &lt;aop:after-throwing method=&quot;afterThrowingPrintLog&quot; pointcut-ref=&quot;pt1&quot;&gt;&lt;/aop:after-throwing&gt;--&gt;
+
+
+&lt;!-- 配置最终通知：无论切入点方法是否正常执行它都会在其后面执行 &lt;aop:after method=&quot;afterPrintLog&quot; pointcut-ref=&quot;pt1&quot;&gt;&lt;/aop:after&gt;--&gt;
+
+
+&lt;!-- 配置环绕通知 详细的注释请看Logger类中--&gt;
+
+
+&lt;aop:around pointcut-ref=&quot;pt1&quot; method=&quot;aroundPringLog&quot;/&gt;
+
+&lt;/aop:aspect&gt;
+
+&lt;/aop:config&gt;
+
+&lt;/beans&gt;
+
+</code></pre>
+<p>Java代码：</p>
+<pre><code class="language-java">public class Logger {
+
+    /**
+     * 前置通知
+     */
+    public  void beforePrintLog(){
+        System.out.println(&quot;前置通知Logger类中的beforePrintLog方法开始记录日志了。。。&quot;);
+    }
+
+    /**
+     * 后置通知
+     */
+    public  void afterReturningPrintLog(){
+        System.out.println(&quot;后置通知Logger类中的afterReturningPrintLog方法开始记录日志了。。。&quot;);
+    }
+    /**
+     * 异常通知
+     */
+    public  void afterThrowingPrintLog(){
+        System.out.println(&quot;异常通知Logger类中的afterThrowingPrintLog方法开始记录日志了。。。&quot;);
+    }
+
+    /**
+     * 最终通知
+     */
+    public  void afterPrintLog(){
+        System.out.println(&quot;最终通知Logger类中的afterPrintLog方法开始记录日志了。。。&quot;);
+    }
+
+    /**
+     * 环绕通知
+     * 问题：
+     *      当我们配置了环绕通知之后，切入点方法没有执行，而通知方法执行了。
+     * 分析：
+     *      通过对比动态代理中的环绕通知代码，发现动态代理的环绕通知有明确的切入点方法调用，而我们的代码中没有。
+     * 解决：
+     *      Spring框架为我们提供了一个接口：ProceedingJoinPoint。该接口有一个方法proceed()，此方法就相当于明确调用切入点方法。
+     *      该接口可以作为环绕通知的方法参数，在程序执行时，spring框架会为我们提供该接口的实现类供我们使用。
+     *
+     * spring中的环绕通知：
+     *      它是spring框架为我们提供的一种可以在代码中手动控制增强方法何时执行的方式。
+     */
+    public Object aroundPringLog(ProceedingJoinPoint pjp){
+        Object rtValue = null;
+        try{
+            Object[] args = pjp.getArgs();//得到方法执行所需的参数
+
+            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。前置&quot;);
+
+            rtValue = pjp.proceed(args);//明确调用业务层方法（切入点方法）
+
+            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。后置&quot;);
+
+            return rtValue;
+        }catch (Throwable t){
+            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。异常&quot;);
+            throw new RuntimeException(t);
+        }finally {
+            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。最终&quot;);
+        }
+    }
+}
+</code></pre>
+<h3 id="110-springaop的基于注解配置">1.10 springAOP的基于注解配置：</h3>
+<p>使用环绕通知，会按正常顺序输出，而分别使用其他4种通知则存在顺序问题</p>
+<pre><code class="language-java">/**
+ * 测试AOP的配置
+ */
+public class AOPTest {
+
+    public static void main(String[] args) {
+        //1.获取容器
+        ApplicationContext ac = new ClassPathXmlApplicationContext(&quot;bean.xml&quot;);
+        //2.获取对象
+        IAccountService as = (IAccountService)ac.getBean(&quot;accountService&quot;);
+        //3.执行方法
+        as.saveAccount();
+    }
+}
+
+/**
+ * 账户的业务层接口
+ */
+public interface IAccountService {
+
+    /**
+     * 模拟保存账户
+     */
+   void saveAccount();
+
+    /**
+     * 模拟更新账户
+     * @param i
+     */
+   void updateAccount(int i);
+
+    /**
+     * 删除账户
+     * @return
+     */
+   int  deleteAccount();
+}
+/**
+ * 账户的业务层实现类
+ */
+@Service(&quot;accountService&quot;)
+public class AccountServiceImpl implements IAccountService{
+
+    @Override
+    public void saveAccount() {
+        System.out.println(&quot;执行了保存&quot;);
+        int i=1/0;
+    }
+
+    @Override
+    public void updateAccount(int i) {
+        System.out.println(&quot;执行了更新&quot;+i);
+
+    }
+
+    @Override
+    public int deleteAccount() {
+        System.out.println(&quot;执行了删除&quot;);
+        return 0;
+    }
+}
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.springframework.stereotype.Component;
+
+/**
+ * 用于记录日志的工具类，它里面提供了公共的代码
+ */
+@Component(&quot;logger&quot;)
+@Aspect//表示当前类是一个切面类
+public class Logger {
+
+    @Pointcut(&quot;execution(* com.itheima.service.impl.*.*(..))&quot;)
+    private void pt1(){}
+
+    /**
+     * 前置通知
+     */
+//    @Before(&quot;pt1()&quot;)
+    public  void beforePrintLog(){
+        System.out.println(&quot;前置通知Logger类中的beforePrintLog方法开始记录日志了。。。&quot;);
+    }
+
+    /**
+     * 后置通知
+     */
+//    @AfterReturning(&quot;pt1()&quot;)
+    public  void afterReturningPrintLog(){
+        System.out.println(&quot;后置通知Logger类中的afterReturningPrintLog方法开始记录日志了。。。&quot;);
+    }
+    /**
+     * 异常通知
+     */
+//    @AfterThrowing(&quot;pt1()&quot;)
+    public  void afterThrowingPrintLog(){
+        System.out.println(&quot;异常通知Logger类中的afterThrowingPrintLog方法开始记录日志了。。。&quot;);
+    }
+
+    /**
+     * 最终通知
+     */
+//    @After(&quot;pt1()&quot;)
+    public  void afterPrintLog(){
+        System.out.println(&quot;最终通知Logger类中的afterPrintLog方法开始记录日志了。。。&quot;);
+    }
+
+    /**
+     * 环绕通知
+     * 问题：
+     *      当我们配置了环绕通知之后，切入点方法没有执行，而通知方法执行了。
+     * 分析：
+     *      通过对比动态代理中的环绕通知代码，发现动态代理的环绕通知有明确的切入点方法调用，而我们的代码中没有。
+     * 解决：
+     *      Spring框架为我们提供了一个接口：ProceedingJoinPoint。该接口有一个方法proceed()，此方法就相当于明确调用切入点方法。
+     *      该接口可以作为环绕通知的方法参数，在程序执行时，spring框架会为我们提供该接口的实现类供我们使用。
+     *
+     * spring中的环绕通知：
+     *      它是spring框架为我们提供的一种可以在代码中手动控制增强方法何时执行的方式。
+     */
+    @Around(&quot;pt1()&quot;)
+    public Object aroundPringLog(ProceedingJoinPoint pjp){
+        Object rtValue = null;
+        try{
+            Object[] args = pjp.getArgs();//得到方法执行所需的参数
+
+            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。前置&quot;);
+
+            rtValue = pjp.proceed(args);//明确调用业务层方法（切入点方法）
+
+            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。后置&quot;);
+
+            return rtValue;
+        }catch (Throwable t){
+            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。异常&quot;);
+            throw new RuntimeException(t);
+        }finally {
+            System.out.println(&quot;Logger类中的aroundPringLog方法开始记录日志了。。。最终&quot;);
+        }
+    }
+}
+</code></pre>
+<p>xml 配置：</p>
+<pre><code class="language-xml">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+    
+    
+    &lt;!-- 配置spring创建容器时要扫描的包--&gt;
+&lt;context:component-scan base-package=&quot;com.itheima&quot;&gt;&lt;/context:component-scan&gt;
+
+&lt;!-- 配置spring开启注解AOP的支持 --&gt;
+&lt;aop:aspectj-autoproxy&gt;&lt;/aop:aspectj-autoproxy&gt;
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+    &lt;/beans&gt; 
+</code></pre>
+<h3 id="111不使用xml配置方式">1.11不使用XML配置方式：</h3>
+<h2 id="jdbctemplate">JDBCTemplate</h2>
+<figure data-type="image" tabindex="3"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9vc2NpbWcub3NjaGluYS5uZXQvb3NjbmV0LzgxNmFkYmFjOWJjMjJkMjJiNjg1NmZlMmU5MGUyY2E3MzY2LmpwZw?x-oss-process=image/format,png" alt="img"></figure>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9vc2NpbWcub3NjaGluYS5uZXQvb3NjbmV0LzBhMTllMjk0OTNjZjJkNDJhNDNjNWNiMzlkM2ZjMjY2NTAwLmpwZw?x-oss-process=image/format,png" alt="img"><br>
+<img src="https://img-blog.csdnimg.cn/2019102209003725.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0NoZW5fbmVhbF9KYXZh,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#spring%E5%B0%8F%E8%AE%B0">spring小记</a><br>
+*
+<ul>
+<li><a href="#%E5%90%84%E4%B8%AA%E6%B3%A8%E8%A7%A3-%E6%95%B4%E5%90%88junit-%E4%BA%8B%E5%8A%A1-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86-aop-jdbctemplate">（各个注解、整合junit、事务）、动态代理、AOP、jdbcTemplate)</a></li>
+<li><a href="#%E6%B3%A8%E8%A7%A3%E5%88%86%E7%B1%BB">注解分类：</a>
+<ul>
+<li><a href="#11-%E6%B3%A8%E8%A7%A3%E8%AF%A6%E8%A7%A3">1.1 注解详解：</a></li>
+<li><a href="#12-%E9%85%8D%E7%BD%AE%E6%B3%A8%E8%A7%A3">1.2 配置注解</a></li>
+<li><a href="#13-%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E6%BA%90%E5%BD%A2%E5%BC%8F%E7%9A%84%E6%B3%A8%E8%A7%A3">1.3 配置数据源形式的注解</a></li>
+<li><a href="#14-spring%E6%95%B4%E5%90%88junit%E6%B5%8B%E8%AF%95%E7%9A%84%E9%85%8D%E7%BD%AE">1.4 spring整合junit测试的配置</a></li>
+</ul>
+</li>
+<li><a href="#spring%E5%A3%B0%E6%98%8E%E5%BC%8F%E4%BA%8B%E5%8A%A1">Spring声明式事务</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86">动态代理</a>
+<ul>
+<li><a href="#15%E5%9F%BA%E4%BA%8E%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86">1.5基于接口的动态代理</a></li>
+<li><a href="#16%E5%9F%BA%E4%BA%8E%E5%AD%90%E7%B1%BB%E7%9A%84%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86">1.6基于子类的动态代理</a></li>
+</ul>
+</li>
+<li><a href="#%E7%94%A8%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E5%AE%9E%E7%8E%B0%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6">用动态代理实现事务控制</a></li>
+<li><a href="#spring-aop">Spring-AOP</a>
+<ul>
+<li><a href="#17-aop-%E7%9B%B8%E5%85%B3%E6%9C%AF%E8%AF%AD">1.7 AOP 相关术语：</a></li>
+<li><a href="#18-spring-aop%E9%85%8D%E7%BD%AE">1.8 spring-AOP配置</a></li>
+<li><a href="#19-%E9%80%9A%E7%94%A8%E5%88%87%E5%85%A5%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F">1.9 通用切入点表达式</a></li>
+<li><a href="#110-springaop%E7%9A%84%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE">1.10 springAOP的基于注解配置：</a></li>
+<li><a href="#111%E4%B8%8D%E4%BD%BF%E7%94%A8xml%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F">1.11不使用XML配置方式：</a></li>
+</ul>
+</li>
+<li><a href="#jdbctemplate">JDBCTemplate</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://cxp-twx.github.io/post/redis-huan-cun">
+              <h3 class="post-title">
+                Redis缓存
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '3818ab196008bdc444d2',
+    clientSecret: '25a6a1be783a52e1a00f165dd3c08fa28fba507a',
+    repo: 'cxp-twx.github.io',
+    owner: 'cxp-twx',
+    admin: ['cxp-twx'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://cxp-twx.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

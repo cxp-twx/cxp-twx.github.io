@@ -1,0 +1,443 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>数据库小结 | CheckChen</title>
+<meta name="description" content="吾日三省吾身" />
+<link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576205647397">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cxp-twx.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://cxp-twx.github.io">
+  <img class="avatar" src="https://cxp-twx.github.io/images/avatar.png?v=1576205647397" alt="">
+  </a>
+  <h1 class="site-title">
+    CheckChen
+  </h1>
+  <p class="site-description">
+    吾日三省吾身
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              数据库小结
+            </h2>
+            <div class="post-info">
+              <span>
+                2018-04-18
+              </span>
+              <span>
+                10 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="数据库小结">数据库小结：</h1>
+<blockquote>
+<ul>
+<li>expire interval  密码存活时间</li>
+<li>expire never  密码永远存活</li>
+<li>创建用户：create user  &quot;mike&quot;@&quot;%&quot; identified by '000000' password expire interval 2 day;</li>
+<li>修改用户密码存活时间：alter user mike password expire interval 30day;</li>
+<li>查看用户权限：	select * from mysql.user where user=&quot;mike&quot; \G;</li>
+</ul>
+</blockquote>
+<h2 id="授权">授权：</h2>
+<blockquote>
+<p>mysql &gt; grant all privileges on <em>.</em> to 'alex'@'%' identified by '123456' with grant option;<br>
+all privileges：表示将所有权限授予给用户。也可指定具体的权限，如：SELECT、CREATE、DROP等。<br>
+on：表示这些权限对哪些数据库和表生效，格式：数据库名.表名，这里写“*”表示所有数据库，所有表。<br>
+如果我要指定将权限应用到test库的user表中，可以这么写：test.user<br>
+to：将权限授予哪个用户。格式：”用户名”@”登录IP或域名”。%表示没有限制，在任何主机都可以登录。<br>
+比如：”alex”@”192.168.0.%”，表示alex这个用户只能在192.168.0IP段登录<br>
+identified by：指定用户的登录密码<br>
+with grant option：表示允许用户将自己的权限授权给其它用户</p>
+</blockquote>
+<h3 id="刷新权限-flush-privileges">刷新权限： flush privileges;</h3>
+<blockquote>
+<p>撤权：revoke all privileges on <em>.</em> from &quot;mike&quot;@&quot;localhost&quot;;<br>
+改密码：set password for &quot;mike&quot;@&quot;localhost&quot; = password(&quot;123456&quot;);<br>
+更改用户名：rename user &quot;mike&quot;@&quot;localhost&quot; to &quot;ake&quot;@&quot;localhost&quot;;<br>
+查看权限：show grants;<br>
+show grants for &quot;mike&quot;@&quot;localhost&quot;;<br>
+select * from mysql.user where user=&quot;mike&quot;;<br>
+用户加解锁：alter user &quot;mike&quot;@&quot;localhost&quot; account lock;<br>
+alter user &quot;mike&quot;@&quot;localhost&quot; account unlock;</p>
+</blockquote>
+<p>variables  查看配置  show variables like &quot;%like%&quot;;<br>
+engines   查看引擎  show engines;</p>
+<h2 id="事务的隔离级别">事务的隔离级别：</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>read uncommiteed</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>read committed</td>
+<td>×</td>
+<td>√</td>
+<td>√</td>
+<td>oracle（默认）</td>
+</tr>
+<tr>
+<td>repeatable read</td>
+<td>×</td>
+<td>×</td>
+<td>√</td>
+<td>mysql（默认）</td>
+</tr>
+<tr>
+<td>serializable</td>
+<td>×</td>
+<td>×</td>
+<td>×</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>查看隔离级别	select @@tx_isolation;</li>
+<li>设置隔离级别	set session|global transaction isolation level 隔离级别；</li>
+</ul>
+<h2 id="变量">变量：</h2>
+<p>​  查看变量：  show global|session variables(like &quot;%char%&quot;);<br>
+​    变量赋值：  set global|session 系统变量名= 值；<br>
+用户变量：set @a:=10;<br>
+局部变量：declare c=10；</p>
+<p>delimiter ￥</p>
+<h2 id="存储过程">存储过程：</h2>
+<h2 id="create-procedure-存储过程名参数列表">create procedure 存储过程名（参数列表）</h2>
+<p>​	begin<br>
+​		存储过程体（一组合法的sql语句）<br>
+​		每句sql语句必须；结尾<br>
+​	end ￥<br>
+​	<br>
+参数列表： 参数模式   参数名   参数类型<br>
+​	in  输入          stuname   varchar(20)<br>
+​	out 输出（into）<br>
+​	inout输入输出<br>
+调用方法 ： call 存储过程名（实参）￥<br>
+查看：show create function|proceduer 名字；<br>
+删除：drop  function|proceduer  名字；<br>
+创建函数： create function 函数名（参数列表）returns 返回类型<br>
+​	begin<br>
+​		函数体<br>
+​		return 值；<br>
+​	end ￥<br>
+参数列表 ： 参数名  参数类型<br>
+调用语法： select 函数名（参数列表）￥</p>
+<h2 id="字符函数">字符函数：</h2>
+<p>​    length   长度    select length(&quot;我爱你&quot;);     根据服务器编码类型而定<br>
+​    concat  拼接字符  select concat(&quot;a&quot;,&quot;_&quot;,&quot;b&quot;);<br>
+​    upper   大写     select upper(&quot;asdd&quot;);<br>
+​    lower   小写     select lower(&quot;ASSS&quot;);<br>
+​    substr   截取字符  select substr(&quot;我爱你你你你你你你&quot;,5);    截取坐标5后面所有字符<br>
+​                               select substr(&quot;woaininininininini&quot;,2,5);   截取坐标2后面5个字符<br>
+​    instr     匹配第一次出现字符的坐标    select instr(&quot;我爱你你知道不&quot;,&quot;我爱你&quot;)；<br>
+​    trim    去除字符左右指定字符(默认空格)    select length(trim(&quot;    我爱你    &quot;))；<br>
+​				select trim(&quot;a&quot;,&quot;aaaaa我爱你aaa&quot;)；<br>
+​     lpad,rpad  左右填充特定字符    select lpad(&quot;我爱你&quot;,10,&quot;ab&quot;);   ab为填充的字符<br>
+​    replace    替换字符     select replace(&quot;张无忌爱上周芷若&quot;,&quot;周芷若&quot;,&quot;赵敏&quot;)；  张无忌爱上赵敏</p>
+<h2 id="数学函数">数学函数：</h2>
+<p>​    round   四舍五入    select round(1.45);<br>
+​	小数点保留位数  select round(1.456,2);<br>
+​    ceil      向上取整     select  ceil(1.23);<br>
+​    floor    向下取整    select floor(12.2);<br>
+​    truncate  截断       select truncate(1.23,1);<br>
+​    mod     取余          select mod(10,3);      mod(-10,3)    a-a/b<em>b  -10-(-10)/3</em>3</p>
+<h2 id="日期函数">日期函数：</h2>
+<p>​    now     当前日期时间     select now();<br>
+​    curdate  当前日期         select curdate();<br>
+​    curtime  当日时间         select curtime();<br>
+​    datediff  两时间差值     select datediff(&quot;2018-02-1&quot;,&quot;2019-02-1&quot;);<br>
+​    year,month,monthname,day....<br>
+​    str_to_date   时间格式    select str_to_date('1998-3-2','%Y-%c-%d');<br>
+​    date_format   格式化时间  select date_format(now(),&quot;%Y年%m月%d日&quot;)；</p>
+<h2 id="流程控制函数">流程控制函数：</h2>
+<p>​    select if(10&lt;5,'da','xiao');  xiao<br>
+​    case     case 条件 when 值 then 值 else  end(case)；<br>
+​    case     case  when 条件 tnen 值  else  end(case)；<br>
+​    if结构：if  条件1 then 语句1；<br>
+​	elseif 条件2 then  语句2；<br>
+​	......<br>
+​	else 语句n；<br>
+​	end if；（只能用在begin end中）</p>
+<h2 id="循环结构">循环结构：</h2>
+<p>while，loop，repeat<br>
+while：	（标签：）while 循环条件 do<br>
+循环体；<br>
+end while（标签）；<br>
+loop：	（标签：）loop<br>
+循环体；<br>
+end loop（标签）；<br>
+repeat：	（标签：）repeat<br>
+循环体；<br>
+until 结束循环的条件<br>
+end repeat（标签）；</p>
+<h2 id="循环控制">循环控制：</h2>
+<p>iterate  like continue<br>
+leave    like  break</p>
+<p>if not exists 判断是否存在<br>
+distinct       查重             select  distinct * from day02;<br>
+between     两者之间      select * from day02 where id between 2 and 6;<br>
+like              模糊查询     select * from day02 where name like '%js_';<br>
+% 表示多个字值，<br>
+_ 下划线表示一个字符；<br>
+M% : 为能配符，正则表达式，表示的意思为模糊查询信息为 M 开头的。<br>
+%M% : 表示查询包含M的所有内容。<br>
+%M_ : 表示查询以M在倒数第二位的所有内容。<br>
+order by     排序            select * from day02 where id &gt;2 order by name;<br>
+update      更新数据      update day02 set cal='121' where id=3;<br>
+limit          显示条数      select * from day02 limit 2;<br>
+select * from day02 where id&gt;6 limit 2;<br>
+regexp      正则查询            select * from  day02 where name regexp '<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>';<br>
+as             别名             select  d.name,d.cal from day02 as d;<br>
+inner join   内连接        select day02.id,student.age from day02 inner join student on day02.id=student.id;<br>
+创建拷贝数据表结构及数据   create table day02_1 as select * from day02;<br>
+拷贝数据表数据             insert into day02_1 select * from day02;<br>
+约束： NOT NULL - 指示某列不能存储 NULL 值。<br>
+UNIQUE - 保证某列的每行必须有唯一的值。<br>
+PRIMARY KEY - NOT NULL 和 UNIQUE 的结合。确保某列（或两个列多个列的结合）有唯一标识，有助于更容易更快速地找到表中的一个特定的记录。<br>
+FOREIGN KEY - 保证一个表中的数据匹配另一个表中的值的参照完整性。<br>
+CHECK - 保证列中的值符合指定的条件。<br>
+DEFAULT - 规定没有给列赋值时的默认值。</p>
+<h2 id="table创建完成后想修改">table创建完成后想修改:</h2>
+<blockquote>
+<p>not null  修改非空    alter table day02_1 modify name varchar(3) null;<br>
+alter table day02_1 modify name varchar(3) not null;<br>
+unique    唯一识别    alter table day02 add unique(id);<br>
+alter table day02 drop index id;<br>
+primary key  主键      alter table day02_2  add primary key(id);<br>
+alter table day02_2 drop primary key;<br>
+foreign key   外键	alter table stus add foreign key(sid) references stu(id);<br>
+alter table stus drop foreign key stus_ibfk_1;<br>
+cascade       级联      create table 表明(.....,on delete set null,on update cascade);<br>
+constraint    约束	create table 表明(.....,constraint 约束名 on delete set null,on update cascade);<br>
+check           检查</p>
+<p>default       默认值     alter table day02_2 alter set defalut 'jss';<br>
+alter table day02_2 alter  nam drop default;<br>
+truncate     删除数据   truncate table day02_1;<br>
+auto_increment 自增  alter table day02_1 modify id int(10) auto_increment;(必须是主键)<br>
+alter table day02_1 modify id int(10);<br>
+创建索引		create  index xiao on day02(name);<br>
+创建索引		alter table day02 add index xiao(names);<br>
+删除索引		alter table day02 drop index xiao;<br>
+drop index xiao on day02;<br>
+查看索引		show index from day02;<br>
+创建唯一索引	create unique index xiao on day02(names)<br>
+alter table day02 add index xiao(naems);<br>
+删除索引		drop index xiao on day02;<br>
+alter table day02 drop index xiao;<br>
+创建视图   		 create view xiao as select id,name from day02 where id&lt;3;<br>
+创建或更新视图	create or replace view xiao select id,name from day02 where id&gt;3;<br>
+drop view xiao;</p>
+<p>group by      分组       select  name,count(*) from day02 group by name;<br>
+select * from day02 where id&gt;2 group by id;<br>
+select * from day02 group by id having id&gt;2;<br>
+begin | strat transaction   开启事务； 各种操作<br>
+rollback                            事物回退；<br>
+summit                            事务提交；<br>
+first           插入第一列位置    alter table day02  add  pid varchar(3) first;<br>
+after          在特定列后插入    alter table day02 add pid  varchar(3) after name;<br>
+modify      修改                     alter table ady02  modify name varchar(4);<br>
+change     修改                       alter table day02  change name names varchar(4);<br>
+rename to  修改表名           alter table day02_1  rename to day02_4;<br>
+temporary  创建临时表      create temporary table ceshi(id int,name varchar(2));<br>
+insert ignore into   忽视已存在的数据   insert ignore into day02 value(1,'ws','123');<br>
+insert  into	添加已存在的数据报错   insert  into day02 value(1,'ws','123');</p>
+</blockquote>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>j <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B0%8F%E7%BB%93">数据库小结：</a>
+<ul>
+<li><a href="#%E6%8E%88%E6%9D%83">授权：</a>
+<ul>
+<li><a href="#%E5%88%B7%E6%96%B0%E6%9D%83%E9%99%90-flush-privileges">刷新权限： flush privileges;</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB">事务的隔离级别：</a></li>
+<li><a href="#%E5%8F%98%E9%87%8F">变量：</a></li>
+<li><a href="#%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B">存储过程：</a></li>
+<li><a href="#create-procedure-%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E5%90%8D%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8">create procedure 存储过程名（参数列表）</a></li>
+<li><a href="#%E5%AD%97%E7%AC%A6%E5%87%BD%E6%95%B0">字符函数：</a></li>
+<li><a href="#%E6%95%B0%E5%AD%A6%E5%87%BD%E6%95%B0">数学函数：</a></li>
+<li><a href="#%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B0">日期函数：</a></li>
+<li><a href="#%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E5%87%BD%E6%95%B0">流程控制函数：</a></li>
+<li><a href="#%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84">循环结构：</a></li>
+<li><a href="#%E5%BE%AA%E7%8E%AF%E6%8E%A7%E5%88%B6">循环控制：</a></li>
+<li><a href="#table%E5%88%9B%E5%BB%BA%E5%AE%8C%E6%88%90%E5%90%8E%E6%83%B3%E4%BF%AE%E6%94%B9">table创建完成后想修改:</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://cxp-twx.github.io/post/socket-bian-cheng">
+              <h3 class="post-title">
+                Socket编程
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '3818ab196008bdc444d2',
+    clientSecret: '25a6a1be783a52e1a00f165dd3c08fa28fba507a',
+    repo: 'cxp-twx.github.io',
+    owner: 'cxp-twx',
+    admin: ['cxp-twx'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://cxp-twx.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

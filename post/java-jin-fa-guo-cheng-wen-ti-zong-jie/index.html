@@ -1,0 +1,446 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java进发过程——问题总结 | CheckChen</title>
+<meta name="description" content="吾日三省吾身" />
+<link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576205647397">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cxp-twx.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://cxp-twx.github.io">
+  <img class="avatar" src="https://cxp-twx.github.io/images/avatar.png?v=1576205647397" alt="">
+  </a>
+  <h1 class="site-title">
+    CheckChen
+  </h1>
+  <p class="site-description">
+    吾日三省吾身
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Java进发过程——问题总结
+            </h2>
+            <div class="post-info">
+              <span>
+                2017-06-13
+              </span>
+              <span>
+                10 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="平时遇到的问题-总结"><strong>平时遇到的问题-总结：</strong></h1>
+<h2 id="mysql">MYSQL：</h2>
+<blockquote>
+<ul>
+<li>-h（指定登录数据库的主机名）</li>
+<li>-p（指定登录数据库的密码）</li>
+<li>-e（指定SQL命令即可执行）</li>
+</ul>
+</blockquote>
+<h3 id="mysql命令表">mysql命令表：</h3>
+<ul>
+<li>For server side help, type 'help contents'</li>
+</ul>
+<h2 id="变量命名规则">变量命名规则：</h2>
+<h3 id="基本要求">基本要求：</h3>
+<ol>
+<li>首字母：字母，下划线(_)或符号（不能含有空格，不能以数字开头）.</li>
+<li>其他部分：数字，字母，下划线，符号（不能含有空格，不能以数字开头）</li>
+<li>php编程中所有变量必须以开始）</li>
+<li>变量名不能是Java关键字（即保留字）</li>
+<li>除了下划线、开始）3.变量名不能是Java关键字（即保留字）4.除了下划线、之外，不包括任何其他特殊字符</li>
+</ol>
+<h3 id="其他要求">其他要求：</h3>
+<ul>
+<li>（1）变量名当有多个单词组成时，第一个单词首字母小写，后一个单词的首字母大写（如：myName）</li>
+<li>(2)见名知意</li>
+<li>(3)变量名的长度没有限制，但却区分大小写（如：power和Power是两个不同的变量）</li>
+</ul>
+<h3 id="a-的含义是先赋值后相加如-ba-先将a的值赋给b然后a再加上1a的含义是先相加后赋值如-ba-先将a加上1然后再把加上1的a赋给b">a++ 的含义是先赋值后相加,如 b=a++; 先将a的值赋给b,然后a再加上1；++a的含义是先相加后赋值,如 b=++a 先将a加上1,然后再把加上1的a赋给b.</h3>
+<h2 id="快捷键">快捷键：</h2>
+<ul>
+<li>Ctrl+L 定位在某行 (对于程序超过100的人就有福音了)</li>
+<li>Ctrl+M 最大化当前的Edit或View (再按则反之)</li>
+<li>Ctrl+/ 注释当前行,再按则取消注释</li>
+<li>Ctrl+O 快速显示 OutLine</li>
+<li>Ctrl+T 快速显示当前类的继承结构</li>
+<li>Ctrl+W 关闭当前Editer</li>
+<li>Ctrl+K 参照选中的Word快速定位到下一个</li>
+<li>Ctrl+E 快速显示当前Editer的下拉列表(如果当前页面没有显示的用黑体表示)</li>
+<li>Ctrl+/(小键盘) 折叠当前类中的所有代码</li>
+<li>Ctrl+×(小键盘) 展开当前类中的所有代码</li>
+<li>Ctrl+Space 代码助手完成一些代码的插入(但一般和输入法有冲突,可以修改输入法的热键,也可以暂用Alt+/来代替)</li>
+<li>Ctrl+Shift+E 显示管理当前打开的所有的View的管理器(可以选择关闭,激活等操作)</li>
+<li>Ctrl+J 正向增量查找(按下Ctrl+J后,你所输入的每个字母编辑器都提供快速匹配定位到某个单词,如果没</li>
+<li>有,则在stutes line中显示没有找到了,查一个单词时,特别实用,这个功能Idea两年前就有了)</li>
+<li>Ctrl+Shift+J 反向增量查找(和上条相同,只不过是从后往前查)</li>
+<li>Ctrl+Shift+F4 关闭所有打开的Editer</li>
+<li>Ctrl+Shift+X 把当前选中的文本全部变为大写</li>
+<li>Ctrl+Shift+Y 把当前选中的文本全部变为小写</li>
+<li>Ctrl+Shift+F 格式化当前代码</li>
+<li>Ctrl+Shift+P 定位到对于的匹配符(譬如{}) (从前面定位后面时,光标要在匹配符里面,后面到前面,则反之)</li>
+<li>下面的快捷键是重构里面常用的,本人就自己喜欢且常用的整理一下(注:一般重构的快捷键都是Alt+Shift开头的了)</li>
+<li>Alt+Shift+R 重命名 (是我自己最爱用的一个了,尤其是变量和类的Rename,比手工方法能节省很多劳动力)</li>
+<li>Alt+Shift+M 抽取方法 (这是重构里面最常用的方法之一了,尤其是对一大堆泥团代码有用)</li>
+<li>Alt+Shift+C 修改函数结构(比较实用,有N个函数调用了这个方法,修改一次搞定)</li>
+<li>Alt+Shift+L 抽取本地变量( 可以直接把一些魔法数字和字符串抽取成一个变量,尤其是多处调用的时候)</li>
+<li>Alt+Shift+F 把Class中的local变量变为field变量 (比较实用的功能)</li>
+<li>Alt+Shift+I 合并变量(可能这样说有点不妥Inline)</li>
+<li>Alt+Shift+V 移动函数和变量(不怎么常用)</li>
+<li>Alt+Shift+Z 重构的后悔药(Undo)</li>
+<li>自建偏好 preferences</li>
+<li>常用的快捷键</li>
+<li>
+<pre><code>  ctrl+c 复制
+</code></pre>
+</li>
+<li>ctrl+v 粘贴</li>
+<li>ctrl+x 剪切</li>
+<li>ctrl+z 撤销</li>
+<li>ctrl+y 反撤销</li>
+<li>ctrl+s 保存</li>
+<li>ctrl+f 查询</li>
+<li>tab 缩进</li>
+<li>shift+tab 反缩进</li>
+<li>win+e 打开我的电脑</li>
+<li>win+d 回到桌面</li>
+<li>win+r 打开运行</li>
+<li>win+i 打开设置</li>
+<li>win+l 锁屏</li>
+</ul>
+<h2 id="dos命令">dos命令</h2>
+<ul>
+<li>dir 显示当前目录中的所有文件</li>
+<li>cd 文件夹名 切换到目录</li>
+<li>盘符： d:  切换到d盘</li>
+<li>md 创建一个文件夹</li>
+<li>rd 移除一个文件夹</li>
+<li>cd.. 回到上一层目录</li>
+<li>cd/ 回到当前盘符根目录</li>
+<li>del 删除文件</li>
+<li>help 帮助</li>
+<li>cls 清屏</li>
+<li>exit 退出</li>
+</ul>
+<h2 id="java程序">java程序</h2>
+<p>class 类名{</p>
+<p>//main快捷</p>
+<p>​      public static void main(String[] args){</p>
+<p>//sout或syso快捷</p>
+<p>​           System.out.println(&quot;内容&quot;)；</p>
+<p>​       }</p>
+<p>}</p>
+<p><strong>注意 英文字母大小 还有括号的中英文</strong></p>
+<h2 id="编程语言的分类">编程语言的分类:</h2>
+<ul>
+<li>1,编译型的语言C, C++, JAVA, OC, Swift, C#</li>
+<li>2,解释型的语言(脚本语言), PHP, JavaScript, Python,Ruby</li>
+<li>3,标记语言HTML, XML</li>
+</ul>
+<h2 id="内存分为3大分区-栈区-堆区-方法区包含静态区-常量区">内存分为3大分区: 栈区, 堆区, 方法区(包含静态区, 常量区)</h2>
+<h3 id="每个功能不同">每个功能不同:</h3>
+<p>​	<strong><strong>栈区:</strong></strong> 主要是给函数(方法)局部变量,分配内存. 栈区的特点:先进后出, 函数一旦被调用, 就会入栈, 开始为这个函数所有的局部变量分配内存, 当函数调用完毕, 函数就会出栈, 为函数里的局部变量分配的内存就会被回收.</p>
+<p>​	<strong>堆区:</strong> 主要是给new 出来的对象分配内存, 堆区的特点, 主要是靠引用来检查对象是否有人再用, 如果对象没有人使用了, Java 的垃圾回收机制, 会回收这块堆区内存.</p>
+<p>​	<strong>方法区:</strong> 方法区包含了静态区,常量区, 方法区主要存储.class字节码文件</p>
+<h2 id="函数的递归调用">函数的递归调用</h2>
+<blockquote>
+<p>函数内部, 可以嵌套函数本身, 这种调用方式叫做递归调用.</p>
+<p>递归调用能够巧妙的解决一些算法问题, 但是递归调用会消耗大量的栈内存,因为,递归是一直调用的最里面, 再从最里面逐级返回. 使用递归一定要有出口,否则会导致栈溢出,程序终止.</p>
+<p>部分包装类中提供了一个小的缓存,  该缓存的取值范围在(-128-127)之间, 若需要装箱的数在这个范围内, 则从缓冲区取一个实例, 否则会new 一个新的实例</p>
+</blockquote>
+<h2 id="继承后构造器的特点">继承后构造器的特点</h2>
+<h4 id="1当子类继承父类后-子类中所有的构造器的第一句都有一个隐式的super">1,当子类继承父类后, 子类中所有的构造器的第一句,都有一个隐式的:super().</h4>
+<blockquote>
+<p>super()的作用, 是调用父类无参的构造器.</p>
+<p>super()的目的, 当子类继承父类后,继承了父类所有的属性和方法, 因此,子类需要知道父类是如何为对象进行初始化的.</p>
+</blockquote>
+<h4 id="2-如果父类中没有显式定义无参构造-只给了有参构造-那么子类的构造器中就不能使用super">2, 如果父类中没有显式定义无参构造, 只给了有参构造, 那么子类的构造器中,就不能使用super(),</h4>
+<h5 id="解决方法">解决方法:</h5>
+<ol>
+<li>父类显式提供一个无参构造</li>
+<li>子类构造器中, 显式调用父类有参构造, 如果子类显式调用了父类的有参构造super(参数),  子类构造隐式的super()将不再提供.</li>
+<li>子类所有的构造器里, 默认都有一个隐式的super().</li>
+<li>super() 必须出现在当前构造器中的首行 ,</li>
+<li>super() 和this() 不能同时出现(指的是super和this调用构造方法)</li>
+</ol>
+<h4 id="1局部变量和成员变量的区别">1,局部变量和成员变量的区别</h4>
+<ul>
+<li>A, 作用域不一样</li>
+<li>B, 内存中的位置不一样</li>
+<li>C, 成员变量有默认值, 局部变量没有默认值.</li>
+</ul>
+<blockquote>
+<p>(1)整型属性默认值是0</p>
+<p>(2)浮点型属性默认值是0.0</p>
+<p>(3)字符型属性默认值是’\u0000’</p>
+<p>(4)布尔型属性默认值是false</p>
+<p>(5)引用类型属性默认值是null</p>
+</blockquote>
+<h4 id="2属性赋值初始值的方式">2,属性赋值初始值的方式</h4>
+<blockquote>
+<p>​	A,属性缺省值</p>
+<p>​	B,定义属性直接显式赋初值</p>
+<p>​	C,通过对象修改属性内容</p>
+</blockquote>
+<h3 id="1-获取字符串的方法">1, 获取字符串的方法</h3>
+<p><strong>A,串接字符串, concat</strong></p>
+<p>String str = “abc”;</p>
+<p>String str2 = str.concat(“def”);</p>
+<p><strong>B,获取子串substring()</strong></p>
+<p>String str1 = str.substring(3);//从哪开始到最后</p>
+<p>String str1 = str.substring(2,4) //包含头,不包含尾</p>
+<p><strong>C,转换大小写</strong></p>
+<p>str.toLowerCase();</p>
+<p>str.toUpperCase();</p>
+<p><strong>D,去除首尾空格和制表符号</strong></p>
+<p>str.trim();</p>
+<h3 id="2-搜索相关的方法">2, 搜索相关的方法</h3>
+<blockquote>
+<p>​	A, int indexOf(int ch)  获取指定字符在字符串中的位置, 若没有指定字符, 返回-1</p>
+<p>​	B, int indexOf(int ch, int fromIndex)  从指定位置开始搜索</p>
+<p>​	C, int indexOf(String str)  返回指定子字符串第一次出现的字符串内的索引。</p>
+<p>​	D, int indexOf(String str, int fromIndex)  返回指定子串的第一次出现的字符串中的索引，从指定的索引开始。</p>
+<p>​	E, int lastIndexOf(String str)  返回指定子字符串最后一次出现的字符串中的索引</p>
+</blockquote>
+<h3 id="3-判断相关的方法">3, 判断相关的方法</h3>
+<blockquote>
+<p>​	A, boolean equals(Object anObject)  判断是否相等</p>
+<p>​	B, boolean equalsIgnoreCase(String anotherString)  判断是否相等,忽略大小写</p>
+<p>​	C, boolean contains(CharSequence s)  判断是否包含某字符串</p>
+<p>​	D, boolean startsWith(String prefix)  判断是否是以指定字符串打头</p>
+<p>​	E, boolean endsWith(String suffix)  判断是否是以指定字符串结尾</p>
+<p>​	F, boolean isEmpty()  判断字符串是否为空</p>
+</blockquote>
+<h3 id="4其他方法">4,其他方法</h3>
+<blockquote>
+<p>​	A, int length()  返回字符串的长度</p>
+<p>​	B, char charAt(int index) 返回索引处的字符</p>
+<p>​	C,将字符数组转换成字符串</p>
+<p>​		构造器: String(char[] ch)</p>
+<p>​		静态方法:static String copyValueOf(char[] ch);</p>
+<p>​	D,将字符串转换成字符数组</p>
+<p>​		char[] toCharArray()</p>
+<p>​	E, String replace(char oldChar, char newChar)  替换字符串中的字符</p>
+<p>​	F, String replace(CharSequence target, CharSequence replacement) 替换字符串中的某个字符串</p>
+</blockquote>
+<p><strong>StringBuffer****和</strong> <strong>StringBulider</strong></p>
+<blockquote>
+<p>1.两个类的区别和联系</p>
+<p>A,创建一个可变的字符串对象</p>
+<p>B, StringBuffer 和StringBulider 使用方式一模一样</p>
+<p>C, StringBuffer考虑了线程安全的问题, 但是效率低</p>
+<p>D, StringBulider比StringBuffer效率高, 因为没有考虑线程安全的问题.</p>
+</blockquote>
+<h3 id="stringbuffer-和-stringbulider-的常用方法">StringBuffer 和 StringBulider 的常用方法</h3>
+<ul>
+<li>​	1, StringBuffer append(CharSequence s)  原串拼接</li>
+<li>​	2, StringBuilder insert(int dstOffset, CharSequence s)   原串插入</li>
+<li>​	3, int indexOf(String str)  寻找子串位置</li>
+<li>​	4, String substring(int start, int end)   获得子串</li>
+<li>​	5, StringBuffer delete(int start, int end)  删除某个范围字符串</li>
+<li>​	6, StringBuffer deleteCharAt(int index)  删除某个位置字符</li>
+<li>​	7,String toString() 转换成不可变字符串.</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%B9%B3%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98-%E6%80%BB%E7%BB%93"><strong>平时遇到的问题-总结：</strong></a>
+<ul>
+<li><a href="#mysql">MYSQL：</a>
+<ul>
+<li><a href="#mysql%E5%91%BD%E4%BB%A4%E8%A1%A8">mysql命令表：</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%98%E9%87%8F%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99">变量命名规则：</a>
+<ul>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E8%A6%81%E6%B1%82">基本要求：</a></li>
+<li><a href="#%E5%85%B6%E4%BB%96%E8%A6%81%E6%B1%82">其他要求：</a></li>
+<li><a href="#a-%E7%9A%84%E5%90%AB%E4%B9%89%E6%98%AF%E5%85%88%E8%B5%8B%E5%80%BC%E5%90%8E%E7%9B%B8%E5%8A%A0%E5%A6%82-ba-%E5%85%88%E5%B0%86a%E7%9A%84%E5%80%BC%E8%B5%8B%E7%BB%99b%E7%84%B6%E5%90%8Ea%E5%86%8D%E5%8A%A0%E4%B8%8A1a%E7%9A%84%E5%90%AB%E4%B9%89%E6%98%AF%E5%85%88%E7%9B%B8%E5%8A%A0%E5%90%8E%E8%B5%8B%E5%80%BC%E5%A6%82-ba-%E5%85%88%E5%B0%86a%E5%8A%A0%E4%B8%8A1%E7%84%B6%E5%90%8E%E5%86%8D%E6%8A%8A%E5%8A%A0%E4%B8%8A1%E7%9A%84a%E8%B5%8B%E7%BB%99b">a++ 的含义是先赋值后相加,如 b=a++; 先将a的值赋给b,然后a再加上1；++a的含义是先相加后赋值,如 b=++a 先将a加上1,然后再把加上1的a赋给b.</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BF%AB%E6%8D%B7%E9%94%AE">快捷键：</a></li>
+<li><a href="#dos%E5%91%BD%E4%BB%A4">dos命令</a></li>
+<li><a href="#java%E7%A8%8B%E5%BA%8F">java程序</a></li>
+<li><a href="#%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E5%88%86%E7%B1%BB">编程语言的分类:</a></li>
+<li><a href="#%E5%86%85%E5%AD%98%E5%88%86%E4%B8%BA3%E5%A4%A7%E5%88%86%E5%8C%BA-%E6%A0%88%E5%8C%BA-%E5%A0%86%E5%8C%BA-%E6%96%B9%E6%B3%95%E5%8C%BA%E5%8C%85%E5%90%AB%E9%9D%99%E6%80%81%E5%8C%BA-%E5%B8%B8%E9%87%8F%E5%8C%BA">内存分为3大分区: 栈区, 堆区, 方法区(包含静态区, 常量区)</a>
+<ul>
+<li><a href="#%E6%AF%8F%E4%B8%AA%E5%8A%9F%E8%83%BD%E4%B8%8D%E5%90%8C">每个功能不同:</a></li>
+</ul>
+</li>
+<li><a href="#%E5%87%BD%E6%95%B0%E7%9A%84%E9%80%92%E5%BD%92%E8%B0%83%E7%94%A8">函数的递归调用</a></li>
+<li><a href="#%E7%BB%A7%E6%89%BF%E5%90%8E%E6%9E%84%E9%80%A0%E5%99%A8%E7%9A%84%E7%89%B9%E7%82%B9">继承后构造器的特点</a><br>
+*
+<ul>
+<li><a href="#1%E5%BD%93%E5%AD%90%E7%B1%BB%E7%BB%A7%E6%89%BF%E7%88%B6%E7%B1%BB%E5%90%8E-%E5%AD%90%E7%B1%BB%E4%B8%AD%E6%89%80%E6%9C%89%E7%9A%84%E6%9E%84%E9%80%A0%E5%99%A8%E7%9A%84%E7%AC%AC%E4%B8%80%E5%8F%A5%E9%83%BD%E6%9C%89%E4%B8%80%E4%B8%AA%E9%9A%90%E5%BC%8F%E7%9A%84super">1,当子类继承父类后, 子类中所有的构造器的第一句,都有一个隐式的:super().</a></li>
+<li><a href="#2-%E5%A6%82%E6%9E%9C%E7%88%B6%E7%B1%BB%E4%B8%AD%E6%B2%A1%E6%9C%89%E6%98%BE%E5%BC%8F%E5%AE%9A%E4%B9%89%E6%97%A0%E5%8F%82%E6%9E%84%E9%80%A0-%E5%8F%AA%E7%BB%99%E4%BA%86%E6%9C%89%E5%8F%82%E6%9E%84%E9%80%A0-%E9%82%A3%E4%B9%88%E5%AD%90%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E5%99%A8%E4%B8%AD%E5%B0%B1%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8super">2, 如果父类中没有显式定义无参构造, 只给了有参构造, 那么子类的构造器中,就不能使用super(),</a>
+<ul>
+<li><a href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95">解决方法:</a></li>
+</ul>
+</li>
+<li><a href="#1%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E5%92%8C%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB">1,局部变量和成员变量的区别</a></li>
+<li><a href="#2%E5%B1%9E%E6%80%A7%E8%B5%8B%E5%80%BC%E5%88%9D%E5%A7%8B%E5%80%BC%E7%9A%84%E6%96%B9%E5%BC%8F">2,属性赋值初始值的方式</a></li>
+<li><a href="#1-%E8%8E%B7%E5%8F%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%96%B9%E6%B3%95">1, 获取字符串的方法</a></li>
+<li><a href="#2-%E6%90%9C%E7%B4%A2%E7%9B%B8%E5%85%B3%E7%9A%84%E6%96%B9%E6%B3%95">2, 搜索相关的方法</a></li>
+<li><a href="#3-%E5%88%A4%E6%96%AD%E7%9B%B8%E5%85%B3%E7%9A%84%E6%96%B9%E6%B3%95">3, 判断相关的方法</a></li>
+<li><a href="#4%E5%85%B6%E4%BB%96%E6%96%B9%E6%B3%95">4,其他方法</a></li>
+<li><a href="#stringbuffer-%E5%92%8C-stringbulider-%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95">StringBuffer 和 StringBulider 的常用方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://cxp-twx.github.io/post/ajax-fu-xi-bi-ji">
+              <h3 class="post-title">
+                Ajax-复习笔记
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '3818ab196008bdc444d2',
+    clientSecret: '25a6a1be783a52e1a00f165dd3c08fa28fba507a',
+    repo: 'cxp-twx.github.io',
+    owner: 'cxp-twx',
+    admin: ['cxp-twx'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://cxp-twx.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

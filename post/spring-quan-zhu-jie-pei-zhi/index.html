@@ -1,0 +1,417 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spring全注解配置 | CheckChen</title>
+<meta name="description" content="吾日三省吾身" />
+<link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576205647397">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cxp-twx.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://cxp-twx.github.io">
+  <img class="avatar" src="https://cxp-twx.github.io/images/avatar.png?v=1576205647397" alt="">
+  </a>
+  <h1 class="site-title">
+    CheckChen
+  </h1>
+  <p class="site-description">
+    吾日三省吾身
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Spring全注解配置
+            </h2>
+            <div class="post-info">
+              <span>
+                2017-01-13
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="1-全注解配置"><strong>1.</strong> <strong>全注解配置</strong></h1>
+<blockquote>
+<p>在Java中写Xml配置Bean还是比较麻烦，因此，Spring还提供了使用注解来配置的文件。我们可以来看一下，注解是怎么来配置这个Xml的配置使用注解流程步骤</p>
+</blockquote>
+<h2 id="11-配置context命名空间"><strong>1.1.</strong> <strong>配置context命名空间</strong></h2>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!--添加context空间--&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot; xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+
+​	xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+
+​	xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans
+
+http://www.springframework.org/schema/beans/spring-beans.xsd
+
+http://www.springframework.org/schema/context
+
+http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+</code></pre>
+<h3 id="12-第一步配置让spring扫描类与支持注解"><strong>1.2.</strong> <strong>第一步：配置让Spring扫描类与支持注解</strong></h3>
+<pre><code class="language-xml">&lt;!-- 
+
+​	@Component  普通仓库(也是组件)
+
+​	@Repository  仓库（其实就是dao层）
+
+​	@Service	service层
+
+​	@Controller  控制层(servlet、action)
+
+ --&gt;
+
+&lt;!-- 进行包的扫描,去看类上面是否有相应的标签配置 --&gt;
+
+&lt;context:component-scan base-package=&quot;com.cxp.spring&quot; /&gt;
+
+&lt;!-- 这个不是必须的(spring3.2版本前使用) 配上后兼容性好 --&gt;
+
+&lt;context:annotation-config /&gt;
+</code></pre>
+<h2 id="13-第二步在类里面加上注解"><strong>1.3.</strong> <strong>第二步：在类里面加上注解</strong></h2>
+<h3 id="131-dao">1.3.1. Dao</h3>
+<pre><code class="language-java">@Repository
+
+public class UserDao {
+
+public void save(){
+
+	System.out.println(&quot;保存数据xxxx....&quot;);
+
+  }
+
+}
+</code></pre>
+<h3 id="132-service">1.3.2. Service</h3>
+<pre><code class="language-java">@Service
+
+public class UserService {
+
+	@Autowired
+
+	private UserDao userDao;
+
+	public void save(){
+
+		userDao.save();
+
+	}
+
+}
+</code></pre>
+<h3 id="133-action">1.3.3. Action</h3>
+<pre><code class="language-java">@Controller
+
+@Scope(“prototype”)
+//默认是&quot;singleton&quot;
+public class UserAction {
+
+	@Autowired
+
+	private UserService userService;
+
+	public String save(){
+
+		userService.save();
+
+		return &quot;success&quot;;
+
+	}
+
+}
+</code></pre>
+<h2 id="14-注解配置bean的名称"><strong>1.4.</strong> <strong>注解配置bean的名称</strong></h2>
+<h5 id="141-接口有两个实现可能性比较少">1.4.1. 接口有两个实现（可能性比较少）</h5>
+<blockquote>
+<p>完成之后，大家注意，现在的配置还有一个问题，比如说我按真实情况来一个Dao接口，然后这个接口有两个实现，现在就会出问题</p>
+<p><strong>IUserDao  （UserJdbcDaoImpl/UserJpaDaoImpl）</strong></p>
+<p>而我们声明的时候就是使用了IUserDao</p>
+</blockquote>
+<hr>
+<pre><code class="language-java">@Service
+//此时会就出错：因为Spring不知道你用的是哪一个dao的实现
+public class UserService {
+
+	@Autowired
+
+	private IUserDao userDao;
+
+	public void save(){
+
+		userDao.save();
+
+	}
+
+}
+
+
+</code></pre>
+<h5 id="142-解决的方案">1.4.2. 解决的方案：</h5>
+<pre><code class="language-java">//为dao生成的bean加上名称，我们在调用的时候确定名称即可。
+@Repository(&quot;userJdbcDao&quot;)
+
+public class UserJdbcDaoImpl  implements IUserDao{
+
+	public void save(){
+
+		System.out.println(&quot;保存数据xxxx....&quot;);
+
+	}
+
+}
+
+@Repository(&quot;userJpaDao&quot;)
+
+public class UserJpaDaoImpl  implements IUserDao{
+
+	public void save(){
+
+		System.out.println(&quot;保存数据xxxx....&quot;);
+
+	}
+
+}
+</code></pre>
+<h2 id="15-调用名称两套方案"><strong>1.5.</strong> <strong>调用名称两套方案：</strong></h2>
+<h4 id="151-方案一使用autowired">1.5.1. 方案一：使用@Autowired</h4>
+<pre><code class="language-java">@Service
+
+public class UserService {
+
+​	@Autowired
+
+​	@Qualifier(&quot;userJdbcDao&quot;)
+
+​	private IUserDao userDao;
+
+​	public void save(){
+
+​		userDao.save();
+
+​	}
+
+}
+</code></pre>
+<h4 id="152-方案二使用resource">1.5.2. 方案二：使用@Resource</h4>
+<pre><code class="language-java">@Service
+
+public class UserService {
+
+​	@Resource(name=&quot;userJpaDao&quot;)
+
+​	private IUserDao userDao;
+
+​	public void save(){
+
+​		userDao.save();
+
+​	}
+
+}
+
+</code></pre>
+<h2 id="16-问题使用哪一种注解来解决比较好"><strong>1.6.</strong> <strong>问题：使用哪一种注解来解决比较好？</strong></h2>
+<blockquote>
+<p><strong>如果你用的是Spring的注解，尽量全部使用Spring的标签</strong></p>
+<hr>
+</blockquote>
+<h1 id="2-使用xml版手动注入xml自动注入还是注解版"><strong>2.</strong> <strong>使用xml版手动注入,xml自动注入还是注解版?</strong></h1>
+<blockquote>
+<ul>
+<li>初学使用xml版,手动注入</li>
+<li>熟练之后可以使用xml自动注入</li>
+<li>以后趋势:注解版</li>
+<li>如果是注解版,就全部使用注解（自己写类）,不要混用，其它框架已经写好的类仍然使用xml进行配置</li>
+<li>如果是xml版,在测试的使用必须使用注解注入（因为测试框架使用注解版）</li>
+<li>只有自己写的类，才可以全部用注解，别人写的类使用注解必须去修改别人的源码，添加响应的注解标志</li>
+</ul>
+</blockquote>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#1-%E5%85%A8%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE"><strong>1.</strong> <strong>全注解配置</strong></a>
+<ul>
+<li><a href="#11-%E9%85%8D%E7%BD%AEcontext%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><strong>1.1.</strong> <strong>配置context命名空间</strong></a>
+<ul>
+<li><a href="#12-%E7%AC%AC%E4%B8%80%E6%AD%A5%E9%85%8D%E7%BD%AE%E8%AE%A9spring%E6%89%AB%E6%8F%8F%E7%B1%BB%E4%B8%8E%E6%94%AF%E6%8C%81%E6%B3%A8%E8%A7%A3"><strong>1.2.</strong> <strong>第一步：配置让Spring扫描类与支持注解</strong></a></li>
+</ul>
+</li>
+<li><a href="#13-%E7%AC%AC%E4%BA%8C%E6%AD%A5%E5%9C%A8%E7%B1%BB%E9%87%8C%E9%9D%A2%E5%8A%A0%E4%B8%8A%E6%B3%A8%E8%A7%A3"><strong>1.3.</strong> <strong>第二步：在类里面加上注解</strong></a>
+<ul>
+<li><a href="#131-dao">1.3.1. Dao</a></li>
+<li><a href="#132-service">1.3.2. Service</a></li>
+<li><a href="#133-action">1.3.3. Action</a></li>
+</ul>
+</li>
+<li><a href="#14-%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AEbean%E7%9A%84%E5%90%8D%E7%A7%B0"><strong>1.4.</strong> <strong>注解配置bean的名称</strong></a><br>
+*<br>
+*<br>
+* <a href="#141-%E6%8E%A5%E5%8F%A3%E6%9C%89%E4%B8%A4%E4%B8%AA%E5%AE%9E%E7%8E%B0%E5%8F%AF%E8%83%BD%E6%80%A7%E6%AF%94%E8%BE%83%E5%B0%91">1.4.1. 接口有两个实现（可能性比较少）</a><br>
+* <a href="#142-%E8%A7%A3%E5%86%B3%E7%9A%84%E6%96%B9%E6%A1%88">1.4.2. 解决的方案：</a></li>
+<li><a href="#15-%E8%B0%83%E7%94%A8%E5%90%8D%E7%A7%B0%E4%B8%A4%E5%A5%97%E6%96%B9%E6%A1%88"><strong>1.5.</strong> <strong>调用名称两套方案：</strong></a><br>
+*
+<ul>
+<li><a href="#151-%E6%96%B9%E6%A1%88%E4%B8%80%E4%BD%BF%E7%94%A8autowired">1.5.1. 方案一：使用@Autowired</a></li>
+<li><a href="#152-%E6%96%B9%E6%A1%88%E4%BA%8C%E4%BD%BF%E7%94%A8resource">1.5.2. 方案二：使用@Resource</a></li>
+</ul>
+</li>
+<li><a href="#16-%E9%97%AE%E9%A2%98%E4%BD%BF%E7%94%A8%E5%93%AA%E4%B8%80%E7%A7%8D%E6%B3%A8%E8%A7%A3%E6%9D%A5%E8%A7%A3%E5%86%B3%E6%AF%94%E8%BE%83%E5%A5%BD"><strong>1.6.</strong> <strong>问题：使用哪一种注解来解决比较好？</strong></a></li>
+</ul>
+</li>
+<li><a href="#2-%E4%BD%BF%E7%94%A8xml%E7%89%88%E6%89%8B%E5%8A%A8%E6%B3%A8%E5%85%A5xml%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%85%A5%E8%BF%98%E6%98%AF%E6%B3%A8%E8%A7%A3%E7%89%88"><strong>2.</strong> <strong>使用xml版手动注入,xml自动注入还是注解版?</strong></a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://cxp-twx.github.io/post/spring-jian-dan-zong-jie">
+              <h3 class="post-title">
+                Spring简单总结
+              </h3>
+            </a>
+          </div>
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '3818ab196008bdc444d2',
+    clientSecret: '25a6a1be783a52e1a00f165dd3c08fa28fba507a',
+    repo: 'cxp-twx.github.io',
+    owner: 'cxp-twx',
+    admin: ['cxp-twx'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://cxp-twx.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>

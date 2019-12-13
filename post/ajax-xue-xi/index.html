@@ -1,0 +1,788 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ajax学习 | CheckChen</title>
+<meta name="description" content="吾日三省吾身" />
+<link rel="shortcut icon" href="https://cxp-twx.github.io/favicon.ico?v=1576205647397">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://cxp-twx.github.io/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://cxp-twx.github.io">
+  <img class="avatar" src="https://cxp-twx.github.io/images/avatar.png?v=1576205647397" alt="">
+  </a>
+  <h1 class="site-title">
+    CheckChen
+  </h1>
+  <p class="site-description">
+    吾日三省吾身
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Ajax学习
+            </h2>
+            <div class="post-info">
+              <span>
+                2016-12-13
+              </span>
+              <span>
+                15 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="查询分页">查询分页</h1>
+<h2 id="通用的分页参数">通用的分页参数</h2>
+<h3 id="参数概览">参数概览</h3>
+<ul>
+<li>
+<p>总条数 （从数据库中查询得到）</p>
+</li>
+<li>
+<p>当前页 (前端页面传参)</p>
+</li>
+<li>
+<p>每页条数 (前端页面传参)</p>
+</li>
+<li>
+<p>总页数 （由总条数和每页条数计算得知）</p>
+</li>
+<li>
+<p>每页要展示数据</p>
+</li>
+<li>
+<pre><code class="language-Java">/*
+	 * 记录数据总条数
+	 * */
+	private Integer totalCount;
+	/*
+	 * 记录每页展示条数
+	 * */
+	private Integer pageSize;
+	/*
+	 * 记录总页数
+	 * */
+	private Integer totalPage;
+	
+	/*
+	 * 记录当前展示的页码
+	 * */
+	private Integer currentPage;
+	
+	/*
+	 * 记录每页要展示的数据
+	 * */
+	private List&lt;E&gt; data;
+
+	public Integer getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(Integer totalCount) {
+		this.totalCount = totalCount;
+	}
+
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+	//由总条数和每页条数计算得知
+	public Integer getTotalPage() {
+		int totalPage = this.totalCount / this.pageSize;
+		if(this.totalCount % this.pageSize != 0) {
+			totalPage++;
+		}
+		return totalPage;
+	}
+
+	public Integer getCurrentPage() {
+		return currentPage;
+	}
+
+	public void setCurrentPage(Integer currentPage) {
+		this.currentPage = currentPage;
+	}
+
+	public List&lt;E&gt; getData() {
+		return data;
+	}
+
+	public void setData(List&lt;E&gt; data) {
+		this.data = data;
+	}
+	/**
+	 * 判断是否是第一页
+	 * @return
+	 */
+	public boolean isFirst() {
+		return getCurrentPage() &lt;= 1;
+	}
+	
+	/**
+	 * 判断是否是最后一页
+	 * @return
+	 */
+	public boolean isLast() {
+		return getCurrentPage() &gt;= getTotalPage();
+	}
+	
+}
+
+</code></pre>
+</li>
+</ul>
+<h3 id="计算公式">计算公式</h3>
+<p>假设数据库使用的是mysql， 第一页从1开始</p>
+<ul>
+<li>总页数算法： 总条数 / 每页条数， 能整除就用商； 不能整除商+1</li>
+<li>取当前页数据
+<ul>
+<li>开始位置： (当前页 - 1) * 每页条数</li>
+<li>结束位置(使用与逻辑分页) ： 当前页 * 每页条数</li>
+<li>取多少条（适用于mysql物理分页）：  每页条数</li>
+</ul>
+</li>
+</ul>
+<h2 id="物理分页">物理分页</h2>
+<p>物理分页是指直接利用SQL语句通过数据库的特性，实现分页。每次从数据库中拿的数据都仅仅是一页的数据量。它是依赖于数据库，不同的数据库，分页语句也不同。</p>
+<h3 id="前端代码">前端代码:</h3>
+<pre><code class="language-javascript">//和逻辑分页基本相同
+</code></pre>
+<h3 id="后台主要代码">后台主要代码:</h3>
+<pre><code class="language-java">// 获取页面传递过来的参数
+	String sCurrentPage = req.getParameter(&quot;currentPage&quot;);
+	String sPageSize= req.getParameter(&quot;pageSize&quot;);
+	
+	// 当前页码默认展示第一页
+	int currentPage = 1;
+	try {
+		// 如果前端传递了具体的页码，我们就用前端传过来的
+		currentPage = Integer.parseInt(sCurrentPage);
+	} catch (NumberFormatException e) {
+	}
+	
+	int pageSize = 10;
+	try {
+		// 如果前端传递了具体的页码，我们就用前端传过来的
+		pageSize = Integer.parseInt(sPageSize);
+	} catch (NumberFormatException e) {
+	}
+	
+	Pagination&lt;Student&gt; pagination = new Pagination&lt;&gt;();
+	pagination.setCurrentPage(currentPage);
+	pagination.setPageSize(pageSize);
+	
+	// 分页查询
+	studentDao.findByPageWithPhysical(pagination);
+	
+	req.setAttribute(&quot;page&quot;, pagination);
+	
+	req.getRequestDispatcher(&quot;physical.jsp&quot;).forward(req, resp);
+}
+</code></pre>
+<h2 id="逻辑分页">逻辑分页</h2>
+<p>逻辑分页之所以叫逻辑分页是因为每次从数据查询数据时并没有做分页，而是将所有数据都拿到了内存中，页面需要展示一页数据时，在内存中对数据做裁剪。逻辑分页并不依赖数据库实现，所以所有的数据库逻辑分页实现方案都一样。</p>
+<h3 id="前端代码-2">前端代码:</h3>
+<pre><code class="language-javascript">&lt;body&gt;
+	&lt;table border=&quot;1&quot;&gt;
+		&lt;tr&gt;
+			&lt;th&gt;学号&lt;/th&gt;
+			&lt;th&gt;姓名&lt;/th&gt;
+			&lt;th&gt;性别&lt;/th&gt;
+			&lt;th&gt;年龄&lt;/th&gt;
+			&lt;th&gt;专业&lt;/th&gt;
+			&lt;th&gt;电话&lt;/th&gt;
+		&lt;/tr&gt;
+
+		&lt;c:forEach var=&quot;item&quot; items=&quot;${page.data }&quot;&gt;
+			&lt;tr&gt;
+				&lt;td&gt;${item.stuId }&lt;/td&gt;
+				&lt;td&gt;${item.stuName }&lt;/td&gt;
+				&lt;td&gt;${item.sex }&lt;/td&gt;
+				&lt;td&gt;${item.age }&lt;/td&gt;
+				&lt;td&gt;${item.major }&lt;/td&gt;
+				&lt;td&gt;${item.phone }&lt;/td&gt;
+			&lt;/tr&gt;
+		&lt;/c:forEach&gt;
+
+	&lt;/table&gt;
+
+	&lt;div&gt;
+		总条数:${page.totalCount }
+
+		&lt;c:if test=&quot;${page.first }&quot;&gt;
+			&lt;span&gt;首页&lt;/span&gt;
+			&lt;span&gt;上一页&lt;/span&gt;
+		&lt;/c:if&gt;
+		&lt;c:if test=&quot;${!page.first }&quot;&gt;
+			&lt;a href=&quot;pagination?type=logic&amp;currentPage=1&quot;&gt;首页&lt;/a&gt;
+			&lt;a href=&quot;pagination?type=logic&amp;currentPage=${page.currentPage-1 }&quot;&gt;上一页&lt;/a&gt;
+		&lt;/c:if&gt;
+
+
+		页码： &lt;input size=&quot;1&quot; id=&quot;currentPage&quot; type=&quot;text&quot;
+			value=&quot;${page.currentPage }&quot; /&gt;/${page.totalPage }
+
+		&lt;c:if test=&quot;${page.last }&quot;&gt;
+			&lt;span&gt;下一页&lt;/span&gt;
+			&lt;span&gt;尾页&lt;/span&gt;
+		&lt;/c:if&gt;
+		&lt;c:if test=&quot;${!page.last }&quot;&gt;
+			&lt;a href=&quot;pagination?type=logic&amp;currentPage=${page.currentPage+1 }&quot;&gt;下一页&lt;/a&gt;
+			&lt;a href=&quot;pagination?type=logic&amp;currentPage=${page.totalPage }&quot;&gt;尾页&lt;/a&gt;
+		&lt;/c:if&gt;
+
+	&lt;/div&gt;
+&lt;/body&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+	var cpInput = document.getElementById(&quot;currentPage&quot;);
+	cpInput.onkeydown = function(event) {
+		console.log(&quot;keyCode: &quot; + event.keyCode);
+		if (event.keyCode == 13) {
+			window.location.href = &quot;pagination?type=logic&amp;currentPage=&quot;
+					+ cpInput.value;
+		}
+	}
+&lt;/script&gt;
+</code></pre>
+<h4 id="后台主要代码-2">后台主要代码:</h4>
+<pre><code class="language-java">// 获取页面传递过来的参数
+		String sCurrentPage = req.getParameter(&quot;currentPage&quot;);
+		String sPageSize= req.getParameter(&quot;pageSize&quot;);
+		
+		// 当前页码默认展示第一页
+		int currentPage = 1;
+		try {
+			// 如果前端传递了具体的页码，我们就用前端传过来的
+			currentPage = Integer.parseInt(sCurrentPage);
+		} catch (NumberFormatException e) {
+		}
+		
+		int pageSize = 10;
+		try {
+			// 如果前端传递了具体的页码，我们就用前端传过来的
+			pageSize = Integer.parseInt(sPageSize);
+		} catch (NumberFormatException e) {
+		}
+		
+		Pagination&lt;Student&gt; pagination = new Pagination&lt;&gt;();
+		pagination.setCurrentPage(currentPage);
+		pagination.setPageSize(pageSize);
+		
+		// 分页查询
+		studentDao.findByPageWithLogic(pagination);
+		
+		req.setAttribute(&quot;page&quot;, pagination);
+		
+		req.getRequestDispatcher(&quot;logic.jsp&quot;).forward(req, resp);
+	}
+</code></pre>
+<h1 id="cookiesession">Cookie&amp;Session</h1>
+<h2 id="cookie">Cookie</h2>
+<h3 id="cookie是什么-what">Cookie是什么？ （What）</h3>
+<p>Cookie是一项在Web请求中，基于客户端的用于存储数据的技术。</p>
+<h3 id="为什么要用cookiewhy">为什么要用Cookie？（Why)</h3>
+<p>我们知道HTTP协议是一种无状态协议，服务端无法区分每个请求对应的是哪个用户。 Cookie就是为了解决这个问题而生的，它通过在浏览器端存储一些数据，在请求时附加到请求头中，这样服务端一读取请求头就知道了这次请求是哪个用户发起的。</p>
+<h3 id="什么情况下要使用cookiewhen">什么情况下要使用Cookie?(When)</h3>
+<p>Cookie的使用分为在业务程序中显式使用和通过容器隐式使用。</p>
+<ul>
+<li>隐式使用： 首次访问JSP、Servlet时，Servlet容器会自动往响应头中添加一个Cookie(Tomcat中是JSESSIONID)</li>
+<li>显式使用： 当我们有一些安全性要求不高，数据量不大的用户数据需要存储时，可以考虑使用Cookie</li>
+</ul>
+<h3 id="怎么使用cookiehow">怎么使用Cookie?（How)</h3>
+<h4 id="cookie的创建">Cookie的创建</h4>
+<pre><code class="language-java">// 两种方法
+// 1. 构造时将数据传入
+Cookie cookie = new Cookie(&quot;key&quot;, &quot;value&quot;);
+
+// 2. 构造时无参，然后通过set方法设置数据
+Cookie cookie = new Cookie();
+cookie.setName(&quot;key&quot;);
+cookie.setValue(&quot;value&quot;);
+
+
+// 除了核心的数据之外，我们还可以设置一些其他属性
+// 1. 设置过期时间
+cookie.setMaxAge(60);	//单位：秒(60秒后,Cookie会自动删除)
+// 2. 设置Domain
+cookie.setDomain(&quot;www.baidu.com&quot;); // 代表只有访问www.baidu.com这个域名下的请求，才能获取到此Cookie
+cookie.setDomain(&quot;.baidu.com&quot;);	// 代表所有www.baidu.com下的二级域名包括www.baidu.com这个一级域名都可以共享此Cookie（注意这种情况下domain必须以&quot;.&quot;开头）
+// 3. 设置Path 
+cookie.setPath(&quot;/StudentServlet&quot;);	// 一旦设置了Path，那么要获取Cookie，当前的请求地址必须满足Path的规则，否则获取不到此Cookie     http://xxx:port/student/StudentServlet/getstu/3
+</code></pre>
+<h4 id="cookie的添加">Cookie的添加</h4>
+<pre><code class="language-java">// 使用响应对象写入浏览器
+
+reponse.addCookie(cookie); //本质上会在响应中添加一个Set-Cookie响应头。
+</code></pre>
+<h4 id="cookie删除">Cookie删除</h4>
+<pre><code class="language-java">// Cookie没有delete方法
+
+// 我们可以通过设置过期时间为0实现删除
+cookie.setMaxAge(0);
+response.addCookie(cookie);
+</code></pre>
+<h4 id="cookie的修改">Cookie的修改</h4>
+<pre><code class="language-java">// Cookie的修改其实就是覆盖添加
+
+// 具体来说分三步
+// 1. 先获取已有Cookie，
+// 2. 然后修改其中的数据，
+// 3. 最后调用response.addCookie()重新添加到浏览器，浏览器看到Key相同的Cookie会自动更新
+
+
+</code></pre>
+<h4 id="获取cookie中的数据">获取Cookie中的数据</h4>
+<pre><code class="language-java">// 1. 先通过请求对象获取请求中携带的所有Cookie数组
+Cookie[] cookies = request.getCookies();
+
+// 2. 迭代Cookie数组，寻找要操作的Cookie
+for(Cookie cookie : cookies) {
+    // 根据cookie.getName()判断是否是自己要获取数据的cookie
+	
+    // 3. 找到后，调用cookie.getValue()获取数据
+}
+
+</code></pre>
+<h2 id="session">Session</h2>
+<h3 id="session是什么-what">Session是什么？ （What）</h3>
+<p>Session和Cookie类似，都是用来存储用户信息的。不同于Cookie的是Session是存储在服务器端。他们两者通过JSESSIONID关联起来。</p>
+<h3 id="为什么要用sessionwhy">为什么要用Session？（Why)</h3>
+<p>虽然Cookie已经可以标识出哪个请求是属于哪个用户的。但是不足的是Cookie本身是存储于客户端硬盘上，安全性不高，不适合存储敏感数据，还有Cookie本身能存储的数据很有限（数据大小本身限制、数据类型限制、字符集限制）。而存储在服务端的Session完全没有这些问题。</p>
+<h3 id="什么情况下要使用sessionwhen">什么情况下要使用Session?(When)</h3>
+<p>Session可以用来存储用户的所有信息，理论上所有能在Cookie中存储的数据都可以放到Session中。考虑到Session是基于内存的，如果存储太多不太重要的数据会大大增加服务器端内存压力，一般Session会配合Cookie一起使用。</p>
+<h3 id="怎么使用sessionhow">怎么使用Session?（How)</h3>
+<h4 id="创建session">创建Session</h4>
+<pre><code class="language-java">// Session是由容器自动创建的，我们可以在代码中直接获取Sesssion
+
+HttpSession session = request.getSession();
+
+</code></pre>
+<h4 id="往session中存储数据">往Session中存储数据</h4>
+<pre><code class="language-java">session.setAttribute();
+
+</code></pre>
+<h4 id="获取session中的数据">获取Session中的数据</h4>
+<pre><code class="language-java">session.getAttribute();
+
+</code></pre>
+<h4 id="删除session中的数据">删除Session中的数据</h4>
+<pre><code class="language-java">session.removeAttribute();
+
+</code></pre>
+<h4 id="修改session中的数据">修改Session中的数据</h4>
+<pre><code class="language-java">// 修改Session中的数据和修改Cookie中的数据类似，都是覆盖添加
+
+// 1. 获取要修改的数据
+Object data = session.getAttribute(&quot;key&quot;);
+
+// 2. 修改数据对应的属性
+data.setXXX();
+
+// 3. 将修改后的数据重新存入Session
+session.setAttribute(&quot;key&quot;, data);
+
+
+</code></pre>
+<h4 id="强制让session失效">强制让Session失效</h4>
+<pre><code class="language-java">session.invalidate();	//调用后session对象会失效，同时客户端Cookie中的JSESSIONID也会发生变化
+
+</code></pre>
+<h1 id="ajax">Ajax</h1>
+<ul>
+<li>是什么?</li>
+</ul>
+<blockquote>
+<p>“Asynchronous Javascript And XML”（异步JavaScript和XML），</p>
+</blockquote>
+<blockquote>
+<p>并不是新的技术，只是把原有的技术，整合到一起而已。</p>
+</blockquote>
+<pre><code>1.使用CSS和XHTML来表示。
+2.使用DOM模型来交互和动态显示。
+3.使用XMLHttpRequest来和服务器进行异步通信。
+4.使用javascript来绑定和调用。
+
+</code></pre>
+<ul>
+<li>有什么用?</li>
+</ul>
+<blockquote>
+<p>咱们的网页如果想要刷新局部内容。 那么需要重新载入整个网页。用户体验不是很好。  就是为了解决局部刷新的问题。 保持其他部分不动，只刷新某些地方。</p>
+</blockquote>
+<h2 id="原生ajax">原生Ajax</h2>
+<h4 id="创建ajax请求对象">创建ajax请求对象</h4>
+<pre><code class="language-javascript">function  ajaxFunction(){
+	    var xmlHttp;
+	    try{ // Firefox, Chrome, Opera 8.0+, Safari
+	        xmlHttp=new XMLHttpRequest();
+	    }
+	    catch (e){
+	        try{// Internet Explorer（高版本）
+	            xmlHttp=new ActiveXObject(&quot;Msxml2.XMLHTTP&quot;);
+	        }
+	        catch (e){
+	            try{// Internet Explorer（低版本）
+	                xmlHttp=new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);
+	            }
+	            catch (e){}
+	        }
+	    }
+	    return xmlHttp;
+	}
+
+</code></pre>
+<h3 id="发送请求">发送请求</h3>
+<pre><code class="language-javascript">//1. 创建xmlhttprequest 对象
+var request = ajaxFunction();
+
+//2. 发送请求。
+/*	
+ *	参数一： 请求类型  GET or  POST
+ *	参数二： 请求的路径
+ *	参数三： 是否异步， true  or false
+ */
+request.open(&quot;GET&quot; ,&quot;TestServlet&quot; ,true );
+request.send();
+
+</code></pre>
+<h3 id="get请求流程">get请求流程</h3>
+<h3 id="post请求流程">post请求流程</h3>
+<pre><code class="language-javascript">&lt;script type=&quot;text/javascript&quot;&gt;
+	//1. 创建对象
+	// 和get请求一样
+	
+	function post() {
+		//1. 创建请求对象
+		var request = ajaxFunction();
+		
+		// 2. 设置请求地址、参数、类型(post、get)
+		request.open(&quot;post&quot;, &quot;StudentServlet&quot;, true);
+		
+		//3. 获取响应数据 注册监听的意思。  一会准备的状态发生了改变，那么就执行 = 号右边的方法
+	    request.onreadystatechange = function(){
+	        //前半段表示 已经能够正常处理。  再判断状态码是否是200
+	        if(request.readyState == 4 &amp;&amp; request.status == 200){
+	            //弹出响应的信息
+	            console.log(&quot;请求完成&quot;);
+	            var h1 = document.getElementById(&quot;h1&quot;);
+	        	h1.innerHTML = request.responseText;
+	        }
+	    }
+		
+	 	// 4. 如果使用的是post方式带数据，那么 这里要添加头， 说明提交的数据类型是一个经过url编码的form表单数据
+		request.setRequestHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);
+		
+		// 5. 发送请求
+    	// 如果是GET请求，参数写在这里是无效的
+		request.send(&quot;id=555&quot;);
+	}
+
+&lt;/script&gt;
+
+</code></pre>
+<h2 id="jquery-ajax">jQuery Ajax</h2>
+<h3 id="ajax的使用">$.ajax()的使用</h3>
+<pre><code class="language-javascript">// 语法：$.ajax(url, [settings]);
+
+$.ajax(&quot;TestServlet&quot;, {
+    type: &quot;GET&quot;,
+    data: {
+        action: &quot;json&quot;,
+        uname: &quot;zhangsan&quot;
+    },
+    dataType: &quot;json&quot;,
+    success: function(data, status_text){
+        console.log(data);
+        console.log(&quot;status_text: &quot; + status_text);
+    },
+    error: function(xhr, textStatus, errorThrow) {
+        console.log(&quot;请求失败&quot;);
+    }
+});
+
+</code></pre>
+<blockquote>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">.</mi><mi>a</mi><mi>j</mi><mi>a</mi><mi>x</mi><mi mathvariant="normal">方</mi><mi mathvariant="normal">法</mi><mi mathvariant="normal">是</mi><mi mathvariant="normal">其</mi><mi mathvariant="normal">他</mi><mi mathvariant="normal">所</mi><mi mathvariant="normal">有</mi><mi>a</mi><mi>j</mi><mi>a</mi><mi>x</mi><mi mathvariant="normal">相</mi><mi mathvariant="normal">关</mi><mi mathvariant="normal">方</mi><mi mathvariant="normal">法</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">底</mi><mi mathvariant="normal">层</mi><mi mathvariant="normal">实</mi><mi mathvariant="normal">现</mi><mi mathvariant="normal">，</mi><mi mathvariant="normal">其</mi><mi mathvariant="normal">他</mi><mi mathvariant="normal">方</mi><mi mathvariant="normal">法</mi><mi mathvariant="normal">都</mi><mi mathvariant="normal">是</mi><mi mathvariant="normal">在</mi><mi mathvariant="normal">它</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">基</mi><mi mathvariant="normal">础</mi><mi mathvariant="normal">上</mi><mi mathvariant="normal">给</mi><mi mathvariant="normal">我</mi><mi mathvariant="normal">们</mi><mi mathvariant="normal">封</mi><mi mathvariant="normal">装</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">更</mi><mi mathvariant="normal">方</mi><mi mathvariant="normal">便</mi><mi mathvariant="normal">使</mi><mi mathvariant="normal">用</mi><mi mathvariant="normal">的</mi><mi mathvariant="normal">方</mi><mi mathvariant="normal">法</mi><mi mathvariant="normal">。</mi><mi mathvariant="normal">关</mi><mi mathvariant="normal">于</mi></mrow><annotation encoding="application/x-tex">.ajax方法是其他所有ajax相关方法的底层实现，其他方法都是在它的基础上给我们封装的更方便使用的方法。 关于</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord">.</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mord mathdefault">a</span><span class="mord mathdefault">x</span><span class="mord cjk_fallback">方</span><span class="mord cjk_fallback">法</span><span class="mord cjk_fallback">是</span><span class="mord cjk_fallback">其</span><span class="mord cjk_fallback">他</span><span class="mord cjk_fallback">所</span><span class="mord cjk_fallback">有</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mord mathdefault">a</span><span class="mord mathdefault">x</span><span class="mord cjk_fallback">相</span><span class="mord cjk_fallback">关</span><span class="mord cjk_fallback">方</span><span class="mord cjk_fallback">法</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">底</span><span class="mord cjk_fallback">层</span><span class="mord cjk_fallback">实</span><span class="mord cjk_fallback">现</span><span class="mord cjk_fallback">，</span><span class="mord cjk_fallback">其</span><span class="mord cjk_fallback">他</span><span class="mord cjk_fallback">方</span><span class="mord cjk_fallback">法</span><span class="mord cjk_fallback">都</span><span class="mord cjk_fallback">是</span><span class="mord cjk_fallback">在</span><span class="mord cjk_fallback">它</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">基</span><span class="mord cjk_fallback">础</span><span class="mord cjk_fallback">上</span><span class="mord cjk_fallback">给</span><span class="mord cjk_fallback">我</span><span class="mord cjk_fallback">们</span><span class="mord cjk_fallback">封</span><span class="mord cjk_fallback">装</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">更</span><span class="mord cjk_fallback">方</span><span class="mord cjk_fallback">便</span><span class="mord cjk_fallback">使</span><span class="mord cjk_fallback">用</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">方</span><span class="mord cjk_fallback">法</span><span class="mord cjk_fallback">。</span><span class="mord cjk_fallback">关</span><span class="mord cjk_fallback">于</span></span></span></span>.ajax的详细介绍参见 &lt;http://jquery.cuishifeng.cn/jQuery.Ajax.html</p>
+</blockquote>
+<h3 id="get的使用">$.get()的使用</h3>
+<pre><code class="language-javascript">/*
+ * 参数：
+ *  url: 请求地址
+ *  data: 待发送 Key/value 参数
+ *  fn: 请求成功后回调函数
+ *  type: 返回内容格式，xml, html, script, json, text, _default
+ */
+
+$.get( &quot;url&quot;,{pid:pid} ,function(data,status_text){
+    console.log(data);
+    console.log(&quot;status_text: &quot; + status_text);
+},&quot;json&quot; );	// 指定请求返回的格式是json，jquery会帮我们把服务端返回的json字符串转换成js的json对象
+
+
+</code></pre>
+<h3 id="post的使用">$.post()的使用</h3>
+<pre><code class="language-javascript">/*
+ * 参数：
+ *  url: 请求地址
+ *  data: 待发送 Key/value 参数
+ *  fn: 请求成功后回调函数
+ *  type: 返回内容格式，xml, html, script, json, text, _default
+ */
+
+$.post( &quot;url&quot;,{pid:pid} ,function(data,status){
+    console.log(data);
+    console.log(&quot;status_text: &quot; + status_text);
+},&quot;json&quot; );	// 指定请求返回的格式是json，jquery会帮我们把服务端返回的json字符串转换成js的json对象
+
+</code></pre>
+<h3 id="getjson的使用">$.getJSON();的使用</h3>
+<pre><code class="language-javascript">$.getJSON(&quot;url&quot;, {id:1, name: &quot;zhangsan&quot;} function(json){
+  console.log(json);
+});
+
+</code></pre>
+<h3 id="以上四个方法的关系和区别">以上四个方法的关系和区别？</h3>
+<blockquote>
+<ol>
+<li><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">.</mi><mi>a</mi><mi>j</mi><mi>a</mi><mi>x</mi><mo>(</mo><mo>)</mo><mo separator="true">;</mo><mi mathvariant="normal">对</mi></mrow><annotation encoding="application/x-tex">.ajax();对</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">.</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mord mathdefault">a</span><span class="mord mathdefault">x</span><span class="mopen">(</span><span class="mclose">)</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord cjk_fallback">对</span></span></span></span>.get()、<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">.</mi><mi>p</mi><mi>o</mi><mi>s</mi><mi>t</mi><mo>(</mo><mo>)</mo><mi mathvariant="normal">、</mi></mrow><annotation encoding="application/x-tex">.post()、</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">.</span><span class="mord mathdefault">p</span><span class="mord mathdefault">o</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mopen">(</span><span class="mclose">)</span><span class="mord cjk_fallback">、</span></span></span></span>.getJSON();三个方法进行了封装，也是对原生的ajax进行的JQuery方式的封装更方便使用。<br>
+2. ​	$.get()方法对JQuery内部对get方法进行的进一步封装;</li>
+<li>$.post()方法对JQuery内部对post方法进行的进一步封装;</li>
+<li>$.getJSON();方法对JQuery内部对JSON字符串进行的进一步封装;</li>
+</ol>
+<p>Jquery会自动将响应结果做对应的类型转换</p>
+</blockquote>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E6%9F%A5%E8%AF%A2%E5%88%86%E9%A1%B5">查询分页</a>
+<ul>
+<li><a href="#%E9%80%9A%E7%94%A8%E7%9A%84%E5%88%86%E9%A1%B5%E5%8F%82%E6%95%B0">通用的分页参数</a>
+<ul>
+<li><a href="#%E5%8F%82%E6%95%B0%E6%A6%82%E8%A7%88">参数概览</a></li>
+<li><a href="#%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F">计算公式</a></li>
+</ul>
+</li>
+<li><a href="#%E7%89%A9%E7%90%86%E5%88%86%E9%A1%B5">物理分页</a>
+<ul>
+<li><a href="#%E5%89%8D%E7%AB%AF%E4%BB%A3%E7%A0%81">前端代码:</a></li>
+<li><a href="#%E5%90%8E%E5%8F%B0%E4%B8%BB%E8%A6%81%E4%BB%A3%E7%A0%81">后台主要代码:</a></li>
+</ul>
+</li>
+<li><a href="#%E9%80%BB%E8%BE%91%E5%88%86%E9%A1%B5">逻辑分页</a>
+<ul>
+<li><a href="#%E5%89%8D%E7%AB%AF%E4%BB%A3%E7%A0%81-2">前端代码:</a>
+<ul>
+<li><a href="#%E5%90%8E%E5%8F%B0%E4%B8%BB%E8%A6%81%E4%BB%A3%E7%A0%81-2">后台主要代码:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#cookiesession">Cookie&amp;Session</a>
+<ul>
+<li><a href="#cookie">Cookie</a>
+<ul>
+<li><a href="#cookie%E6%98%AF%E4%BB%80%E4%B9%88-what">Cookie是什么？ （What）</a></li>
+<li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8cookiewhy">为什么要用Cookie？（Why)</a></li>
+<li><a href="#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E8%A6%81%E4%BD%BF%E7%94%A8cookiewhen">什么情况下要使用Cookie?(When)</a></li>
+<li><a href="#%E6%80%8E%E4%B9%88%E4%BD%BF%E7%94%A8cookiehow">怎么使用Cookie?（How)</a>
+<ul>
+<li><a href="#cookie%E7%9A%84%E5%88%9B%E5%BB%BA">Cookie的创建</a></li>
+<li><a href="#cookie%E7%9A%84%E6%B7%BB%E5%8A%A0">Cookie的添加</a></li>
+<li><a href="#cookie%E5%88%A0%E9%99%A4">Cookie删除</a></li>
+<li><a href="#cookie%E7%9A%84%E4%BF%AE%E6%94%B9">Cookie的修改</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96cookie%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE">获取Cookie中的数据</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#session">Session</a>
+<ul>
+<li><a href="#session%E6%98%AF%E4%BB%80%E4%B9%88-what">Session是什么？ （What）</a></li>
+<li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8sessionwhy">为什么要用Session？（Why)</a></li>
+<li><a href="#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E8%A6%81%E4%BD%BF%E7%94%A8sessionwhen">什么情况下要使用Session?(When)</a></li>
+<li><a href="#%E6%80%8E%E4%B9%88%E4%BD%BF%E7%94%A8sessionhow">怎么使用Session?（How)</a>
+<ul>
+<li><a href="#%E5%88%9B%E5%BB%BAsession">创建Session</a></li>
+<li><a href="#%E5%BE%80session%E4%B8%AD%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE">往Session中存储数据</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96session%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE">获取Session中的数据</a></li>
+<li><a href="#%E5%88%A0%E9%99%A4session%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE">删除Session中的数据</a></li>
+<li><a href="#%E4%BF%AE%E6%94%B9session%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE">修改Session中的数据</a></li>
+<li><a href="#%E5%BC%BA%E5%88%B6%E8%AE%A9session%E5%A4%B1%E6%95%88">强制让Session失效</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#ajax">Ajax</a>
+<ul>
+<li><a href="#%E5%8E%9F%E7%94%9Fajax">原生Ajax</a><br>
+*
+<ul>
+<li><a href="#%E5%88%9B%E5%BB%BAajax%E8%AF%B7%E6%B1%82%E5%AF%B9%E8%B1%A1">创建ajax请求对象</a></li>
+<li><a href="#%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82">发送请求</a></li>
+<li><a href="#get%E8%AF%B7%E6%B1%82%E6%B5%81%E7%A8%8B">get请求流程</a></li>
+<li><a href="#post%E8%AF%B7%E6%B1%82%E6%B5%81%E7%A8%8B">post请求流程</a></li>
+</ul>
+</li>
+<li><a href="#jquery-ajax">jQuery Ajax</a>
+<ul>
+<li><a href="#ajax%E7%9A%84%E4%BD%BF%E7%94%A8">$.ajax()的使用</a></li>
+<li><a href="#get%E7%9A%84%E4%BD%BF%E7%94%A8">$.get()的使用</a></li>
+<li><a href="#post%E7%9A%84%E4%BD%BF%E7%94%A8">$.post()的使用</a></li>
+<li><a href="#getjson%E7%9A%84%E4%BD%BF%E7%94%A8">$.getJSON();的使用</a></li>
+<li><a href="#%E4%BB%A5%E4%B8%8A%E5%9B%9B%E4%B8%AA%E6%96%B9%E6%B3%95%E7%9A%84%E5%85%B3%E7%B3%BB%E5%92%8C%E5%8C%BA%E5%88%AB">以上四个方法的关系和区别？</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: '3818ab196008bdc444d2',
+    clientSecret: '25a6a1be783a52e1a00f165dd3c08fa28fba507a',
+    repo: 'cxp-twx.github.io',
+    owner: 'cxp-twx',
+    admin: ['cxp-twx'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+
+          
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | 
+  <a class="rss" href="https://cxp-twx.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+
+  let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+  // This should probably be throttled.
+  // Especially because it triggers during smooth scrolling.
+  // https://lodash.com/docs/4.17.10#throttle
+  // You could do like...
+  // window.addEventListener("scroll", () => {
+  //    _.throttle(doThatStuff, 100);
+  // });
+  // Only not doing it here to keep this Pen dependency-free.
+
+  window.addEventListener("scroll", event => {
+    let fromTop = window.scrollY;
+
+    mainNavLinks.forEach((link, index) => {
+      let section = document.getElementById(decodeURI(link.hash).substring(1));
+      let nextSection = null
+      if (mainNavLinks[index + 1]) {
+        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+      }
+      if (section.offsetTop <= fromTop) {
+        if (nextSection) {
+          if (nextSection.offsetTop > fromTop) {
+            link.classList.add("current");
+          } else {
+            link.classList.remove("current");    
+          }
+        } else {
+          link.classList.add("current");
+        }
+      } else {
+        link.classList.remove("current");
+      }
+    });
+  });
+
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>
